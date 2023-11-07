@@ -1,4 +1,4 @@
-v<p align="center">
+<p align="center">
   <img src="https://raw.githubusercontent.com/dbt-labs/dbt/ec7dee39f793aa4f7dd3dae37282cc87664813e4/etc/dbt-logo-full.svg" alt="dbt logo" width="500"/>
 </p>
 
@@ -7,30 +7,16 @@ v<p align="center">
 dbt is the T in ELT. Organize, cleanse, denormalize, filter, rename, and pre-aggregate the raw data in your warehouse so that it's ready for analysis.
 
 ## TimescaleDB
-This repo contains the base code to help you start to build out your dbt-timescaledb adapter plugin, for more information on how to build out the adapter please follow the [docs](https://docs.getdbt.com/docs/contributing/building-a-new-adapter)
 
-** Note ** this `README` is meant to be replaced with what information would be required to use your adpater once your at a point todo so.
+TODO
 
 ** Note **
 ### Adapter Scaffold default Versioning
 This adapter plugin follows [semantic versioning](https://semver.org/). The first version of this plugin is v1.7.0, in order to be compatible with dbt Core v1.7.0.
 
-It's also brand new! For TimescaleDB-specific functionality, we will aim for backwards-compatibility wherever possible. We are likely to be iterating more quickly than most major-version-1 software projects. To that end, backwards-incompatible changes will be clearly communicated and limited to minor versions (once every three months).
-
- ## Getting Started
-
- #### Setting up Locally
-- run `pip install -r dev-requirements.txt`.
-- cd directory into the `dbt-core` you'd like to be testing against and run `make dev`.
-
- #### Connect to Github
-- run `git init`.
-- Connect your lcoal code to a Github repo.
-
 ## Join the dbt Community
 
 - Be part of the conversation in the [dbt Community Slack](http://community.getdbt.com/)
-- If one doesn't exist feel free to request a #db-TimescaleDB channel be made in the [#channel-requests](https://getdbt.slack.com/archives/C01D8J8AJDA) on dbt community slack channel.
 - Read more on the [dbt Community Discourse](https://discourse.getdbt.com)
 
 ## Reporting bugs and contributing code
