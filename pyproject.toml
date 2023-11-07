@@ -19,9 +19,15 @@ build-backend = "pdm.backend"
 [tool.pdm.dev-dependencies]
 dev = [
     "pre-commit>=3.5.0",
+    "ruff>=0.1.4",
 ]
 
 [tool.pdm]
 plugins = [
     "sync-pre-commit-lock"
 ]
+
+[tool.ruff]
+line-length = 120
+select = ["E", "F", "B", "W", "I", "PL"]
+target-version = "py311"

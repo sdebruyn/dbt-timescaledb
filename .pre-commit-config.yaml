@@ -6,7 +6,22 @@ repos:
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-added-large-files
+      - id: check-json
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-shebang-scripts-are-executable
+      - id: check-toml
+      - id: fix-byte-order-marker
+      - id: mixed-line-ending
+      - id: pretty-format-json
   - repo: https://github.com/pdm-project/pdm
     rev: '2.10.1'
     hooks:
       - id: pdm-lock-check
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.4
+    hooks:
+      - id: ruff
+        args: [ --fix ]
+      - id: ruff-format

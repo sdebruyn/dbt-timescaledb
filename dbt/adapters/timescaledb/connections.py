@@ -1,11 +1,10 @@
 from contextlib import contextmanager
 from dataclasses import dataclass
-import dbt.exceptions # noqa
-from dbt.adapters.base import Credentials
 
+import dbt.exceptions  # noqa
+from dbt.adapters.base import Credentials
 from dbt.adapters.sql import SQLConnectionManager as connection_cls
 
-from dbt.logger import GLOBAL_LOGGER as logger
 
 @dataclass
 class TimescaleDBCredentials(Credentials):
@@ -20,11 +19,7 @@ class TimescaleDBCredentials(Credentials):
     # username: str
     # password: str
 
-    _ALIASES = {
-        "dbname":"database",
-        "pass":"password",
-        "user":"username"
-    }
+    _ALIASES = {"dbname": "database", "pass": "password", "user": "username"}
 
     @property
     def type(self):
@@ -43,11 +38,11 @@ class TimescaleDBCredentials(Credentials):
         """
         List of keys to display in the `dbt debug` output.
         """
-        return ("host","port","username","user")
+        return ("host", "port", "username", "user")
+
 
 class TimescaleDBConnectionManager(connection_cls):
     TYPE = "timescaledb"
-
 
     @contextmanager
     def exception_handler(self, sql: str):
@@ -97,7 +92,7 @@ class TimescaleDBConnectionManager(connection_cls):
         pass
 
     @classmethod
-    def get_response(cls,cursor):
+    def get_response(cls, cursor):
         """
         Gets a cursor object and returns adapter-specific information
         about the last executed command generally a AdapterResponse ojbect
