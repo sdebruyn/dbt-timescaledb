@@ -1,6 +1,6 @@
 [project]
 name = "dbt-timescaledb"
-version = "1.7.0"
+dynamic = ["version"]
 description = "The TimescaleDB adapter plugin for dbt"
 authors = [
     {name = "Sam Debruyn", email = "dbt.sam@debruyn.dev"},
@@ -16,6 +16,11 @@ license = {text = "MIT"}
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
+[tool.pdm.version]
+source = "scm"
+write_to = "dbt/adapters/timescaledb/__version__.py"
+write_template = "__version__ = '{}'"
+
 [tool.pdm.dev-dependencies]
 dev = [
     "pre-commit>=3.5.0",
@@ -28,6 +33,6 @@ plugins = [
 ]
 
 [tool.ruff]
-line-length = 120
+line-length = 110
 select = ["E", "F", "B", "W", "I", "PL"]
 target-version = "py311"
