@@ -39,7 +39,12 @@
 
   -- build model
   {% call statement('main', auto_begin=False) -%}
-    {{ get_create_continuous_aggregate_as_sql(intermediate_relation, sql) }}
+    -- MARKER RUN OUTSIDE TRANSACTION
+    create materialized view if not exists {{ intermediate_relation }} with (timescaledb.continuous) as {{ sql }};
+
+    {% for _index_dict in config.get('indexes', []) -%}
+        {{- get_create_index_sql(intermediate_relation, _index_dict) -}}
+    {%- endfor -%}
   {%- endcall %}
 
   -- cleanup
@@ -70,12 +75,3 @@
   {{ return({'relations': [target_relation]}) }}
 
 {%- endmaterialization -%}
-
-{% macro get_create_continuous_aggregate_as_sql(relation, sql) %}
-    create materialized view if not exists {{ relation }} with (timescaledb.continuous) as {{ sql }};
-
-    {% for _index_dict in config.get('indexes', []) -%}
-        {{- get_create_index_sql(relation, _index_dict) -}}
-    {%- endfor -%}
-
-{% endmacro %}
