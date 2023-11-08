@@ -14,7 +14,6 @@ repos:
       - id: check-toml
       - id: fix-byte-order-marker
       - id: mixed-line-ending
-      - id: pretty-format-json
   - repo: https://github.com/pdm-project/pdm
     rev: '2.10.1'
     hooks:
@@ -25,3 +24,7 @@ repos:
       - id: ruff
         args: [ --fix ]
       - id: ruff-format
+  - repo: https://github.com/IamTheFij/docker-pre-commit
+    rev: v3.0.1
+    hooks:
+      - id: docker-compose-check

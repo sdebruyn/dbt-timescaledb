@@ -1,15 +1,17 @@
+import os
+
 import pytest
-
-# import os
-# import json
-
-# Import the fuctional fixtures as a plugin
-# Note: fixtures with session scope need to be local
 
 pytest_plugins = ["dbt.tests.fixtures.project"]
 
 
-# The profile dictionary, used to write out profiles.yml
 @pytest.fixture(scope="class")
 def dbt_profile_target():
-    pass
+    return {
+        "type": "postgres",
+        "host": os.getenv("POSTGRES_TEST_HOST", "localhost"),
+        "port": int(os.getenv("POSTGRES_TEST_PORT", "5432")),
+        "user": os.getenv("POSTGRES_TEST_USER", "timescaledb"),
+        "pass": os.getenv("POSTGRES_TEST_PASS", "timescaledb"),
+        "dbname": os.getenv("POSTGRES_TEST_DATABASE", "timescaledb"),
+    }

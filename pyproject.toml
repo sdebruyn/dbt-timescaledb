@@ -46,6 +46,8 @@ write_template = "version = '{}'"
 dev = [
     "pre-commit>=3.5.0",
     "ruff>=0.1.4",
+    "pytest>=7.4.3",
+    "dbt-tests-adapter>=1.7.1",
 ]
 
 [tool.ruff]
