@@ -34,4 +34,4 @@ jobs:
         pdm sync
     - name: Run tests
       run: |
-        pdm run pytest
+        pdm run pytest -n auto
