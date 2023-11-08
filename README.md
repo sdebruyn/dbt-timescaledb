@@ -33,7 +33,7 @@ select current_timestamp as time_column
 
 ### Continuous aggregates
 
-There is support for a `continuous_aggregate` materialization. This materialization will create a continuous aggregate table in TimescaleDB.
+There is support for a `continuous_aggregate` materialization. This materialization will create a continuous aggregate in TimescaleDB.
 
 ```sql
 {{
@@ -51,6 +51,12 @@ group by 2
 ### More
 
 Feel free to request things you're interested in by creating an [issue](https://github.com/sdebruyn/dbt-timescaledb/issues).
+
+The following things are planned:
+
+- [x] Basic hypertable support
+- [x] Basic continuous aggregate support
+- [ ] Configure continuous aggregate policies through dbt
 
 ## Join the dbt Community
 
