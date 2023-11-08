@@ -19,7 +19,7 @@ build-backend = "pdm.backend"
 [tool.pdm.version]
 source = "scm"
 write_to = "dbt/adapters/timescaledb/__version__.py"
-write_template = "__version__ = '{}'"
+write_template = "version = '{}'"
 
 [tool.pdm.dev-dependencies]
 dev = [
