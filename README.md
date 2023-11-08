@@ -24,7 +24,7 @@ You can materialize your models as hypertables. This materialization requires yo
 ```sql
 {{
   config(
-    materialized='timescaledb',
+    materialized='hypertable',
     time_column_name='time_column'
   )
 }}
