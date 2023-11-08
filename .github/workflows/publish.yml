@@ -1,0 +1,22 @@
+name: Publish to PyPI
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v4
+
+        - name: Set up Python 3.11
+          uses: actions/setup-python@v4
+          with:
+            python-version: '3.11'
+
+        - uses: pdm-project/setup-pdm@v3
+
+        - name: Publish package distributions to PyPI
+          run: pdm publish
