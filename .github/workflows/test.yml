@@ -1,0 +1,41 @@
+name: Run Pytest
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      timescaledb:
+        image: timescale/timescaledb:latest-pg15
+        env:
+          POSTGRES_PASSWORD: timescaledb
+          POSTGRES_USER: timescaledb
+          POSTGRES_DB: timescaledb
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.11'
+    - name: Install PDM
+      run: |
+        python -m pip install --upgrade pip
+        pip install --user pdm
+    - name: Install dependencies
+      run: |
+        pdm sync
+    - name: Run tests
+      run: |
+        pdm run pytest
+      env:
+        TIMESCALEDB_TEST_HOST: timescaledb
