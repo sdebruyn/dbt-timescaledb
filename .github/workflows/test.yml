@@ -38,5 +38,3 @@ jobs:
     - name: Run tests
       run: |
         pdm run pytest
-      env:
-        TIMESCALEDB_TEST_HOST: timescaledb
