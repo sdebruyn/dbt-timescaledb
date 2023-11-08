@@ -1,5 +1,3 @@
 name: dbt_timescaledb
 version: 1.7.0
 config-version: 2
-
-macro-paths: ["macros"]
