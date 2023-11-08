@@ -19,7 +19,7 @@ dbt is the T in ELT. Organize, cleanse, denormalize, filter, rename, and pre-agg
 
 ### Hypertables
 
-You can materialize your models as hypertables. This materialization requires you to set a `time_column_name` configuration option in your models. This will create a hypertable in TimescaleDB.
+You can materialize your models as hypertables. The `hypertable` materialization requires you to set a `time_column_name` configuration option in your models. This will create a hypertable in TimescaleDB.
 
 ```sql
 {{
