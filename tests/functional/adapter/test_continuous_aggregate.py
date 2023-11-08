@@ -10,12 +10,21 @@ from dbt.tests.util import (
 class TestContinuousAggregate:
     @pytest.fixture(scope="class")
     def project_config_update(self):
-        return {"name": "continuous_aggregate_tests", "models": {"+materialized": "continuous_aggregate"}}
+        return {
+            "name": "continuous_aggregate_tests",
+            "models": {
+                "continuous_aggregate_tests": {
+                    "base": {"+materialized": "hypertable", "+time_column_name": "time_column"},
+                    "test_model": {"+materialized": "continuous_aggregate"},
+                }
+            },
+        }
 
     @pytest.fixture(scope="class")
     def models(self):
         return {
-            "test_model.sql": "select 1 as id",
+            "base.sql": "select current_timestamp as time_column",
+            "test_model.sql": "select * from {{ ref('base') }}",
         }
 
     def test_continuous_aggregate(self, project):

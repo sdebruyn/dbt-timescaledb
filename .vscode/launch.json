@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug continuous aggregates",
+            "type": "python",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "module": "pytest",
+            "args": [
+                "-v",
+                "tests/functional/adapter/test_continuous_aggregate.py"
+            ]
+        }
+    ]
+}
