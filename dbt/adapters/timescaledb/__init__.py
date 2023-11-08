@@ -1,13 +1,11 @@
 from dbt.adapters.base import AdapterPlugin
-from dbt.adapters.postgres import PostgresCredentials
-from dbt.adapters.timescaledb.impl import TimescaleDBAdapter
+from dbt.adapters.timescaledb.timescaledb_adapter import TimescaleDBAdapter
+from dbt.adapters.timescaledb.timescaledb_credentials import TimescaleDBCredentials
 from dbt.include import timescaledb
 
 Plugin = AdapterPlugin(
     adapter=TimescaleDBAdapter,
-    credentials=PostgresCredentials,
+    credentials=TimescaleDBCredentials,
     include_path=timescaledb.PACKAGE_PATH,
     dependencies=["postgres"],
 )
-
-__all__ = ["TimescaleDBAdapter", "Plugin"]
