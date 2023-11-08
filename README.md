@@ -2,17 +2,17 @@
   <img src="https://raw.githubusercontent.com/dbt-labs/dbt/ec7dee39f793aa4f7dd3dae37282cc87664813e4/etc/dbt-logo-full.svg" alt="dbt logo" width="500"/>
 </p>
 
+[![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm-project.org)
+![PyPI](https://img.shields.io/pypi/v/dbt-timescaledb?label=latest%20stable&logo=pypi)
+[![PyPI - License](https://img.shields.io/pypi/l/dbt-timescaledb)](https://github.com/sdebruyn/dbt-timescaledb/blob/main/LICENSE)
+
 **[dbt](https://www.getdbt.com/)** enables data analysts and engineers to transform their data using the same practices that software engineers use to build applications.
 
 dbt is the T in ELT. Organize, cleanse, denormalize, filter, rename, and pre-aggregate the raw data in your warehouse so that it's ready for analysis.
 
 ## TimescaleDB
 
-TODO
-
-** Note **
-### Adapter Scaffold default Versioning
-This adapter plugin follows [semantic versioning](https://semver.org/). The first version of this plugin is v1.7.0, in order to be compatible with dbt Core v1.7.0.
+Timescale extends PostgreSQL for all of your resource-intensive production workloads, so you can build faster, scale further, and stay under budget.
 
 ## Join the dbt Community
 
