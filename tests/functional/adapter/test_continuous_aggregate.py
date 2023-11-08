@@ -2,7 +2,6 @@ import pytest
 
 from dbt.tests.util import (
     check_result_nodes_by_name,
-    relation_from_name,
     run_dbt,
 )
 
@@ -24,14 +23,16 @@ class TestContinuousAggregate:
     def models(self):
         return {
             "base.sql": "select current_timestamp as time_column",
-            "test_model.sql": "select * from {{ ref('base') }}",
+            "test_model.sql": """
+select
+    count(*),
+    time_bucket(interval '1 day', time_column) as bucket
+from {{ ref('base') }}
+group by 2
+""",
         }
 
     def test_continuous_aggregate(self, project):
         results = run_dbt(["run"])
-        assert len(results) == 1
-        check_result_nodes_by_name(results, ["test_model"])
-
-        relation = relation_from_name(project.adapter, "test_model")
-        result = project.run_sql(f"select count(*) as num_rows from {relation}", fetch="one")
-        assert result[0] == 1
+        assert len(results) == 2  # noqa
+        check_result_nodes_by_name(results, ["base", "test_model"])

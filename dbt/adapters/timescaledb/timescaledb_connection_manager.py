@@ -16,7 +16,9 @@ class TimescaleDBConnectionManager(PostgresConnectionManager):
         bindings: Optional[Any] = None,
         abridge_sql_log: bool = False,
     ) -> Tuple[Connection, Any]:
-        restore_isolation_level = None
+        restore_isolation_level = ISOLATION_LEVEL_AUTOCOMMIT
+        connection = None
+
         if "-- MARKER RUN OUTSIDE TRANSACTION" in sql:
             auto_begin = False
             connection = self.get_thread_connection()
@@ -24,9 +26,9 @@ class TimescaleDBConnectionManager(PostgresConnectionManager):
             connection.handle.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
         try:
-            connection, cursor = super().add_query(sql, auto_begin, bindings, abridge_sql_log)
+            res1, res2 = super().add_query(sql, auto_begin, bindings, abridge_sql_log)
         finally:
             if restore_isolation_level != ISOLATION_LEVEL_AUTOCOMMIT:
                 connection.handle.set_isolation_level(restore_isolation_level)
 
-        return connection, cursor
+        return res1, res2
