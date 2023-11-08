@@ -14,7 +14,7 @@ license = {text = "MIT"}
 keywords = ["dbt", "timescaledb"]
 
 classifiers = [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: MIT License",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: MacOS :: MacOS X",
