@@ -13,7 +13,44 @@ dbt is the T in ELT. Organize, cleanse, denormalize, filter, rename, and pre-agg
 
 ## TimescaleDB
 
-Timescale extends PostgreSQL for all of your resource-intensive production workloads, so you can build faster, scale further, and stay under budget.
+[Timescale](https://www.timescale.com/) extends PostgreSQL for all of your resource-intensive production workloads, so you can build faster, scale further, and stay under budget.
+
+## dbt-timescaledb features
+
+### Hypertables
+
+You can materialize your models as hypertables. This materialization requires you to set a `time_column_name` configuration option in your models. This will create a hypertable in TimescaleDB.
+
+```sql
+{{
+  config(
+    materialized='timescaledb',
+    time_column_name='time_column'
+  )
+}}
+select current_timestamp as time_column
+```
+
+### Continuous aggregates
+
+There is support for a `continuous_aggregate` materialization. This materialization will create a continuous aggregate table in TimescaleDB.
+
+```sql
+{{
+  config(
+    materialized='continuous_aggregate',
+  )
+}}
+select
+    count(*),
+    time_bucket(interval '1 day', time_column) as bucket
+from {{ ref('a_hypertable') }}
+group by 2
+```
+
+### More
+
+Feel free to request things you're interested in by creating an [issue](https://github.com/sdebruyn/dbt-timescaledb/issues).
 
 ## Join the dbt Community
 
