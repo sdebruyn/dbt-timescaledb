@@ -11,7 +11,7 @@
     using {{ index_config.type }}
   {%- endif %}
   ({{ comma_separated_columns }})
-  {% if index_config.transaction_per_type %}
+  {%- if index_config.transaction_per_type %}
     with (timescaledb.transaction_per_chunk)
-  {% endif %};
+  {% endif -%};
 {%- endmacro %}
