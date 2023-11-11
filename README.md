@@ -98,31 +98,8 @@ You can also configure [hypertable compression](https://docs.timescale.com/use-t
   config(
     materialized='hypertable',
     time_column_name='time_column',
-    compression=True
-  )
-}}
-select current_timestamp as time_column
-```
-
-or in YAML:
-
-```yaml
-models:
-  your_project_name:
-    folder_containing_the_hypertables:
-      +materialized: hypertable
-# ...
-```
-
-or
-
-```sql
-{{
-  config(
-    materialized='hypertable',
-    time_column_name='time_column',
     compression={
-      chunk_time_interval='1 day',
+      after='1 day',
     }
   )
 }}
@@ -156,7 +133,7 @@ The following compression options ([docs for compression](https://docs.timescale
 * `orderby` (string)
 * `segmentby` (list of strings)
 * `chunk_time_interval` (the actual interval, not prefixed with "interval")
-* `after` (interval or integer depending on your time column)
+* `after` (interval or integer depending on your time column): **required**
 * `schedule_interval` (interval)
 * `initial_start`
 * `timezone`
