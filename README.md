@@ -137,21 +137,27 @@ models:
       +compression: false # same as leaving this out, default value
         model_one:
           +time_column_name: time_column
-          +compression: true
+          +compression:
+            after: interval '1 day'
         model_two:
           +time_column_name: time_column_name_in_model_two
           +compression:
-            chunk_time_interval: '1 day'
+            after: interval '1 hour'
+            chunk_time_interval: 1 day
             orderby: 'another_column'
             segmentby: ['column_one', 'column_two']
 # ...
 ```
 
-The following compression options are supported:
+The following compression options ([docs for compression](https://docs.timescale.com/api/latest/compression/alter_table_compression/) and docs for [compression policy](https://docs.timescale.com/api/latest/compression/add_compression_policy/#add_compression_policy)) are supported:
 
 * `orderby` (string)
 * `segmentby` (list of strings)
 * `chunk_time_interval` (the actual interval, not prefixed with "interval")
+* `after` (interval or integer depending on your time column)
+* `schedule_interval` (interval)
+* `initial_start`
+* `timezone`
 
 ### Continuous aggregates
 
@@ -176,9 +182,8 @@ Feel free to request things you're interested in by creating an [issue](https://
 
 The following things are planned:
 
-- [x] Basic hypertable support
-- [x] Basic continuous aggregate support
-- [ ] Configure continuous aggregate policies through dbt
+* Continuous aggregate policies
+* Continuous aggregate compression
 
 ## License
 

@@ -34,61 +34,47 @@
       '{{ intermediate_relation }}',
       '{{ time_column_name }}',
 
-      {# optional arguments:
-        - partitioning_column (str)
-        - number_partitions (int)
-        - chunk_time_interval (int)
-        - create_default_indexes (bool)
-        - partitioning_func (str)
-        - associated_schema_name (str)
-        - associated_table_prefix (str)
-        - time_partitioning_func (str)
-        - replication_factor (int)
-        - data_nodes (list)
-        - distributed (bool)
-       #}
-
-      {% if config.get('partitioning_column') is not none %}
+      {% if config.get('partitioning_column') %}
         partition_column => '{{ config.get("partitioning_column") }}',
       {% endif %}
 
-      {% if config.get('number_partitions') is not none %}
+      {% if config.get('number_partitions') %}
         number_partitions => {{ config.get('number_partitions') }},
       {% endif %}
 
-      {% if config.get('chunk_time_interval') is not none %}
+      {% if config.get('chunk_time_interval') %}
         chunk_time_interval => {{ config.get('chunk_time_interval') }},
       {% endif %}
 
-      {% if config.get('create_default_indexes') is not none %}
+      {% if config.get('create_default_indexes') %}
         create_default_indexes => {{ config.get('create_default_indexes') }},
       {% endif %}
 
-      {% if config.get('partitioning_func') is not none %}
+      {% if config.get('partitioning_func') %}
         partitioning_func => '{{ config.get("partitioning_func") }}',
       {% endif %}
 
-      {% if config.get('associated_schema_name') is not none %}
+      {% if config.get('associated_schema_name') %}
         associated_schema_name => '{{ config.get("associated_schema_name") }}',
       {% endif %}
 
-      {% if config.get('associated_table_prefix') is not none %}
+      {% if config.get('associated_table_prefix') %}
         associated_table_prefix => '{{ config.get("associated_table_prefix") }}',
       {% endif %}
 
-      {% if config.get('time_partitioning_func') is not none %}
+      {% if config.get('time_partitioning_func') %}
         time_partitioning_func => '{{ config.get("time_partitioning_func") }}',
       {% endif %}
 
-      {% if config.get('replication_factor') is not none %}
+      {% if config.get('replication_factor') %}
         replication_factor => {{ config.get('replication_factor') }},
       {% endif %}
 
-      {% if config.get('data_nodes') is not none %}
+      {% if config.get('data_nodes') %}
         data_nodes => '{"{{ config.get("data_nodes")|join("\", \"") }}"}',
       {% endif %}
 
-      {% if config.get('distributed') is not none %}
+      {% if config.get('distributed') %}
         distributed => {{ config.get('distributed') }},
       {% endif %}
 
@@ -109,6 +95,24 @@
           ,timescaledb.compress_chunk_time_interval = '{{ config.get("compression").chunk_time_interval }}'
         {% endif %}
       );
+
+      select add_compression_policy(
+        '{{ intermediate_relation }}',
+        {{ config.get("compression").after }}
+
+        {% if config.get("compression").schedule_interval %}
+          , schedule_interval => '{{ config.get("compression").schedule_interval }}'
+        {% endif %}
+
+        {% if config.get("compression").initial_start %}
+          , initial_start => {{ config.get("compression").initial_start }}
+        {% endif %}
+
+        {% if config.get("compression").timezone %}
+          , timezone => '{{ config.get("compression").timezone }}'
+        {% endif %}
+
+        );
     {% endif %}
 
   {%- endcall %}
