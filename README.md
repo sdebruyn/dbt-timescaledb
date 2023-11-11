@@ -1,6 +1,6 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/dbt-labs/dbt/ec7dee39f793aa4f7dd3dae37282cc87664813e4/etc/dbt-logo-full.svg" alt="dbt logo" width="300"/>
-  <img src="https://avatars.githubusercontent.com/u/8986001?s=200&v=4" alt="timescale logo" width="100"/>
+  <img src="https://raw.githubusercontent.com/dbt-labs/dbt-core/764c7c0fdc756eba68668c54f49b840ee4e7d301/etc/dbt-logo-full.svg" alt="dbt logo"  height="90"/>
+  <img src="https://www.timescale.com/static/f2ad0b5d363418dec15c7cc5d03c7df6/Timescale-Brandmark-Yellow-SVG.svg" alt="timescale logo" height="90"/>
 </p>
 
 [![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm-project.org)

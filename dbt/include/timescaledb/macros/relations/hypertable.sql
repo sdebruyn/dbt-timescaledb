@@ -87,3 +87,23 @@
 
   );
 {% endmacro %}
+
+{% macro add_reorder_policy(relation, reorder_config) %}
+  {# TODO #}
+{% endmacro %}
+
+{% macro add_retention_policy(relation, retention_config) %}
+  {# TODO #}
+{% endmacro %}
+
+{% macro attach_tablespace(relation, tablespace) %}
+  {# TODO #}
+{% endmacro %}
+
+{% macro set_integer_now_func(relation, integer_now_func) %}
+  {# TODO #}
+{% endmacro %}
+
+{% macro add_dimension(relation, dimension_config) %}
+  {# TODO #}
+{% endmacro %}
