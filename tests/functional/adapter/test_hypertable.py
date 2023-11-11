@@ -8,13 +8,38 @@ from dbt.tests.util import (
 
 
 class TestHypertable:
+    @pytest.fixture(
+        scope="class",
+        params=[
+            {},
+            {"+partitioning_column:": "col_1", "+number_partitions": 5},
+            {"+chunk_time_interval": "interval '24 hours'"},
+            {"+create_default_indexes": False},
+            {"+associated_schema_name": "public"},
+            {"+associated_table_prefix": "prefix_"},
+        ],
+        ids=[
+            "default",
+            "partitioning",
+            "chunk_time_interval",
+            "create_default_indexes",
+            "associated_schema_name",
+            "associated_table_prefix",
+        ],
+    )
+    def model_config(self, request):
+        return {
+            "+materialized": "hypertable",
+            "+time_column_name": "time_column",
+        }
+
     @pytest.fixture(scope="class")
-    def project_config_update(self):
+    def project_config_update(self, model_config):
         return {
             "name": "hypertable_tests",
             "models": {
                 "hypertable_tests": {
-                    "test_model": {"+materialized": "hypertable", "+time_column_name": "time_column"}
+                    "test_model": model_config,
                 }
             },
         }
@@ -22,7 +47,11 @@ class TestHypertable:
     @pytest.fixture(scope="class")
     def models(self):
         return {
-            "test_model.sql": "select current_timestamp as time_column",
+            "test_model.sql": """
+select
+    current_timestamp as time_column,
+    1 as col_1
+""",
         }
 
     def test_hypertable(self, project):
