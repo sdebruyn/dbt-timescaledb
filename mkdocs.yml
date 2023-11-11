@@ -1,0 +1,64 @@
+site_name: dbt-timescaledb
+site_description: Documentation for `dbt-timescaledb`
+site_url: https://dbt-timescaledb.debruyn.dev
+site_author: Sam Debruyn
+repo_url: https://github.com/sdebruyn/dbt-timescaledb
+edit_uri: edit/main/docs/
+repo_name: sdebruyn/dbt-timescaledb
+copyright: Copyright &copy; 2023 Sam Debruyn. dbt is a trademark of dbt Labs, Inc. Timescale is a trademark of Timescale, Inc.
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/sdebruyn/dbt-timescaledb
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/samueldebruyn/
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/s_debruyn
+    - icon: fontawesome/solid/globe
+      link: https://debruyn.dev
+  analytics:
+    provider: google
+    property: G-9S204BDS2D
+  consent:
+    title: Cookie consent
+    description: >-
+      We use cookies to recognize your repeated visits and preferences, as well
+      as to measure the effectiveness of our documentation and whether users
+      find what they're searching for. With your consent, you're helping us to
+      make our documentation better.
+
+markdown_extensions:
+  - pymdownx.highlight
+
+plugins:
+  - search
+  - social
+  - git-revision-date-localized
+
+theme:
+  name: material
+  icon:
+    logo: material/database-eye
+    repo: fontawesome/brands/github
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+      primary: deep orange
+      accent: yellow
+      media: "(prefers-color-scheme: light)"
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+      primary: yellow
+      accent: deep orange
+      media: "(prefers-color-scheme: dark)"
+  features:
+    - search.suggest
+    - content.action.edit
+
+nav:
+  - Home: index.md

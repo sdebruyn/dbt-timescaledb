@@ -34,6 +34,7 @@ jobs:
     - uses: pre-commit/action@v3.0.0
 
     - uses: pdm-project/setup-pdm@v3
+
     - name: Install dependencies
       run: |
         pdm sync
