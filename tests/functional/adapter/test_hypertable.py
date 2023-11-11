@@ -2,7 +2,6 @@ from typing import Any
 
 import pytest
 
-from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import (
     check_result_nodes_by_name,
     relation_from_name,
@@ -57,7 +56,7 @@ select
 """,
         }
 
-    def test_hypertable(self, project: TestProjInfo, unique_schema: str) -> None:
+    def test_hypertable(self, project, unique_schema: str) -> None:  # noqa: ANN001
         results = run_dbt(["run"])
         assert len(results) == 1
         check_result_nodes_by_name(results, ["test_model"])
@@ -79,21 +78,20 @@ and hypertable_schema = '{unique_schema}'""",
 
 
 class BaseTestHypertableCompression:
+    def base_compression_settings(self) -> dict[str, Any]:
+        return {"after": "interval '1 day'"}
+
     @pytest.fixture(scope="class")
     def compression_settings(self) -> dict[str, Any]:
-        return {"after": "interval '1 day'"}
+        return self.base_compression_settings()
 
     @pytest.fixture(
         scope="class"
         # params=[
-        #     {"after": "interval '1 day'"},
-        #     {"after": "interval '1 day'", "orderby": "col_1 asc"},
         #     {"after": "interval '1 day'", "segmentby": ["col_1"]},
         #     {"after": "interval '1 day'", "chunk_time_interval": "24 hours"},
         # ],
         # ids=[
-        #     "compression_default",
-        #     "compression_orderby",
         #     "compression_segmentby",
         #     "compression_chunk_time_interval",
         # ],
@@ -129,7 +127,7 @@ select
     def validate_compression(self, compression_settings: list) -> None:
         assert len(compression_settings) == 1
 
-    def test_hypertable(self, project: TestProjInfo, unique_schema: str) -> None:
+    def test_hypertable(self, project, unique_schema: str) -> None:  # noqa: ANN001
         results = run_dbt(["run"])
         assert len(results) == 1
         check_result_nodes_by_name(results, ["test_model"])
@@ -163,8 +161,9 @@ class TestHypertableCompressionDefault(BaseTestHypertableCompression):
 
 
 class TestHypertableCompressionOrderBy(BaseTestHypertableCompression):
+    @pytest.fixture(scope="class")
     def compression_settings(self) -> dict[str, Any]:
-        return super().compression_settings() | {"orderby": "col_1 asc"}
+        return super().base_compression_settings() | {"orderby": "col_1 asc"}
 
     def validate_compression(self, compression_settings: list) -> None:
         assert len(compression_settings) == 2

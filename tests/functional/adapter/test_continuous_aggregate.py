@@ -2,7 +2,6 @@ from typing import Any
 
 import pytest
 
-from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import (
     check_result_nodes_by_name,
     run_dbt,
@@ -35,7 +34,7 @@ group by 2
 """,
         }
 
-    def test_continuous_aggregate(self, project: TestProjInfo) -> None:
+    def test_continuous_aggregate(self, project) -> None:  # noqa: ANN001
         results = run_dbt(["run"])
         assert len(results) == 2  # noqa
         check_result_nodes_by_name(results, ["base", "test_model"])
