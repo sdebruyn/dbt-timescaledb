@@ -17,6 +17,10 @@ class TestHypertable:
             {"+create_default_indexes": False},
             {"+associated_schema_name": "public"},
             {"+associated_table_prefix": "prefix_"},
+            {"+compression": {}},
+            {"+compression": {"orderby": "col_1 asc"}},
+            {"+compression": {"segmentby": ["col_1"]}},
+            {"+compression": {"chunk_time_interval": "24 hours"}},
         ],
         ids=[
             "default",
@@ -25,6 +29,10 @@ class TestHypertable:
             "create_default_indexes",
             "associated_schema_name",
             "associated_table_prefix",
+            "compression_default",
+            "compression_orderby",
+            "compression_segmentby",
+            "compression_chunk_time_interval",
         ],
     )
     def model_config(self, request):

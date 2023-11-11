@@ -85,7 +85,7 @@
       {% endif %}
 
       {% if config.get('data_nodes') is not none %}
-        data_nodes => '{{ config.get("data_nodes") }}',
+        data_nodes => '{"{{ config.get("data_nodes")|join("\", \"") }}"}',
       {% endif %}
 
       {% if config.get('distributed') is not none %}
@@ -94,6 +94,23 @@
 
       if_not_exists => false, {# Users should not be concerned with this #}
       migrate_data => true); {# Required since dbt models will always contain data #}
+
+    {% if config.get('compression') is not none %}
+      alter table {{ intermediate_relation }} set (timescaledb.compress
+        {% if config.get("compression").orderby %}
+          ,timescaledb.compress_orderby = '{{ config.get("compression").orderby }}'
+        {% endif %}
+
+        {% if config.get("compression").segmentby %}
+          ,timescaledb.compress_segmentby = '{{ config.get("compression").segmentby | join(",") }}'
+        {% endif %}
+
+        {% if config.get("compression").chunk_time_interval %}
+          ,timescaledb.compress_chunk_time_interval = '{{ config.get("compression").chunk_time_interval }}'
+        {% endif %}
+      );
+    {% endif %}
+
   {%- endcall %}
 
   -- cleanup

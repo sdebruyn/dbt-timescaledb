@@ -58,6 +58,20 @@ You can materialize your models as [hypertables](https://docs.timescale.com/use-
 select current_timestamp as time_column
 ```
 
+As with any dbt model configuration, you can also set this in YAML ([docs](https://docs.getdbt.com/reference/model-configs)):
+
+```yaml
+models:
+  your_project_name:
+    folder_containing_the_hypertables:
+      +materialized: hypertable
+        model_one:
+          +time_column_name: time_column
+        model_two:
+          +time_column_name: time_column_name_in_model_two
+# ...
+```
+
 All [other TimescaleDB hypertable configuration options](https://docs.timescale.com/api/latest/hypertable/create_hypertable/#optional-arguments) are supported through model configuration as well:
 
 * `time_column_name`
@@ -73,19 +87,41 @@ All [other TimescaleDB hypertable configuration options](https://docs.timescale.
 * `data_nodes` (list of strings)
 * `distributed` (boolean)
 
-As with any dbt model configuration, you can also set this in YAML ([docs](https://docs.getdbt.com/reference/model-configs)):
+### Hypertable compression
 
-```yaml
-models:
-  your_project_name:
-    folder_containing_the_hypertables:
-      +materialized: hypertable
-        model_one:
-          +time_column_name: time_column
-        model_two:
-          +time_column_name: time_column_name_in_model_two
-# ...
+You can also configure [hypertable compression](https://docs.timescale.com/use-timescale/latest/compression/about-compression/) options:
+
+```sql
+{{
+  config(
+    materialized='hypertable',
+    time_column_name='time_column',
+    compression=True
+  )
+}}
+select current_timestamp as time_column
 ```
+
+or
+
+```sql
+{{
+  config(
+    materialized='hypertable',
+    time_column_name='time_column',
+    compression={
+      chunk_time_interval='1 day',
+    }
+  )
+}}
+select current_timestamp as time_column
+```
+
+The following compression options are supported:
+
+* `orderby` (string)
+* `segmentby` (list of strings)
+* `chunk_time_interval` (the actual interval, not prefixed with "interval")
 
 ### Continuous aggregates
 
