@@ -122,6 +122,11 @@ select
         assert not time_column[5]
         assert time_column[6]
 
+    def validate_jobs(self, timescale_jobs: list) -> None:
+        assert len(timescale_jobs) == 1
+        job = timescale_jobs[0]
+        assert job[9]
+
     def test_hypertable(self, project, unique_schema: str) -> None:  # noqa: ANN001
         results = run_dbt(["run"])
         assert len(results) == 1
@@ -149,6 +154,15 @@ and hypertable_schema = '{unique_schema}'""",
             fetch="all",
         )
         self.validate_compression(compression_settings)
+        timescale_jobs = project.run_sql(
+            f"""
+select *
+from timescaledb_information.jobs
+where hypertable_name = 'test_model'
+and hypertable_schema = '{unique_schema}'""",
+            fetch="all",
+        )
+        self.validate_jobs(timescale_jobs)
 
 
 class TestHypertableCompressionDefault(BaseTestHypertableCompression):
