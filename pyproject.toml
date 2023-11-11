@@ -24,6 +24,7 @@ classifiers = [
 
 [project.urls]
 Repository = "https://github.com/sdebruyn/dbt-timescaledb"
+Documentation = "https://dbt-timescaledb.debruyn.dev"
 
 [build-system]
 requires = ["pdm-backend"]
