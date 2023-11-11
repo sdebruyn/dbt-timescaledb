@@ -1,5 +1,8 @@
+from typing import Any
+
 import pytest
 
+from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import (
     check_result_nodes_by_name,
     relation_from_name,
@@ -27,14 +30,14 @@ class TestHypertable:
             "associated_table_prefix",
         ],
     )
-    def model_config(self, request):
+    def model_config(self, request) -> dict[str, Any]:  # noqa: ANN001
         return {
             "+materialized": "hypertable",
             "+time_column_name": "time_column",
         } | request.param
 
     @pytest.fixture(scope="class")
-    def project_config_update(self, model_config):
+    def project_config_update(self, model_config: dict[str, Any]) -> dict[str, Any]:
         return {
             "name": "hypertable_tests",
             "models": {
@@ -45,7 +48,7 @@ class TestHypertable:
         }
 
     @pytest.fixture(scope="class")
-    def models(self):
+    def models(self) -> dict[str, Any]:
         return {
             "test_model.sql": """
 select
@@ -54,7 +57,7 @@ select
 """,
         }
 
-    def test_hypertable(self, project, unique_schema):
+    def test_hypertable(self, project: TestProjInfo, unique_schema: str) -> None:
         results = run_dbt(["run"])
         assert len(results) == 1
         check_result_nodes_by_name(results, ["test_model"])
@@ -77,7 +80,7 @@ and hypertable_schema = '{unique_schema}'""",
 
 class BaseTestHypertableCompression:
     @pytest.fixture(scope="class")
-    def compression_settings(self):
+    def compression_settings(self) -> dict[str, Any]:
         return {"after": "interval '1 day'"}
 
     @pytest.fixture(
@@ -95,7 +98,7 @@ class BaseTestHypertableCompression:
         #     "compression_chunk_time_interval",
         # ],
     )
-    def model_config(self, compression_settings):
+    def model_config(self, compression_settings: dict[str, Any]) -> dict[str, Any]:
         return {
             "+materialized": "hypertable",
             "+time_column_name": "time_column",
@@ -103,7 +106,7 @@ class BaseTestHypertableCompression:
         }
 
     @pytest.fixture(scope="class")
-    def project_config_update(self, model_config):
+    def project_config_update(self, model_config: dict[str, Any]) -> dict[str, Any]:
         return {
             "name": "hypertable_tests",
             "models": {
@@ -114,7 +117,7 @@ class BaseTestHypertableCompression:
         }
 
     @pytest.fixture(scope="class")
-    def models(self):
+    def models(self) -> dict[str, Any]:
         return {
             "test_model.sql": """
 select
@@ -123,10 +126,10 @@ select
 """,
         }
 
-    def validate_compression(self, compression_settings):
+    def validate_compression(self, compression_settings: list) -> None:
         assert len(compression_settings) == 1
 
-    def test_hypertable(self, project, unique_schema):
+    def test_hypertable(self, project: TestProjInfo, unique_schema: str) -> None:
         results = run_dbt(["run"])
         assert len(results) == 1
         check_result_nodes_by_name(results, ["test_model"])
@@ -157,3 +160,11 @@ and hypertable_schema = '{unique_schema}'""",
 
 class TestHypertableCompressionDefault(BaseTestHypertableCompression):
     pass
+
+
+class TestHypertableCompressionOrderBy(BaseTestHypertableCompression):
+    def compression_settings(self) -> dict[str, Any]:
+        return super().compression_settings() | {"orderby": "col_1 asc"}
+
+    def validate_compression(self, compression_settings: list) -> None:
+        assert len(compression_settings) == 2
