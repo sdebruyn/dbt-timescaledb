@@ -102,6 +102,16 @@ You can also configure [hypertable compression](https://docs.timescale.com/use-t
 select current_timestamp as time_column
 ```
 
+or in YAML:
+
+```yaml
+models:
+  your_project_name:
+    folder_containing_the_hypertables:
+      +materialized: hypertable
+# ...
+```
+
 or
 
 ```sql
@@ -115,6 +125,26 @@ or
   )
 }}
 select current_timestamp as time_column
+```
+
+or YAML examples:
+
+```yaml
+models:
+  your_project_name:
+    folder_containing_the_hypertables:
+      +materialized: hypertable
+      +compression: false # same as leaving this out, default value
+        model_one:
+          +time_column_name: time_column
+          +compression: true
+        model_two:
+          +time_column_name: time_column_name_in_model_two
+          +compression:
+            chunk_time_interval: '1 day'
+            orderby: 'another_column'
+            segmentby: ['column_one', 'column_two']
+# ...
 ```
 
 The following compression options are supported:

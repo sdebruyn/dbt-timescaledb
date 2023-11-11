@@ -95,7 +95,7 @@
       if_not_exists => false, {# Users should not be concerned with this #}
       migrate_data => true); {# Required since dbt models will always contain data #}
 
-    {% if config.get('compression') is not none %}
+    {% if config.get('compression') %}
       alter table {{ intermediate_relation }} set (timescaledb.compress
         {% if config.get("compression").orderby %}
           ,timescaledb.compress_orderby = '{{ config.get("compression").orderby }}'
