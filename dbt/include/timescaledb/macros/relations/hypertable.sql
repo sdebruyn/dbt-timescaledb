@@ -1,7 +1,12 @@
 {% macro get_create_hypertable_as_sql(relation) %}
+  {% set time_column_name = config.get("time_column_name") %}
+  {% if not time_column_name %}
+    {{ exceptions.raise_compiler_error("The configuration option time_column_name is required for hypertables.") }}
+  {% endif %}
+
   select create_hypertable(
     '{{ relation }}',
-    '{{ config.get("time_column_name") }}',
+    '{{ time_column_name }}',
 
     {%- if config.get('partitioning_column') %}
       partition_column => '{{ config.get("partitioning_column") }}',
