@@ -57,8 +57,3 @@ line-length = 110
 select = ["E", "F", "B", "W", "I", "PL", "ANN"]
 ignore = ["PLR2004", "ANN101"]
 target-version = "py311"
-
-[tool.pytest.ini_options]
-markers = [
-    "empty: the relation in this test should be empty"
-]

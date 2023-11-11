@@ -20,7 +20,7 @@
       chunk_time_interval => {{ config.get('chunk_time_interval') }},
     {% endif -%}
 
-    {%- if config.get('create_default_indexes') %}
+    {%- if config.get('create_default_indexes') is not none %}
       create_default_indexes => {{ config.get('create_default_indexes') }},
     {% endif -%}
 
