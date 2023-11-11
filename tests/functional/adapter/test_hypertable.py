@@ -31,7 +31,7 @@ class TestHypertable:
         return {
             "+materialized": "hypertable",
             "+time_column_name": "time_column",
-        }
+        } | request.param
 
     @pytest.fixture(scope="class")
     def project_config_update(self, model_config):
