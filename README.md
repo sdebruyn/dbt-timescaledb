@@ -64,14 +64,14 @@ All [other TimescaleDB hypertable configuration options](https://docs.timescale.
 * `partitioning_column`
 * `number_partitions`
 * `chunk_time_interval`
-* `create_default_indexes`
+* `create_default_indexes` (boolean)
 * `partitioning_func`
 * `associated_schema_name`
 * `associated_table_prefix`
 * `time_partitioning_func`
 * `replication_factor`
-* `data_nodes`
-* `distributed`
+* `data_nodes` (list of strings)
+* `distributed` (boolean)
 
 As with any dbt model configuration, you can also set this in YAML ([docs](https://docs.getdbt.com/reference/model-configs)):
 
