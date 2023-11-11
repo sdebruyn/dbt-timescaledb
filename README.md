@@ -72,6 +72,8 @@ models:
 # ...
 ```
 
+Since hypertables make more sense as empty tables in which you insert data, you can also set the configuration option `empty_hypertable` (`false` by default) which will truncate the data right after creating the table and right before converting it into a hypertable.
+
 All [other TimescaleDB hypertable configuration options](https://docs.timescale.com/api/latest/hypertable/create_hypertable/#optional-arguments) are supported through model configuration as well:
 
 * `time_column_name`
@@ -158,6 +160,10 @@ The following compression options ([docs for compression](https://docs.timescale
 * `schedule_interval` (interval)
 * `initial_start`
 * `timezone`
+
+### Transaction per chunk indexes
+
+You can create [transaction per chunk indexes](https://docs.timescale.com/api/latest/hypertable/create_index/) by setting the optional boolean `transaction_per_chunk` in the [index configuration](https://docs.getdbt.com/reference/resource-configs/postgres-configs#indexes), similar to the `unique` setting.
 
 ### Continuous aggregates
 

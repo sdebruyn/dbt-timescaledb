@@ -29,6 +29,11 @@
   -- build model
   {% call statement('main') -%}
     {{ get_create_table_as_sql(False, intermediate_relation, sql) }}
+
+    {%- if config.get("empty_hypertable") %}
+      truncate {{ intermediate_relation }};
+    {% endif -%}
+
     {{ get_create_hypertable_as_sql(intermediate_relation) }}
 
     {%- if config.get('compression') %}
