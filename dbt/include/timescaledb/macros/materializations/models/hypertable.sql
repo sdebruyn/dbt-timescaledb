@@ -30,8 +30,23 @@
   -- build model
   {% call statement('main') -%}
     {{ get_create_table_as_sql(False, intermediate_relation, sql) }}
+  {%- endcall %}
+
+  -- cleanup
+  {% if existing_relation is not none %}
+     /* Do the equivalent of rename_if_exists. 'existing_relation' could have been dropped
+        since the variable was first set. */
+    {% set existing_relation = load_cached_relation(existing_relation) %}
+    {% if existing_relation is not none %}
+        {{ adapter.rename_relation(existing_relation, backup_relation) }}
+    {% endif %}
+  {% endif %}
+
+  {{ adapter.rename_relation(intermediate_relation, target_relation) }}
+
+  {% call statement('hypertable') %}
     select create_hypertable(
-      '{{ intermediate_relation }}',
+      '{{ target_relation }}',
       '{{ time_column_name }}',
 
       {# optional arguments:
@@ -94,19 +109,7 @@
 
       if_not_exists => false, {# Users should not be concerned with this #}
       migrate_data => true); {# Required since dbt models will always contain data #}
-  {%- endcall %}
-
-  -- cleanup
-  {% if existing_relation is not none %}
-     /* Do the equivalent of rename_if_exists. 'existing_relation' could have been dropped
-        since the variable was first set. */
-    {% set existing_relation = load_cached_relation(existing_relation) %}
-    {% if existing_relation is not none %}
-        {{ adapter.rename_relation(existing_relation, backup_relation) }}
-    {% endif %}
-  {% endif %}
-
-  {{ adapter.rename_relation(intermediate_relation, target_relation) }}
+  {% endcall %}
 
   {% do create_indexes(target_relation) %}
 
