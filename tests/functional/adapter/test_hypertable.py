@@ -85,17 +85,7 @@ class BaseTestHypertableCompression:
     def compression_settings(self) -> dict[str, Any]:
         return self.base_compression_settings()
 
-    @pytest.fixture(
-        scope="class"
-        # params=[
-        #     {"after": "interval '1 day'", "segmentby": ["col_1"]},
-        #     {"after": "interval '1 day'", "chunk_time_interval": "24 hours"},
-        # ],
-        # ids=[
-        #     "compression_segmentby",
-        #     "compression_chunk_time_interval",
-        # ],
-    )
+    @pytest.fixture(scope="class")
     def model_config(self, compression_settings: dict[str, Any]) -> dict[str, Any]:
         return {
             "+materialized": "hypertable",
@@ -126,6 +116,11 @@ select
 
     def validate_compression(self, compression_settings: list) -> None:
         assert len(compression_settings) == 1
+        time_column = [x for x in compression_settings if x[2] == "time_column"][0]
+
+        assert time_column[3] is None
+        assert not time_column[5]
+        assert time_column[6]
 
     def test_hypertable(self, project, unique_schema: str) -> None:  # noqa: ANN001
         results = run_dbt(["run"])
@@ -167,3 +162,40 @@ class TestHypertableCompressionOrderBy(BaseTestHypertableCompression):
 
     def validate_compression(self, compression_settings: list) -> None:
         assert len(compression_settings) == 2
+        time_column = [x for x in compression_settings if x[2] == "time_column"][0]
+        col_1 = [x for x in compression_settings if x[2] == "col_1"][0]
+
+        assert time_column[3] is None
+        assert not time_column[5]
+        assert time_column[6]
+
+        assert col_1[3] is None
+        assert col_1[4] == 1
+        assert col_1[5]
+        assert not col_1[6]
+
+
+class TestHypertableCompressionSegmentBy(BaseTestHypertableCompression):
+    @pytest.fixture(scope="class")
+    def compression_settings(self) -> dict[str, Any]:
+        return super().base_compression_settings() | {"segmentby": ["col_1"]}
+
+    def validate_compression(self, compression_settings: list) -> None:
+        assert len(compression_settings) == 2
+        time_column = [x for x in compression_settings if x[2] == "time_column"][0]
+        col_1 = [x for x in compression_settings if x[2] == "col_1"][0]
+
+        assert time_column[3] is None
+        assert not time_column[5]
+        assert time_column[6]
+
+        assert col_1[3] == 1
+        assert col_1[4] is None
+        assert col_1[5] is None
+        assert col_1[6] is None
+
+
+class TestHypertableCompressionChunkTimeInterval(BaseTestHypertableCompression):
+    @pytest.fixture(scope="class")
+    def compression_settings(self) -> dict[str, Any]:
+        return super().base_compression_settings() | {"chunk_time_interval": "1 day"}
