@@ -36,3 +36,6 @@ group by 2
         results = run_dbt(["run"])
         assert len(results) == 2  # noqa
         check_result_nodes_by_name(results, ["base", "test_model"])
+        nodes = [r.node for r in results]
+        test_model = next(n for n in nodes if n.name == "test_model")
+        assert test_model.node_info["materialized"] == "continuous_aggregate"
