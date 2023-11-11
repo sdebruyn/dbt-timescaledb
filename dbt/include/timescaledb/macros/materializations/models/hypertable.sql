@@ -30,7 +30,70 @@
   -- build model
   {% call statement('main') -%}
     {{ get_create_table_as_sql(False, intermediate_relation, sql) }}
-    SELECT create_hypertable('{{ intermediate_relation }}', '{{ time_column_name }}', migrate_data => true);
+    select create_hypertable(
+      '{{ intermediate_relation }}',
+      '{{ time_column_name }}',
+
+      {# optional arguments:
+        - partitioning_column (str)
+        - number_partitions (int)
+        - chunk_time_interval (int)
+        - create_default_indexes (bool)
+        - partitioning_func (str)
+        - associated_schema_name (str)
+        - associated_table_prefix (str)
+        - time_partitioning_func (str)
+        - replication_factor (int)
+        - data_nodes (list)
+        - distributed (bool)
+       #}
+
+      {% if config.get('partitioning_column') is not none %}
+        partition_column => '{{ config.get("partitioning_column") }}',
+      {% endif %}
+
+      {% if config.get('number_partitions') is not none %}
+        number_partitions => {{ config.get('number_partitions') }},
+      {% endif %}
+
+      {% if config.get('chunk_time_interval') is not none %}
+        chunk_time_interval => {{ config.get('chunk_time_interval') }},
+      {% endif %}
+
+      {% if config.get('create_default_indexes') is not none %}
+        create_default_indexes => {{ config.get('create_default_indexes') }},
+      {% endif %}
+
+      {% if config.get('partitioning_func') is not none %}
+        partitioning_func => '{{ config.get("partitioning_func") }}',
+      {% endif %}
+
+      {% if config.get('associated_schema_name') is not none %}
+        associated_schema_name => '{{ config.get("associated_schema_name") }}',
+      {% endif %}
+
+      {% if config.get('associated_table_prefix') is not none %}
+        associated_table_prefix => '{{ config.get("associated_table_prefix") }}',
+      {% endif %}
+
+      {% if config.get('time_partitioning_func') is not none %}
+        time_partitioning_func => '{{ config.get("time_partitioning_func") }}',
+      {% endif %}
+
+      {% if config.get('replication_factor') is not none %}
+        replication_factor => {{ config.get('replication_factor') }},
+      {% endif %}
+
+      {% if config.get('data_nodes') is not none %}
+        data_nodes => '{{ config.get("data_nodes") }}',
+      {% endif %}
+
+      {% if config.get('distributed') is not none %}
+        distributed => {{ config.get('distributed') }},
+      {% endif %}
+
+      if_not_exists => false, {# Users should not be concerned with this #}
+      migrate_data => true); {# Required since dbt models will always contain data #}
   {%- endcall %}
 
   -- cleanup
