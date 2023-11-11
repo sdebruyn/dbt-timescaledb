@@ -29,6 +29,7 @@ class TestHypertable:
         results = run_dbt(["run"])
         assert len(results) == 1
         check_result_nodes_by_name(results, ["test_model"])
+        assert results[0].node.node_info["materialized"] == "hypertable"
 
         relation = relation_from_name(project.adapter, "test_model")
         result = project.run_sql(f"select count(*) as num_rows from {relation}", fetch="one")
