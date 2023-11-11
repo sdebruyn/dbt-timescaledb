@@ -39,7 +39,7 @@ jobs:
 
     - name: Run tests
       run: |
-        pdm run pytest -n auto
+        pdm run pytest --cov=dbt -n auto
 
     - name: Report Coveralls
       uses: coverallsapp/github-action@v2
