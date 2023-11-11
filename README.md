@@ -7,6 +7,7 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/dbt-timescaledb)](https://pypi.org/project/dbt-timescaledb/)
 [![PyPI - License](https://img.shields.io/pypi/l/dbt-timescaledb)](https://github.com/sdebruyn/dbt-timescaledb/blob/main/LICENSE)
 [![tests](https://github.com/sdebruyn/dbt-timescaledb/actions/workflows/test.yml/badge.svg)](https://github.com/sdebruyn/dbt-timescaledb/actions/workflows/test.yml)
+[![Coverage Status](https://coveralls.io/repos/github/sdebruyn/dbt-timescaledb/badge.svg?branch=main)](https://coveralls.io/github/sdebruyn/dbt-timescaledb?branch=main)
 
 **[dbt](https://www.getdbt.com/)** enables data analysts and engineers to transform their data using the same practices that software engineers use to build applications.
 
@@ -16,11 +17,36 @@ dbt is the T in ELT. Organize, cleanse, denormalize, filter, rename, and pre-agg
 
 [Timescale](https://www.timescale.com/) extends PostgreSQL for all of your resource-intensive production workloads, so you can build faster, scale further, and stay under budget.
 
-## dbt-timescaledb features
+## dbt-timescaledb features & documentation
+
+### Installation
+
+Install the package using pip:
+
+```bash
+pip install dbt-timescaledb
+```
+
+In your `profiles.yml`, use the same configuration [as you'd do for a regular PostgreSQL database](https://docs.getdbt.com/docs/core/connect-data-platform/postgres-setup#profile-configuration). The only difference is that you need to set the `type` to `timescaledb`.
+
+```yaml
+company-name:
+  target: dev
+  outputs:
+    dev:
+      type: timescaledb # only option different from regular dbt-postgres
+      host: [hostname]
+      user: [username]
+      password: [password]
+      port: [port]
+      dbname: [database name]
+      schema: [dbt schema]
+      # see dbt-postgres docs linked above for more options
+```
 
 ### Hypertables
 
-You can materialize your models as hypertables. The `hypertable` materialization requires you to set a `time_column_name` configuration option in your models. This will create a hypertable in TimescaleDB.
+You can materialize your models as [hypertables](https://docs.timescale.com/use-timescale/latest/hypertables/about-hypertables/). The `hypertable` materialization requires you to set the `time_column_name` configuration option in your models. This will create a hypertable in TimescaleDB.
 
 ```sql
 {{
@@ -32,9 +58,38 @@ You can materialize your models as hypertables. The `hypertable` materialization
 select current_timestamp as time_column
 ```
 
+All [other TimescaleDB hypertable configuration options](https://docs.timescale.com/api/latest/hypertable/create_hypertable/#optional-arguments) are supported through model configuration as well:
+
+* `time_column_name`
+* `partitioning_column`
+* `number_partitions`
+* `chunk_time_interval`
+* `create_default_indexes`
+* `partitioning_func`
+* `associated_schema_name`
+* `associated_table_prefix`
+* `time_partitioning_func`
+* `replication_factor`
+* `data_nodes`
+* `distributed`
+
+As with any dbt model configuration, you can also set this in YAML ([docs](https://docs.getdbt.com/reference/model-configs)):
+
+```yaml
+models:
+  your_project_name:
+    folder_containing_the_hypertables:
+      +materialized: hypertable
+        model_one:
+          +time_column_name: time_column
+        model_two:
+          +time_column_name: time_column_name_in_model_two
+# ...
+```
+
 ### Continuous aggregates
 
-There is support for a `continuous_aggregate` materialization. This materialization will create a continuous aggregate in TimescaleDB.
+There is support for `continuous_aggregate` materialization. This materialization will create a continuous aggregate in TimescaleDB.
 
 ```sql
 {{
@@ -59,10 +114,9 @@ The following things are planned:
 - [x] Basic continuous aggregate support
 - [ ] Configure continuous aggregate policies through dbt
 
-## Reporting bugs and contributing code
+## License
 
-- Want to report a bug or request a feature? Let us know on [Slack](http://community.getdbt.com/), or open [an issue](https://github.com/sdebruyn/dbt-timescaledb/issues)
-- Want to help us build dbt? Check out the [Contributing Guide](https://github.com/dbt-labs/dbt/blob/HEAD/CONTRIBUTING.md)
+MIT License. See [LICENSE](LICENSE) for full details.
 
 ## Code of Conduct
 
