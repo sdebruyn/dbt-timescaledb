@@ -34,86 +34,86 @@
       '{{ intermediate_relation }}',
       '{{ time_column_name }}',
 
-      {% if config.get('partitioning_column') %}
+      {%- if config.get('partitioning_column') %}
         partition_column => '{{ config.get("partitioning_column") }}',
-      {% endif %}
+      {% endif -%}
 
-      {% if config.get('number_partitions') %}
+      {%- if config.get('number_partitions') %}
         number_partitions => {{ config.get('number_partitions') }},
-      {% endif %}
+      {% endif -%}
 
-      {% if config.get('chunk_time_interval') %}
+      {%- if config.get('chunk_time_interval') %}
         chunk_time_interval => {{ config.get('chunk_time_interval') }},
-      {% endif %}
+      {% endif -%}
 
-      {% if config.get('create_default_indexes') %}
+      {%- if config.get('create_default_indexes') %}
         create_default_indexes => {{ config.get('create_default_indexes') }},
-      {% endif %}
+      {% endif -%}
 
-      {% if config.get('partitioning_func') %}
+      {%- if config.get('partitioning_func') %}
         partitioning_func => '{{ config.get("partitioning_func") }}',
-      {% endif %}
+      {% endif -%}
 
-      {% if config.get('associated_schema_name') %}
+      {%- if config.get('associated_schema_name') %}
         associated_schema_name => '{{ config.get("associated_schema_name") }}',
-      {% endif %}
+      {% endif -%}
 
-      {% if config.get('associated_table_prefix') %}
+      {%- if config.get('associated_table_prefix') %}
         associated_table_prefix => '{{ config.get("associated_table_prefix") }}',
-      {% endif %}
+      {% endif -%}
 
-      {% if config.get('time_partitioning_func') %}
+      {%- if config.get('time_partitioning_func') %}
         time_partitioning_func => '{{ config.get("time_partitioning_func") }}',
-      {% endif %}
+      {% endif -%}
 
-      {% if config.get('replication_factor') %}
+      {%- if config.get('replication_factor') %}
         replication_factor => {{ config.get('replication_factor') }},
-      {% endif %}
+      {% endif -%}
 
-      {% if config.get('data_nodes') %}
+      {%- if config.get('data_nodes') %}
         data_nodes => '{"{{ config.get("data_nodes")|join("\", \"") }}"}',
-      {% endif %}
+      {% endif -%}
 
-      {% if config.get('distributed') %}
+      {%- if config.get('distributed') %}
         distributed => {{ config.get('distributed') }},
-      {% endif %}
+      {% endif -%}
 
       if_not_exists => false, {# Users should not be concerned with this #}
       migrate_data => true); {# Required since dbt models will always contain data #}
 
-    {% if config.get('compression') %}
+    {%- if config.get('compression') %}
       alter table {{ intermediate_relation }} set (timescaledb.compress
-        {% if config.get("compression").orderby %}
+        {%- if config.get("compression").orderby %}
           ,timescaledb.compress_orderby = '{{ config.get("compression").orderby }}'
-        {% endif %}
+        {% endif -%}
 
-        {% if config.get("compression").segmentby %}
+        {%- if config.get("compression").segmentby %}
           ,timescaledb.compress_segmentby = '{{ config.get("compression").segmentby | join(",") }}'
-        {% endif %}
+        {% endif -%}
 
-        {% if config.get("compression").chunk_time_interval %}
+        {%- if config.get("compression").chunk_time_interval %}
           ,timescaledb.compress_chunk_time_interval = '{{ config.get("compression").chunk_time_interval }}'
-        {% endif %}
+        {% endif -%}
       );
 
       select add_compression_policy(
         '{{ intermediate_relation }}',
         {{ config.get("compression").after }}
 
-        {% if config.get("compression").schedule_interval %}
+        {%- if config.get("compression").schedule_interval %}
           , schedule_interval => '{{ config.get("compression").schedule_interval }}'
-        {% endif %}
+        {% endif -%}
 
-        {% if config.get("compression").initial_start %}
+        {%- if config.get("compression").initial_start %}
           , initial_start => {{ config.get("compression").initial_start }}
-        {% endif %}
+        {% endif -%}
 
-        {% if config.get("compression").timezone %}
+        {%- if config.get("compression").timezone %}
           , timezone => '{{ config.get("compression").timezone }}'
-        {% endif %}
+        {% endif -%}
 
         );
-    {% endif %}
+    {%- endif -%}
 
   {%- endcall %}
 
