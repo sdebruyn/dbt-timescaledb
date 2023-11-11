@@ -54,7 +54,7 @@ select
 """,
         }
 
-    def test_hypertable(self, project):
+    def test_hypertable(self, project, unique_schema):
         results = run_dbt(["run"])
         assert len(results) == 1
         check_result_nodes_by_name(results, ["test_model"])
@@ -63,3 +63,13 @@ select
         relation = relation_from_name(project.adapter, "test_model")
         result = project.run_sql(f"select count(*) as num_rows from {relation}", fetch="one")
         assert result[0] == 1
+
+        hypertables = project.run_sql(
+            f"""
+select *
+from timescaledb_information.hypertables
+where hypertable_name = 'test_model'
+and hypertable_schema = '{unique_schema}'""",
+            fetch="all",
+        )
+        assert len(hypertables) == 1
