@@ -34,10 +34,20 @@ group by 2
 """,
         }
 
-    def test_continuous_aggregate(self, project) -> None:  # noqa: ANN001
+    def test_continuous_aggregate(self, project, unique_schema: str) -> None:  # noqa: ANN001
         results = run_dbt(["run"])
         assert len(results) == 2  # noqa
         check_result_nodes_by_name(results, ["base", "test_model"])
         nodes = [r.node for r in results]
         test_model = next(n for n in nodes if n.name == "test_model")
         assert test_model.node_info["materialized"] == "continuous_aggregate"
+
+        continuous_aggregate_results = project.run_sql(
+            f"""
+select *
+from timescaledb_information.continuous_aggregates
+where view_schema = '{unique_schema}'
+and view_name = 'test_model'""",
+            fetch="all",
+        )
+        assert len(continuous_aggregate_results) == 1
