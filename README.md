@@ -1,7 +1,13 @@
-![dbt logo for light mode](https://raw.githubusercontent.com/sdebruyn/dbt-timescaledb/main/assets/dbt-signature_tm.png#gh-light-mode-only)
-![dbt logo for dark mode](https://raw.githubusercontent.com/sdebruyn/dbt-timescaledb/main/assets/dbt-signature_tm_light.png#gh-dark-mode-only)
-![timescale logo for light mode](https://raw.githubusercontent.com/sdebruyn/dbt-timescaledb/main/assets/Timescale-Logo-Black-PNG.png#gh-light-mode-only)
-![timescale logo for dark mode](https://raw.githubusercontent.com/sdebruyn/dbt-timescaledb/main/assets/Timescale-Logo-Primary-PNG.png#gh-dark-mode-only)
+# dbt-timescaledb
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/sdebruyn/dbt-timescaledb/main/assets/dbt-signature_tm_light.png">
+  <img alt="dbt logo" src="https://raw.githubusercontent.com/sdebruyn/dbt-timescaledb/main/assets/dbt-signature_tm.png">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/sdebruyn/dbt-timescaledb/main/assets/Timescale-Logo-Primary-PNG.png">
+  <img alt="timescale logo" src="https://raw.githubusercontent.com/sdebruyn/dbt-timescaledb/main/assets/Timescale-Logo-Black-PNG.png">
+</picture>
 
 [![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm-project.org)
 [![PyPI - Version](https://img.shields.io/pypi/v/dbt-timescaledb)](https://pypi.org/project/dbt-timescaledb/)

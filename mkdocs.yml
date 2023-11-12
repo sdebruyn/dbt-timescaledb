@@ -5,6 +5,7 @@ site_author: Sam Debruyn
 repo_url: https://github.com/sdebruyn/dbt-timescaledb
 edit_uri: edit/main/docs/
 repo_name: sdebruyn/dbt-timescaledb
+strict: true
 copyright: |
   dbt and dbt Core are trademarks of dbt Labs, Inc.
   Timescale and TimescaleDB are trademarks of Timescale, Inc.
