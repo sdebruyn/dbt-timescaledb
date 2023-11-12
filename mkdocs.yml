@@ -30,11 +30,14 @@ extra:
 
 markdown_extensions:
   - pymdownx.highlight
+  - pymdownx.snippets:
+      check_paths: true
 
 plugins:
   - search
   - social
   - git-revision-date-localized
+  - autorefs
 
 theme:
   name: material
@@ -59,6 +62,17 @@ theme:
   features:
     - search.suggest
     - content.action.edit
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.top
+    - navigation.tabs
+    - navigation.tabs.sticky
+
+extra_css:
+  - stylesheets/extra.css
 
 nav:
-  - Home: index.md
+  - Home:
+      - Overview: index.md
+      - License: license.md

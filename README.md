@@ -1,4 +1,4 @@
-![dbt logo](assets/dbt-signature_tm.png#gh-light-mode-only) ![dbt logo](assets/dbt-signature_tm_light.png#gh-dark-mode-only) ![timescale logo](https://www.timescale.com/static/516782923da3e393d5c343c9a52d74d4/Timescale-Logo-Primary-SVG.svg#gh-dark-mode-only) ![timescale logo](https://www.timescale.com/static/ada2f38ead4be42ee298825fd543f66e/Timescale-Logo-Black-SVG.svg#gh-light-mode-only)
+![dbt logo](https://raw.githubusercontent.com/sdebruyn/dbt-timescaledb/main/assets/dbt-signature_tm.png#gh-light-mode-only) ![dbt logo](https://raw.githubusercontent.com/sdebruyn/dbt-timescaledb/main/assets/dbt-signature_tm_light.png#gh-dark-mode-only) ![timescale logo](https://www.timescale.com/static/516782923da3e393d5c343c9a52d74d4/Timescale-Logo-Primary-SVG.svg#gh-dark-mode-only) ![timescale logo](https://www.timescale.com/static/ada2f38ead4be42ee298825fd543f66e/Timescale-Logo-Black-SVG.svg#gh-light-mode-only)
 
 [![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm-project.org)
 [![PyPI - Version](https://img.shields.io/pypi/v/dbt-timescaledb)](https://pypi.org/project/dbt-timescaledb/)
@@ -167,7 +167,7 @@ The following things are planned:
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for full details.
+MIT License. See [LICENSE](https://dbt-timescaledb.debruyn.dev/license/) for full details.
 
 ## Code of Conduct
 

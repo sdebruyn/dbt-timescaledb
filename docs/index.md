@@ -1,3 +1,1 @@
-# Nothing here yet
-
-Check back soon!
+--8<-- "README.md"
