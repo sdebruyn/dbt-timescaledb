@@ -1,7 +1,7 @@
 {%- materialization continuous_aggregate, adapter="timescaledb" -%}
 
   {%- set existing_relation = load_cached_relation(this) -%}
-  {%- set target_relation = this.incorporate(type="view") -%}
+  {%- set target_relation = this.incorporate(type=this.MaterializedView) -%}
   {%- set intermediate_relation =  make_intermediate_relation(target_relation) -%}
 
   -- the intermediate_relation should not already exist in the database; get_relation
@@ -21,7 +21,7 @@
      exist, then there is nothing to move out of the way and subsequentally drop. In that case,
      this relation will be effectively unused.
   */
-  {%- set backup_relation_type = "view" if existing_relation is none else existing_relation.type -%}
+  {%- set backup_relation_type = target_relation.MaterializedView if existing_relation is none else existing_relation.type -%}
   {%- set backup_relation = make_backup_relation(target_relation, backup_relation_type) -%}
   -- as above, the backup_relation should not already exist
   {%- set preexisting_backup_relation = load_cached_relation(backup_relation) -%}
@@ -38,18 +38,15 @@
   {{ run_hooks(pre_hooks, inside_transaction=True) }}
 
   -- build model
-  {% call statement('main', auto_begin=False) -%}
-    {{ adapter.marker_run_outside_transaction() }}
-    create materialized view if not exists {{ intermediate_relation }} with (timescaledb.continuous) as {{ sql }};
-  {%- endcall %}
+  {% call statement('main') -%}
+    create materialized view if not exists {{ intermediate_relation }}
+    with (timescaledb.continuous) as {{ sql }}
+    with no data;
 
-  {%- if config.get('indexes') %}
-    {% call statement('indexes') -%}
-      {% for _index_dict in config.get('indexes', []) -%}
-          {{- get_create_index_sql(intermediate_relation, _index_dict) -}}
-      {%- endfor -%}
-    {%- endcall %}
-  {% endif -%}
+    {% for _index_dict in config.get('indexes', []) -%}
+        {{- get_create_index_sql(intermediate_relation, _index_dict) -}}
+    {%- endfor -%}
+  {%- endcall %}
 
   -- cleanup
   -- move the existing view out of the way
@@ -75,6 +72,12 @@
   {{ drop_relation_if_exists(backup_relation) }}
 
   {{ run_hooks(post_hooks, inside_transaction=False) }}
+
+  {#- Load the data into the continuous aggregate -#}
+  {% call statement('refresh', fetch_result=False, auto_begin=False) %}
+    {{ adapter.marker_run_outside_transaction() }}
+    call refresh_continuous_aggregate('{{ target_relation }}', NULL, NULL);
+  {% endcall %}
 
   {{ return({'relations': [target_relation]}) }}
 
