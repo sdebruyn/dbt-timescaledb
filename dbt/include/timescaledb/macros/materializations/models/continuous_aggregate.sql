@@ -39,7 +39,7 @@
 
   -- build model
   {% call statement('main', auto_begin=False) -%}
-    -- MARKER RUN OUTSIDE TRANSACTION
+    {{ adapter.marker_run_outside_transaction() }}
     create materialized view if not exists {{ intermediate_relation }} with (timescaledb.continuous) as {{ sql }};
 
     {% for _index_dict in config.get('indexes', []) -%}

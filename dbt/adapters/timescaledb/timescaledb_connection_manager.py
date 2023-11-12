@@ -4,6 +4,11 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 from dbt.adapters.postgres.connections import PostgresConnectionManager
 from dbt.contracts.connection import Connection
+from dbt.events import AdapterLogger
+
+NO_TRANSACTION_MARKER = "/* MARKER SHOULD RUN OUTSIDE TRANSACTION */"
+
+logger = AdapterLogger("TimescaleDB")
 
 
 class TimescaleDBConnectionManager(PostgresConnectionManager):
@@ -19,16 +24,20 @@ class TimescaleDBConnectionManager(PostgresConnectionManager):
         restore_isolation_level = ISOLATION_LEVEL_AUTOCOMMIT
         connection = None
 
-        if "-- MARKER RUN OUTSIDE TRANSACTION" in sql:
+        if NO_TRANSACTION_MARKER in sql:
+            logger.debug("Found marker to run SQL outside transaction")
             auto_begin = False
             connection = self.get_thread_connection()
             restore_isolation_level = connection.handle.isolation_level
+            logger.debug(f"Current isolation level: {restore_isolation_level}")
             connection.handle.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+            logger.debug(f"Set isolation level to {ISOLATION_LEVEL_AUTOCOMMIT} and autocommit to False")
 
         try:
             res1, res2 = super().add_query(sql, auto_begin, bindings, abridge_sql_log)
         finally:
             if restore_isolation_level != ISOLATION_LEVEL_AUTOCOMMIT:
+                logger.debug(f"Restoring isolation level to {restore_isolation_level}")
                 connection.handle.set_isolation_level(restore_isolation_level)
 
         return res1, res2
