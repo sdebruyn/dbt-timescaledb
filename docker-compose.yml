@@ -2,6 +2,6 @@ services:
   timescaledb:
     env_file:
     - test.env
-    image: timescale/timescaledb-ha:pg15
+    image: timescale/timescaledb:latest-pg15
     ports:
     - 5432:5432/tcp
