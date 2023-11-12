@@ -3,6 +3,7 @@ from typing import Any
 import pytest
 
 from dbt.tests.util import run_dbt
+from tests.utils import get_indexes_sql
 
 
 class TestHypertableIndex:
@@ -24,19 +25,6 @@ select
     1 as col_1
 """
 
-    def _get_indexes_sql(self, unique_schema: str, table_name: str) -> str:
-        return f"""
-            SELECT
-              pg_get_indexdef(idx.indexrelid) as index_definition
-            FROM pg_index idx
-            JOIN pg_class tab ON tab.oid = idx.indrelid
-            WHERE
-              tab.relname = '{table_name}'
-              AND tab.relnamespace = (
-                SELECT oid FROM pg_namespace WHERE nspname = '{unique_schema}'
-              );
-        """
-
     @pytest.fixture(scope="class")
     def models(self) -> dict[str, Any]:
         return {
@@ -48,11 +36,9 @@ select
         results = run_dbt(["run"])
         assert len(results) == 2
 
-        with_default_results = project.run_sql(
-            self._get_indexes_sql(unique_schema, "with_default"), fetch="all"
-        )
+        with_default_results = project.run_sql(get_indexes_sql(unique_schema, "with_default"), fetch="all")
         without_default_results = project.run_sql(
-            self._get_indexes_sql(unique_schema, "without_default"), fetch="all"
+            get_indexes_sql(unique_schema, "without_default"), fetch="all"
         )
 
         assert len(with_default_results) == 2
