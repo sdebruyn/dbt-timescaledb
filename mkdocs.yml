@@ -5,18 +5,20 @@ site_author: Sam Debruyn
 repo_url: https://github.com/sdebruyn/dbt-timescaledb
 edit_uri: edit/main/docs/
 repo_name: sdebruyn/dbt-timescaledb
-copyright: Copyright &copy; 2023 Sam Debruyn. dbt is a trademark of dbt Labs, Inc. Timescale is a trademark of Timescale, Inc.
+copyright: |
+  dbt and dbt Core are trademarks of dbt Labs, Inc.
+  Timescale and TimescaleDB are trademarks of Timescale, Inc.
 
 extra:
   social:
-    - icon: fontawesome/brands/github
-      link: https://github.com/sdebruyn/dbt-timescaledb
-    - icon: fontawesome/brands/linkedin
-      link: https://www.linkedin.com/in/samueldebruyn/
-    - icon: fontawesome/brands/x-twitter
-      link: https://x.com/s_debruyn
-    - icon: fontawesome/solid/globe
-      link: https://debruyn.dev
+  - icon: fontawesome/brands/github
+    link: https://github.com/sdebruyn/dbt-timescaledb
+  - icon: fontawesome/brands/linkedin
+    link: https://www.linkedin.com/in/samueldebruyn/
+  - icon: fontawesome/brands/x-twitter
+    link: https://x.com/s_debruyn
+  - icon: fontawesome/solid/globe
+    link: https://debruyn.dev
   analytics:
     provider: google
     property: G-9S204BDS2D
@@ -29,15 +31,24 @@ extra:
       make our documentation better.
 
 markdown_extensions:
-  - pymdownx.highlight
-  - pymdownx.snippets:
-      check_paths: true
+- admonition
+- pymdownx.highlight
+- pymdownx.superfences
+- pymdownx.inlinehilite
+- pymdownx.snippets:
+    check_paths: true
+- pymdownx.emoji:
+    emoji_index: !!python/name:material.extensions.emoji.twemoji
+    emoji_generator: !!python/name:material.extensions.emoji.to_svg
+- pymdownx.tabbed:
+    alternate_style: true
 
 plugins:
-  - search
-  - social
-  - git-revision-date-localized
-  - autorefs
+- search
+- social
+- git-revision-date-localized
+- autorefs
+- open-in-new-tab
 
 theme:
   name: material
@@ -45,34 +56,43 @@ theme:
     logo: material/database-eye
     repo: fontawesome/brands/github
   palette:
-    - scheme: default
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-      primary: deep orange
-      accent: yellow
-      media: "(prefers-color-scheme: light)"
-    - scheme: slate
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
-      primary: yellow
-      accent: deep orange
-      media: "(prefers-color-scheme: dark)"
+  - scheme: default
+    toggle:
+      icon: material/brightness-7
+      name: Switch to dark mode
+    primary: deep orange
+    accent: yellow
+    media: "(prefers-color-scheme: light)"
+  - scheme: slate
+    toggle:
+      icon: material/brightness-4
+      name: Switch to light mode
+    primary: yellow
+    accent: deep orange
+    media: "(prefers-color-scheme: dark)"
   features:
-    - search.suggest
-    - content.action.edit
-    - navigation.instant
-    - navigation.instant.progress
-    - navigation.tracking
-    - navigation.top
-    - navigation.tabs
-    - navigation.tabs.sticky
+  - search.suggest
+  - content.action.edit
+  - navigation.instant
+  - navigation.instant.progress
+  - navigation.tracking
+  - navigation.top
+  - navigation.tabs
+  - navigation.tabs.sticky
+  - content.code.copy
+  - content.code.annotate
 
 extra_css:
-  - stylesheets/extra.css
+- stylesheets/extra.css
 
 nav:
-  - Home:
-      - Overview: index.md
-      - License: license.md
+- Home:
+  - Overview: index.md
+  - Installation: installation.md
+  - License: license.md
+- Usage:
+  - Overview: usage/index.md
+  - Hypertables: usage/hypertables.md
+  - Continuous aggregates: usage/continuous-aggregates.md
+  - Compression: usage/compression.md
+  - Indexes: usage/indexes.md

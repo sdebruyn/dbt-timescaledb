@@ -5,7 +5,7 @@
 groups = ["default", "dev", "docs", "test"]
 strategy = ["cross_platform"]
 lock_version = "4.4"
-content_hash = "sha256:277b77d3431a465f0d6e10891e4f6a12cc8bff3d935ab37ee2bdd678868139e3"
+content_hash = "sha256:14e673079ffe0b41355f17efbf6b78eff1d1b0d811b39b4144d0c100c1a6368e"
 
 [[package]]
 name = "agate"
@@ -764,6 +764,19 @@ dependencies = [
 files = [
     {file = "mkdocs_material-9.4.8-py3-none-any.whl", hash = "sha256:8b20f6851bddeef37dced903893cd176cf13a21a482e97705a103c45f06ce9b9"},
     {file = "mkdocs_material-9.4.8.tar.gz", hash = "sha256:f0c101453e8bc12b040e8b64ca39a405d950d8402609b1378cc2b98976e74b5f"},
+]
+
+[[package]]
+name = "mkdocs-open-in-new-tab"
+version = "1.0.3"
+requires_python = ">=3.7"
+summary = "MkDocs plugin to open outgoing links and PDFs in new tab."
+dependencies = [
+    "mkdocs",
+]
+files = [
+    {file = "mkdocs-open-in-new-tab-1.0.3.tar.gz", hash = "sha256:a40231901b12f01a1d4b798112712d475741356e550d8f3adf3ca23e332a7d2c"},
+    {file = "mkdocs_open_in_new_tab-1.0.3-py3-none-any.whl", hash = "sha256:e2ddfa02f53d7c16d8430f5c0b3d98c4b98c82e1b8aa6fbdc91c78e89bbeb5f1"},
 ]
 
 [[package]]
