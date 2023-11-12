@@ -39,7 +39,7 @@ jobs:
       run: pdm install -x --no-editable -dG test
 
     - name: Run tests
-      run: pdm run pytest --cov=dbt -n auto
+      run: pdm run pytest -v --cov=dbt -n auto
 
     - name: Report Coveralls
       uses: coverallsapp/github-action@v2
