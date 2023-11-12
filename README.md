@@ -41,4 +41,4 @@ This adapter is in an alpha version. All available features are continuously tes
 
 ## Code of Conduct
 
-Both dbt Labs and Timescale have published a code of conduct. Everyone interacting in this project's codebases, issues, discussions, and related Slack channels is expected to follow the [dbt Code of Conduct](https://community.getdbt.com/code-of-conduct) and the [Timescale Code of Conduct](https://www.timescale.com/code-of-conduct).
+Both dbt Labs and Timescale have published a code of conduct. Everyone interacting in this project's codebases, issues, discussions, and related Slack channels is expected to follow the [dbt Code of Conduct](https://docs.getdbt.com/community/resources/code-of-conduct) and the [Timescale Code of Conduct](https://www.timescale.com/code-of-conduct).
