@@ -1,7 +1,4 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/dbt-labs/dbt-core/764c7c0fdc756eba68668c54f49b840ee4e7d301/etc/dbt-logo-full.svg" alt="dbt logo"  height="90"/>
-  <img src="https://www.timescale.com/static/f2ad0b5d363418dec15c7cc5d03c7df6/Timescale-Brandmark-Yellow-SVG.svg" alt="timescale logo" height="90"/>
-</p>
+![dbt logo](assets/dbt-signature_tm.png#gh-light-mode-only) ![dbt logo](assets/dbt-signature_tm_light.png#gh-dark-mode-only) ![timescale logo](https://www.timescale.com/static/516782923da3e393d5c343c9a52d74d4/Timescale-Logo-Primary-SVG.svg#gh-dark-mode-only) ![timescale logo](https://www.timescale.com/static/ada2f38ead4be42ee298825fd543f66e/Timescale-Logo-Black-SVG.svg#gh-light-mode-only)
 
 [![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm-project.org)
 [![PyPI - Version](https://img.shields.io/pypi/v/dbt-timescaledb)](https://pypi.org/project/dbt-timescaledb/)
@@ -15,7 +12,7 @@ dbt is the T in ELT. Organize, cleanse, denormalize, filter, rename, and pre-agg
 
 ## TimescaleDB
 
-[Timescale](https://www.timescale.com/) extends PostgreSQL for all of your resource-intensive production workloads, so you can build faster, scale further, and stay under budget.
+**[Timescale](https://www.timescale.com/)** extends PostgreSQL for all of your resource-intensive production workloads, so you can build faster, scale further, and stay under budget.
 
 ## dbt-timescaledb features & documentation
 
