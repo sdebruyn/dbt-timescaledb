@@ -15,7 +15,7 @@ jobs:
       PDM_BUILD_SCM_VERSION: "1.0.0"
     services:
       timescaledb:
-        image: timescale/timescaledb:latest-pg15
+        image: timescale/timescaledb-ha:pg15
         env:
           POSTGRES_PASSWORD: timescaledb
           POSTGRES_USER: timescaledb
