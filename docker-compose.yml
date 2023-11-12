@@ -1,9 +1,7 @@
 services:
   timescaledb:
-    image: timescale/timescaledb:latest-pg15
+    env_file:
+    - test.env
+    image: timescale/timescaledb-ha:pg15
     ports:
-      - 5432:5432/tcp
-    environment:
-      - POSTGRES_USER=timescaledb
-      - POSTGRES_PASSWORD=timescaledb
-      - POSTGRES_DB=timescaledb
+    - 5432:5432/tcp

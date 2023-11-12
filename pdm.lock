@@ -5,7 +5,7 @@
 groups = ["default", "dev", "docs", "test"]
 strategy = ["cross_platform"]
 lock_version = "4.4"
-content_hash = "sha256:14e673079ffe0b41355f17efbf6b78eff1d1b0d811b39b4144d0c100c1a6368e"
+content_hash = "sha256:c755fa845e7cb9c2bcd179810b8c025708fa1bdef6f440a9ef959d7271695137"
 
 [[package]]
 name = "agate"
@@ -1083,6 +1083,19 @@ files = [
 ]
 
 [[package]]
+name = "pytest-dotenv"
+version = "0.5.2"
+summary = "A py.test plugin that parses environment files before running tests"
+dependencies = [
+    "pytest>=5.0.0",
+    "python-dotenv>=0.9.1",
+]
+files = [
+    {file = "pytest-dotenv-0.5.2.tar.gz", hash = "sha256:2dc6c3ac6d8764c71c6d2804e902d0ff810fa19692e95fe138aefc9b1aa73732"},
+    {file = "pytest_dotenv-0.5.2-py3-none-any.whl", hash = "sha256:40a2cece120a213898afaa5407673f6bd924b1fa7eafce6bda0e8abffe2f710f"},
+]
+
+[[package]]
 name = "pytest-xdist"
 version = "3.4.0"
 requires_python = ">=3.7"
@@ -1107,6 +1120,16 @@ dependencies = [
 files = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
+]
+
+[[package]]
+name = "python-dotenv"
+version = "1.0.0"
+requires_python = ">=3.8"
+summary = "Read key-value pairs from a .env file and set them as environment variables"
+files = [
+    {file = "python-dotenv-1.0.0.tar.gz", hash = "sha256:a8df96034aae6d2d50a4ebe8216326c61c3eb64836776504fcca410e5937a3ba"},
+    {file = "python_dotenv-1.0.0-py3-none-any.whl", hash = "sha256:f5971a9226b701070a4bf2c38c89e5a3f0d64de8debda981d1db98583009122a"},
 ]
 
 [[package]]

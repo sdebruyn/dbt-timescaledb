@@ -53,6 +53,7 @@ test = [
     "dbt-tests-adapter>=1.7.1",
     "pytest-xdist>=3.3.1",
     "pytest-cov>=4.1.0",
+    "pytest-dotenv>=0.5.2",
 ]
 docs = [
     "mkdocs-material[imaging]>=9.4.8",
@@ -68,3 +69,6 @@ line-length = 110
 select = ["E", "F", "B", "W", "I", "PL", "ANN"]
 ignore = ["PLR2004", "ANN101"]
 target-version = "py311"
+
+[tool.pytest.ini_options]
+env_files = ["test.env"]
