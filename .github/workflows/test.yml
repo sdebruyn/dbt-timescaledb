@@ -41,9 +41,11 @@ jobs:
       run: pdm install -x --no-editable -dG test
 
     - name: Run tests
-      run: pdm run pytest -v --cov=dbt -n auto tests/
+      run: pdm run pytest -v --cov=dbt --cov-report=xml -n auto tests/
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      with:
+        files: ./coverage.xml
