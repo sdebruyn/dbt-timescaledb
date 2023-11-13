@@ -38,7 +38,7 @@ jobs:
     - uses: pdm-project/setup-pdm@v3
 
     - name: Install dependencies
-      run: pdm install -x --no-editable -dG test
+      run: pdm install -x -dG test
 
     - name: Run tests
       run: pdm run pytest -v --cov=dbt --cov-report=xml -n auto tests/
