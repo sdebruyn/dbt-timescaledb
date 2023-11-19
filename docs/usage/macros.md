@@ -2,9 +2,12 @@
 
 The macros below are available to use in your dbt project. They are also used internally by the adapter to implement the configuration options.
 
+!!! tip
+    Usually the macros below won't be used directly but instead will be used via the configuration options of the hypertables and continuous aggregates. They are documented here for completeness.
+
 ## `enable_compression`
 
-Enable compression on a table.
+Enable compression on a hypertable or continuous aggregate.
 
 [Configuration options](compression.md#compression-settings)
 
@@ -14,7 +17,7 @@ Enable compression on a table.
 
 ## `add_compression_policy`
 
-Add a compression policy to a table.
+Add a compression policy to a hypertable or continuous aggregate.
 
 [Configuration options](compression.md#compression-policy-settings)
 
@@ -24,10 +27,22 @@ Add a compression policy to a table.
 
 ## `add_reorder_policy`
 
-Add a reorder policy to a table.
+Add a reorder policy to a hypertable.
 
 [Configuration options](reorder-policies.md#configuration-options)
 
 ```sql+jinja
 {{ add_reorder_policy('table_name', {"index": {"columns": "column_name"}}) }}
+```
+
+## `add_refresh_policy`
+
+Add a refresh policy to a continuous aggregate.
+
+[Configuration options](continuous-aggregates.md#timescaledb-refresh-policy-options)
+
+```sql+jinja
+{{ add_refresh_policy('continuous_aggregate_name', {
+    "start_offset": "interval '3 day'",
+    "end_offset": "interval '2 day'"}) }}
 ```
