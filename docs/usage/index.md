@@ -10,4 +10,6 @@ Other TimescaleDB features are available natively in dbt as well:
 * [Compression](compression.md)
 * [Transaction per chunk indexes](indexes.md)
 
+Most of the features are also available as [macros](macros.md).
+
 The amount of features is still quite low as this adapter is still in the alpha stage. More will be added soon.

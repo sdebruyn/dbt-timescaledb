@@ -97,3 +97,4 @@ nav:
   - Continuous aggregates: usage/continuous-aggregates.md
   - Compression: usage/compression.md
   - Indexes: usage/indexes.md
+  - Macros: usage/macros.md
