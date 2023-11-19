@@ -88,10 +88,6 @@
   );
 {% endmacro %}
 
-{% macro attach_tablespace(relation, tablespace) %}
-  {# TODO #}
-{% endmacro %}
-
 {% macro set_integer_now_func(relation, integer_now_func) %}
   {# TODO #}
 {% endmacro %}
