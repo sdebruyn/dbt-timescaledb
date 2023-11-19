@@ -21,3 +21,13 @@ Add a compression policy to a table.
 ```sql+jinja
 {{ add_compression_policy('table_name', {"after": "interval '60d'"}) }}
 ```
+
+## `add_reorder_policy`
+
+Add a reorder policy to a table.
+
+[Configuration options](reorder-policies.md#configuration-options)
+
+```sql+jinja
+{{ add_reorder_policy('table_name', {"index": {"columns": "column_name"}}) }}
+```

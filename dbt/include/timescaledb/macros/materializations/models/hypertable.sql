@@ -57,6 +57,8 @@
 
   {% do create_indexes(target_relation) %}
 
+  {% do create_reorder_policies(target_relation) %}
+
   {{ run_hooks(post_hooks, inside_transaction=True) }}
 
   {% set should_revoke = should_revoke(existing_relation, full_refresh_mode=True) %}
