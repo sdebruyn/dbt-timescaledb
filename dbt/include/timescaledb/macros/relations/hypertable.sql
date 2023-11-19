@@ -57,42 +57,6 @@
   );
 {% endmacro %}
 
-{% macro enable_compression(relation, compression_config) %}
-  alter table {{ relation }} set (timescaledb.compress
-    {%- if compression_config.orderby %}
-        ,timescaledb.compress_orderby = '{{ compression_config.orderby }}'
-    {% endif -%}
-
-    {%- if compression_config.segmentby %}
-        ,timescaledb.compress_segmentby = '{{ compression_config.segmentby | join(",") }}'
-    {% endif -%}
-
-    {%- if compression_config.chunk_time_interval %}
-        ,timescaledb.compress_chunk_time_interval = '{{ compression_config.chunk_time_interval }}'
-    {% endif -%}
-  );
-{% endmacro %}
-
-{% macro add_compression_policy(relation, compression_config) %}
-  select add_compression_policy(
-    '{{ relation }}',
-    {{ compression_config.after }}
-
-    {%- if compression_config.schedule_interval %}
-        , schedule_interval => '{{ compression_config.schedule_interval }}'
-    {% endif -%}
-
-    {%- if compression_config.initial_start %}
-        , initial_start => {{ compression_config.initial_start }}
-    {% endif -%}
-
-    {%- if compression_config.timezone %}
-        , timezone => '{{ compression_config.timezone }}'
-    {% endif -%}
-
-  );
-{% endmacro %}
-
 {% macro create_reorder_policies(relation) %}
   {%- set _reorder_policies = config.get('reorder_policies', default=[]) -%}
   {% for _reorder_policy_dict in _reorder_policies %}

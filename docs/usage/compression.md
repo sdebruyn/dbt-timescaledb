@@ -5,12 +5,9 @@ Compression is one of the key features of TimescaleDB and can speed up queries w
 !!! info
     Consult the [Timescale docs](https://docs.timescale.com/use-timescale/latest/compression/about-compression/) to learn more about compression.
 
-!!! note "Hypertables only for now"
-    For now, compression is only available on hypertables. Support for continuous aggregates will be added later.
-
 ## Usage
 
-Compression is a configuration option for hypertables. The only required argument is `after`, referring to the time interval after which compression should be applied. This can be an interval or an integer depending on the data type of your time column.
+Compression is a configuration option for **hypertables and continuous aggregates**. The only required argument is `after`, referring to the time interval after which compression should be applied. This can be an interval or an integer depending on the data type of your time column.
 
 === "SQL"
 
