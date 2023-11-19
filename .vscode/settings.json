@@ -4,7 +4,6 @@
         "tests"
     ],
     "python.testing.unittestEnabled": false,
-    "dbt.queryLimit": 100,
     "yaml.schemas": {
         "https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/dbt_project.json": [
             "dbt_project.yml"
