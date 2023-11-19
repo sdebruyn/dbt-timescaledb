@@ -59,7 +59,7 @@ The `after` option from the compression policy settings is the only required opt
 * `chunk_time_interval` (the actual interval, not prefixed with "interval")
 
 !!! info
-    Consult the [Timescale docs](https://docs.timescale.com/api/latest/compression/alter_table_compression/) for more information on these settings.
+    Consult the [Timescale docs](https://docs.timescale.com/api/latest/compression/alter_table_compression/) for more information regarding these settings.
 
 ### Compression policy settings
 
@@ -69,4 +69,4 @@ The `after` option from the compression policy settings is the only required opt
 * `timezone`
 
 !!! info
-    Consult the [Timescale docs](https://docs.timescale.com/api/latest/compression/add_compression_policy/#add_compression_policy) for more information on these settings.
+    Consult the [Timescale docs](https://docs.timescale.com/api/latest/compression/add_compression_policy/#add_compression_policy) for more information regarding these settings.

@@ -21,3 +21,23 @@
     ) as {{ sql }}
   with no data;
 {% endmacro %}
+
+{% macro add_refresh_policy(relation, refresh_config) %}
+  select add_continuous_aggregate_policy('{{ relation }}',
+    start_offset => {{ refresh_config.start_offset }},
+    end_offset => {{ refresh_config.end_offset }},
+
+    {%- if refresh_config.schedule_interval %}
+        schedule_interval => {{ refresh_config.schedule_interval }},
+    {% endif -%}
+
+    {%- if refresh_config.initial_start %}
+        initial_start => {{ refresh_config.initial_start }},
+    {% endif -%}
+
+    {%- if refresh_config.timezone %}
+        timezone => '{{ refresh_config.timezone }}',
+    {% endif -%}
+
+    if_not_exists => true);
+{% endmacro %}

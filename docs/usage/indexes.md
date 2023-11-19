@@ -3,7 +3,7 @@
 Next to all regular Postgres indexes, TimescaleDB also supports [transaction per chunk](https://docs.timescale.com/api/latest/hypertable/create_index/) indexes.
 
 !!! info
-    Consult the [Timescale docs](https://docs.timescale.com/api/latest/hypertable/create_index/) for more information on the usage of these indexes.
+    Consult the [Timescale docs](https://docs.timescale.com/api/latest/hypertable/create_index/) for more information regarding the usage of these indexes.
 
 ## Usage
 
@@ -38,4 +38,4 @@ To create a transaction per chunk index, simply set the `transaction_per_chunk` 
     ```
 
 !!! info
-    Consult the [dbt Postgres docs](https://docs.getdbt.com/reference/resource-configs/postgres-configs#indexes) for more information on how indexes can be configured.
+    Consult the [dbt Postgres docs](https://docs.getdbt.com/reference/resource-configs/postgres-configs#indexes) for more information regarding how indexes can be configured.

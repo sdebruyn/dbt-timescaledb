@@ -30,7 +30,7 @@
     {{ compression_config.after }},
 
     {%- if compression_config.schedule_interval %}
-        schedule_interval => '{{ compression_config.schedule_interval }}',
+        schedule_interval => {{ compression_config.schedule_interval }},
     {% endif -%}
 
     {%- if compression_config.initial_start %}

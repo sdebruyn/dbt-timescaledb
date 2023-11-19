@@ -9,7 +9,7 @@ Hypertables make less sense as dbt models to store transformed data. However, yo
     dbt will always recreate your entire model. This means that all existing data in your hypertables will be lost when you run them again. If you're using hypertables for ingesting time-series data, you probably don't want this.
 
 !!! info
-    Consult the [Timescale docs](https://docs.timescale.com/use-timescale/latest/hypertables/about-hypertables/) for more information on hypertables.
+    Consult the [Timescale docs](https://docs.timescale.com/use-timescale/latest/hypertables/about-hypertables/) for more information regarding hypertables.
 
 ## Usage
 
@@ -69,7 +69,7 @@ All [TimescaleDB hypertable configuration options](https://docs.timescale.com/ap
 * `distributed` (boolean)
 
 !!! info
-    Consult the [Timescale docs](https://docs.timescale.com/api/latest/hypertable/create_hypertable/#optional-arguments) for more information on these options.
+    Consult the [Timescale docs](https://docs.timescale.com/api/latest/hypertable/create_hypertable/#optional-arguments) for more information regarding these options.
 
 ## :thinking: Ideas
 

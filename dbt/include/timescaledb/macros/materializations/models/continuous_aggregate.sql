@@ -41,6 +41,10 @@
   {% call statement('main') -%}
     {{ get_create_continuous_aggregate_as_sql(intermediate_relation, sql) }}
 
+    {%- if config.get('refresh_policy') %}
+      {{ add_refresh_policy(intermediate_relation, config.get('refresh_policy')) }}
+    {%- endif -%}
+
     {%- if config.get('compression') %}
       {{ enable_compression(intermediate_relation, config.get("compression")) }}
       {{ add_compression_policy(intermediate_relation, config.get("compression")) }}
