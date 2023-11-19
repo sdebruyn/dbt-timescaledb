@@ -9,14 +9,14 @@ from dbt.tests.util import (
 
 
 class TestContinuousAggregate:
-    @pytest.fixture(scope="class")
-    def project_config_update(self) -> dict[str, Any]:
+    @pytest.fixture(scope="class", params=[False, True])
+    def project_config_update(self, request) -> dict[str, Any]:  # noqa: ANN001
         return {
             "name": "continuous_aggregate_tests",
             "models": {
                 "continuous_aggregate_tests": {
                     "base": {"+materialized": "hypertable", "+time_column_name": "time_column"},
-                    "test_model": {"+materialized": "continuous_aggregate"},
+                    "test_model": {"+materialized": "continuous_aggregate", "+refresh_now": request.param},
                 }
             },
         }

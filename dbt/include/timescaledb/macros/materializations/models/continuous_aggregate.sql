@@ -74,10 +74,12 @@
   {{ run_hooks(post_hooks, inside_transaction=False) }}
 
   {#- Load the data into the continuous aggregate -#}
-  {% call statement('refresh', fetch_result=False, auto_begin=False) %}
-    {{ adapter.marker_run_outside_transaction() }}
-    call refresh_continuous_aggregate('{{ target_relation }}', NULL, NULL);
-  {% endcall %}
+  {% if config.get("refresh_now") != False %}
+    {% call statement('refresh', fetch_result=False, auto_begin=False) %}
+      {{ adapter.marker_run_outside_transaction() }}
+      call refresh_continuous_aggregate('{{ target_relation }}', NULL, NULL);
+    {% endcall %}
+  {% endif %}
 
   {{ return({'relations': [target_relation]}) }}
 
