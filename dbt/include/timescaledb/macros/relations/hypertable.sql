@@ -88,10 +88,6 @@
   );
 {% endmacro %}
 
-{% macro add_retention_policy(relation, retention_config) %}
-  {# TODO #}
-{% endmacro %}
-
 {% macro attach_tablespace(relation, tablespace) %}
   {# TODO #}
 {% endmacro %}
