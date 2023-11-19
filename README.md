@@ -33,7 +33,7 @@ The recommended versions of Timescale are TimescaleDB Community Edition or Times
 
 ## Features & documentation
 
-[Read the documentation](https://dbt-timescaledb.debruyn.dev/) for more information.
+[Read the documentation](https://dbt-timescaledb.debruyn.dev/) ([installation](https://dbt-timescaledb.debruyn.dev/installation/) | [usage](https://dbt-timescaledb.debruyn.dev/usage/)) for more information.
 
 ## Current status
 
