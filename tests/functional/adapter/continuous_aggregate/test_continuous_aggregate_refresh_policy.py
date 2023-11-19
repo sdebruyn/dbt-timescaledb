@@ -21,7 +21,7 @@ class TestContinuousAggregateRefreshPolicy:
                         "+refresh_policy": {
                             "start_offset": "interval '1 month'",
                             "end_offset": "interval '1 day'",
-                            "schedule_interval": "interval '1 day'",
+                            "schedule_interval": "interval '3 day'",
                         },
                     },
                 }
@@ -61,6 +61,7 @@ and view_name = 'test_model'""",
 select *
 from timescaledb_information.jobs
 where application_name like 'Refresh Continuous Aggregate Policy%'
+and schedule_interval = interval '3 day'
 """,
             fetch="all",
         )

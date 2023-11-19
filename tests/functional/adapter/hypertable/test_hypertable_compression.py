@@ -7,7 +7,7 @@ from dbt.tests.util import check_result_nodes_by_name, run_dbt
 
 class BaseTestHypertableCompression:
     def base_compression_settings(self) -> dict[str, Any]:
-        return {"after": "interval '1 day'"}
+        return {"after": "interval '1 day'", "schedule_interval": "interval '6 day'"}
 
     @pytest.fixture(scope="class")
     def compression_settings(self) -> dict[str, Any]:
@@ -87,7 +87,9 @@ and hypertable_schema = '{unique_schema}'""",
 select *
 from timescaledb_information.jobs
 where hypertable_name = 'test_model'
-and hypertable_schema = '{unique_schema}'""",
+and hypertable_schema = '{unique_schema}'
+and application_name like 'Compression Policy%'
+and schedule_interval = interval '6 day'""",
             fetch="all",
         )
         self.validate_jobs(timescale_jobs)

@@ -47,3 +47,15 @@ select
 
         assert len(create_index_results) == 2, "Expected 2 indexes when index should be created"
         assert len(sep_index_results) == 1, "Expected 1 index on separate index creation"
+
+        timescale_jobs = project.run_sql(
+            f"""
+select *
+from timescaledb_information.jobs
+where application_name like 'Reorder Policy%'
+and hypertable_schema = '{unique_schema}'""",
+            fetch="all",
+        )
+        assert len(timescale_jobs) == 2
+        table_names = [job[15] for job in timescale_jobs]
+        assert set(table_names) == {"create_index", "sep_index"}

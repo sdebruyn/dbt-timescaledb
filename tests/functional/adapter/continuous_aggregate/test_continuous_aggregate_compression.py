@@ -18,7 +18,15 @@ class TestContinuousAggregateCompression:
                     },
                     "test_model": {
                         "+materialized": "continuous_aggregate",
-                        "+compression": {"after": "interval '1 day'"},
+                        "+refresh_policy": {
+                            "start_offset": "interval '1 month'",
+                            "end_offset": "interval '1 day'",
+                            "schedule_interval": "interval '1 day'",
+                        },
+                        "+compression": {
+                            "after": "interval '40 day'",
+                            "schedule_interval": "interval '5 day'",
+                        },
                     },
                 }
             },
@@ -56,3 +64,14 @@ and view_name = 'test_model'""",
         assert continuous_aggregate[2] == unique_schema
         assert continuous_aggregate[3] == "test_model"
         assert continuous_aggregate[6]  # compression_enabled
+
+        job_results = project.run_sql(
+            """
+select *
+from timescaledb_information.jobs
+where application_name like 'Compression Policy%'
+and schedule_interval = interval '5 day'
+""",
+            fetch="all",
+        )
+        assert len(job_results) == 1
