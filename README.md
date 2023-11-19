@@ -13,7 +13,7 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/dbt-timescaledb)](https://pypi.org/project/dbt-timescaledb/)
 [![PyPI - License](https://img.shields.io/pypi/l/dbt-timescaledb)](https://github.com/sdebruyn/dbt-timescaledb/blob/main/LICENSE)
 [![tests](https://github.com/sdebruyn/dbt-timescaledb/actions/workflows/test.yml/badge.svg)](https://github.com/sdebruyn/dbt-timescaledb/actions/workflows/test.yml)
-[![Coverage Status](https://coveralls.io/repos/github/sdebruyn/dbt-timescaledb/badge.svg?branch=main)](https://coveralls.io/github/sdebruyn/dbt-timescaledb?branch=main)
+[![codecov](https://codecov.io/github/sdebruyn/dbt-timescaledb/graph/badge.svg?token=7SLONAKRMD)](https://codecov.io/github/sdebruyn/dbt-timescaledb)
 
 **[dbt](https://www.getdbt.com/)** enables data analysts and engineers to transform their data using the same practices that software engineers use to build applications.
 
