@@ -40,12 +40,19 @@
   -- build model
   {% call statement('main') -%}
     create materialized view if not exists {{ intermediate_relation }}
-    with (timescaledb.continuous) as {{ sql }}
-    with no data;
+    with (
+      timescaledb.continuous
 
-    {% for _index_dict in config.get('indexes', []) -%}
-        {{- get_create_index_sql(intermediate_relation, _index_dict) -}}
-    {%- endfor -%}
+      {%- if config.get('materialized_only') %}
+        ,timescaledb.materialized_only = {{ config.get("materialized_only") }}
+      {% endif -%}
+
+      {%- if config.get('create_group_indexes') %}
+        ,timescaledb.create_group_indexes = {{ config.get("create_group_indexes") }}
+      {% endif -%}
+
+      ) as {{ sql }}
+    with no data;
   {%- endcall %}
 
   -- cleanup
@@ -59,6 +66,8 @@
     {% endif %}
   {% endif %}
   {{ adapter.rename_relation(intermediate_relation, target_relation) }}
+
+  {% do create_indexes(target_relation) %}
 
   {% set should_revoke = should_revoke(existing_relation, full_refresh_mode=True) %}
   {% do apply_grants(target_relation, grant_config, should_revoke=should_revoke) %}
