@@ -19,6 +19,9 @@ jobs:
             python-version: '3.11'
 
         - uses: pdm-project/setup-pdm@v3
+          with:
+            update-python: false
+            cache: true
 
         - name: Publish package distributions to PyPI
           run: pdm publish

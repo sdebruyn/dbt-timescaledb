@@ -36,6 +36,9 @@ jobs:
         extra_args: --all-files --show-diff-on-failure
 
     - uses: pdm-project/setup-pdm@v3
+      with:
+        update-python: false
+        cache: true
 
     - name: Install dependencies
       run: pdm install -x -dG test
