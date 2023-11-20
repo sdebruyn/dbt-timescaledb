@@ -15,7 +15,12 @@
   -- as above, the backup_relation should not already exist
   {%- set preexisting_backup_relation = load_cached_relation(backup_relation) -%}
   -- grab current tables grants config for comparision later on
-  {% set grant_config = config.get('grants') %}
+  {%- set grant_config = config.get('grants') -%}
+  {%- set should_truncate = config.get("empty_hypertable", false) -%}
+  {%- set dimensions_count = config.get("dimensions", []) | length -%}
+  {% if dimensions_count > 0 and not should_truncate %}
+    {{ exceptions.raise_compiler_error("The hypertable should always be empty when adding dimensions. Make sure empty_hypertable is set in your model configuration.") }}
+  {% endif %}
 
   -- drop the temp relations if they exist already in the database
   {{ drop_relation_if_exists(preexisting_intermediate_relation) }}
@@ -30,7 +35,7 @@
   {% call statement('main') -%}
     {{ get_create_table_as_sql(False, intermediate_relation, sql) }}
 
-    {%- if config.get("empty_hypertable") %}
+    {%- if should_truncate %}
       truncate {{ intermediate_relation }};
     {% endif -%}
 
@@ -62,6 +67,8 @@
   {% do create_indexes(target_relation) %}
 
   {% do create_reorder_policies(target_relation) %}
+
+  {% do create_dimensions(target_relation) %}
 
   {{ run_hooks(post_hooks, inside_transaction=True) }}
 

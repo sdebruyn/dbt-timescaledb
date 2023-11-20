@@ -56,3 +56,13 @@ Set the function used to generate the current time for integer time columns.
 ```sql+jinja
 {{ set_integer_now_func('table_name', 'function_name') }}
 ```
+
+## `add_dimension`
+
+Add a dimension to a hypertable. Note that this only works on empty hypertables.
+
+[Configuration options](hypertables.md#dimension-options)
+
+```sql+jinja
+{{ add_dimension('table_name', {'column_name': 'column_name'}) }}
+```

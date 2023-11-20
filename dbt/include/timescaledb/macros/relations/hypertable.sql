@@ -97,6 +97,30 @@
   select set_integer_now_func('{{ relation }}', '{{ integer_now_func }}');
 {% endmacro %}
 
+{% macro create_dimensions(relation) %}
+  {%- set _dimensions = config.get('dimensions', default=[]) -%}
+  {% for _dimension in _dimensions %}
+    {% set create_dimension_sql = add_dimension(relation, _dimension) %}
+    {% do run_query(create_dimension_sql) %}
+  {% endfor %}
+{% endmacro %}
+
 {% macro add_dimension(relation, dimension_config) %}
-  {# TODO #}
+  select add_dimension(
+    '{{ relation }}',
+    '{{ dimension_config.column_name }}',
+
+    {%- if dimension_config.number_partitions %}
+      number_partitions => {{ dimension_config.number_partitions }},
+    {% endif -%}
+
+    {%- if dimension_config.chunk_time_interval %}
+      chunk_time_interval => {{ dimension_config.chunk_time_interval }},
+    {% endif -%}
+
+    {%- if dimension_config.partitioning_func %}
+      partitioning_func => '{{ dimension_config.partitioning_func }}',
+    {% endif -%}
+
+    if_not_exists => true);
 {% endmacro %}

@@ -103,6 +103,59 @@ The following 2 options are available for hypertables where the time column is n
 select 1::bigint as time_column
 ```
 
+### Dimension options
+
+You can add dimensions to a hypertable.
+
+!!! warning "Empty hypertable required"
+    You can only add dimensions to an empty hypertable. Therefore, you'll have to set `empty_hypertable` to `true` as well.
+
+!!! info
+    Consult the [Timescale docs](https://docs.timescale.com/api/latest/hypertable/add_dimension/) for more information regarding dimensions.
+
+=== "SQL"
+
+    ```sql+jinja hl_lines="5" title="models/my_hypertable.sql"
+    {{ config(
+        materialized = 'hypertable',
+        time_column_name = 'time_column',
+        dimensions=[
+          {"column_name": "id", "number_partitions": 5},
+          {"column_name": "col_1", "chunk_time_interval": 10000},
+          {"column_name": "another_column"}
+        ]
+    }}
+
+    select
+      current_timestamp as time_column,
+      1 as id,
+      2 as col_1,
+      3 as another_column
+    ```
+
+=== "YAML"
+
+    ```yaml hl_lines="8" title="dbt_project.yml"
+    models:
+      your_project_name:
+        model_name:
+          +materialized: hypertable
+          +time_column_name: time_column
+          +dimensions:
+            - column_name: id
+              number_partitions: 5
+            - column_name: another_time_column
+              chunk_time_interval: interval '1 day'
+    # ...
+    ```
+
+Dimensions are a list. Every dimension can have the following configuration options:
+
+* `column`
+* `number_partitions`
+* `chunk_time_interval`
+* `partitioning_func`
+
 ## :thinking: Ideas
 
 dbt could still be useful to manage hypertables and their policies. Here are a few ideas of features we could implement in the future to make this process easier.
