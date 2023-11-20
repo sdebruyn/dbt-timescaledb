@@ -75,6 +75,6 @@ Add a retention policy to a hypertable or continuous aggregate.
 
 ```sql+jinja
 {{ add_retention_policy('table_name', {
-    #TODO: config example
+    "drop_after": "interval '1 month'"
 }) }}
 ```
