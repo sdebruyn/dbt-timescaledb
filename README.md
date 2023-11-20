@@ -35,10 +35,6 @@ The recommended versions of Timescale are TimescaleDB Community Edition or Times
 
 [Read the documentation](https://dbt-timescaledb.debruyn.dev/) ([installation](https://dbt-timescaledb.debruyn.dev/installation/) | [usage](https://dbt-timescaledb.debruyn.dev/usage/)) for more information.
 
-## Current status
-
-This adapter is in an alpha version. All available features are continuously tested, but there might be some bugs. Please report any bugs you find.
-
 ## Code of Conduct
 
 Both dbt Labs and Timescale have published a code of conduct. Everyone interacting in this project's codebases, issues, discussions, and related Slack channels is expected to follow the [dbt Code of Conduct](https://docs.getdbt.com/community/resources/code-of-conduct) and the [Timescale Code of Conduct](https://www.timescale.com/code-of-conduct).
