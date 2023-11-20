@@ -17,12 +17,10 @@ class TestHypertableReorderPolicy:
     indexes = [{{
         "columns": ["time_column", "col_1"]
     }}],
-    reorder_policies=[
-      {{
-        "create_index": {create_index},
-        "index": {{ "columns": ["col_1"] if {create_index} else ["time_column", "col_1"] }}
-      }},
-    ],
+    reorder_policy = {{
+      "create_index": {create_index},
+      "index": {{ "columns": ["col_1"] if {create_index} else ["time_column", "col_1"] }}
+    }},
   )
 }}}}
 

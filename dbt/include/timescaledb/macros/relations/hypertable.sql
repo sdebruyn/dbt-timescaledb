@@ -57,14 +57,6 @@
   );
 {% endmacro %}
 
-{% macro create_reorder_policies(relation) %}
-  {%- set _reorder_policies = config.get('reorder_policies', default=[]) -%}
-  {% for _reorder_policy_dict in _reorder_policies %}
-    {% set create_reorder_policy_sql = add_reorder_policy(relation, _reorder_policy_dict) %}
-    {% do run_query(create_reorder_policy_sql) %}
-  {% endfor %}
-{% endmacro %}
-
 {% macro add_reorder_policy(relation, reorder_config) %}
   {%- set index_dict = reorder_config.index -%}
   {%- set index_config = adapter.parse_index(index_dict) -%}

@@ -39,7 +39,7 @@
       truncate {{ intermediate_relation }};
     {% endif -%}
 
-    {{ get_create_hypertable_as_sql(intermediate_relation) }}
+    {{- get_create_hypertable_as_sql(intermediate_relation) }}
 
     {%- if config.get('compression') %}
       {{ enable_compression(intermediate_relation, config.get("compression")) }}
@@ -66,7 +66,11 @@
 
   {% do create_indexes(target_relation) %}
 
-  {% do create_reorder_policies(target_relation) %}
+  {%- if config.get("reorder_policy") %}
+    {% call statement("reorder_policy", fetch_result=False) %}
+      {{ add_reorder_policy(target_relation, config.get("reorder_policy")) }}
+    {% endcall %}
+  {% endif -%}
 
   {% do create_dimensions(target_relation) %}
 

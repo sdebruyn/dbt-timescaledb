@@ -5,6 +5,9 @@ You can add a reorder policy to reorder chunks on a given hypertable index in th
 !!! info
     Consult the [Timescale docs](https://docs.timescale.com/api/latest/hypertable/add_reorder_policy/) to learn more about reorder policies.
 
+!!! note
+    You can only create 1 reorder policy per hypertable.
+
 ## Usage
 
 === "SQL"
@@ -14,11 +17,11 @@ You can add a reorder policy to reorder chunks on a given hypertable index in th
       config(
         materialized='hypertable',
         time_column_name='time_column',
-        reorder_policies=[
+        reorder_policy={
           index: {
             columns: ['column_a']
           }
-        ]
+        }
       )
     }}
     select
@@ -35,9 +38,9 @@ You can add a reorder policy to reorder chunks on a given hypertable index in th
           +materialized: hypertable
             model_one:
               +time_column_name: time_column
-              +reorder_policies:
-                - index:
-                    columns: ['column_a']
+              +reorder_policy:
+                index:
+                  columns: ['column_a']
     # ...
     ```
 
