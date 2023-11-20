@@ -88,8 +88,13 @@
   );
 {% endmacro %}
 
-{% macro set_integer_now_func(relation, integer_now_func) %}
-  {# TODO #}
+{% macro set_integer_now_func(relation, integer_now_func, integer_now_func_sql = none) %}
+  {% if integer_now_func_sql %}
+    create or replace function {{ integer_now_func }}() returns bigint language sql immutable as $$
+      {{ integer_now_func_sql }}
+    $$;
+  {% endif %}
+  select set_integer_now_func('{{ relation }}', '{{ integer_now_func }}');
 {% endmacro %}
 
 {% macro add_dimension(relation, dimension_config) %}

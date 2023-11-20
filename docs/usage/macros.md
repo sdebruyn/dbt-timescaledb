@@ -46,3 +46,13 @@ Add a refresh policy to a continuous aggregate.
     "start_offset": "interval '3 day'",
     "end_offset": "interval '2 day'"}) }}
 ```
+
+## `set_integer_now_func`
+
+Set the function used to generate the current time for integer time columns.
+
+[Configuration options](hypertables.md#set_integer_now_func-options)
+
+```sql+jinja
+{{ set_integer_now_func('table_name', 'function_name') }}
+```

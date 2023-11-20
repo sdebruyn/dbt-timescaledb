@@ -39,7 +39,11 @@
     {%- if config.get('compression') %}
       {{ enable_compression(intermediate_relation, config.get("compression")) }}
       {{ add_compression_policy(intermediate_relation, config.get("compression")) }}
-    {%- endif -%}
+    {% endif -%}
+
+    {%- if config.get("integer_now_func") %}
+      {{ set_integer_now_func(intermediate_relation, config.get("integer_now_func"), config.get("integer_now_func_sql")) }}
+    {% endif -%}
 
   {%- endcall %}
 
