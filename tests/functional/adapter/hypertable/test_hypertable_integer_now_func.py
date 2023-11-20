@@ -33,17 +33,17 @@ class BaseTestHypertableIntegerNowFunc:
             "test_model.sql": "select 1::bigint as id",
         }
 
-    def prepare_func(self, project: Any) -> None:  # noqa: ANN401
+    def prepare_func(self, project: Any) -> None:
         pass
 
-    def test_integer_now_func(self, project: Any, unique_schema: str) -> None:  # noqa: ANN401
+    def test_integer_now_func(self, project: Any, unique_schema: str) -> None:
         self.prepare_func(project)
         results = run_dbt(["run"])
         assert len(results) == 1
 
 
 class TestHypertableIntegerNowFuncWithoutSQL(BaseTestHypertableIntegerNowFunc):
-    def prepare_func(self, project: Any) -> None:  # noqa: ANN401
+    def prepare_func(self, project: Any) -> None:
         project.run_sql(
             """
 create or replace function test_model_now() returns bigint language sql immutable as $$

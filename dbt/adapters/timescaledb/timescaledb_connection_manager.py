@@ -18,7 +18,7 @@ class TimescaleDBConnectionManager(PostgresConnectionManager):
         self,
         sql: str,
         auto_begin: bool = True,
-        bindings: Optional[Any] = None,  # noqa: ANN401
+        bindings: Optional[Any] = None,
         abridge_sql_log: bool = False,
     ) -> Tuple[Connection, Any]:
         restore_isolation_level = ISOLATION_LEVEL_AUTOCOMMIT

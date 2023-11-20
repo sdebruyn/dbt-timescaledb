@@ -32,7 +32,7 @@ select
             "without_default.sql": self._model_sql(False),
         }
 
-    def test_table(self, project: Any, unique_schema: str) -> None:  # noqa: ANN401
+    def test_table(self, project: Any, unique_schema: str) -> None:
         results = run_dbt(["run"])
         assert len(results) == 2
 

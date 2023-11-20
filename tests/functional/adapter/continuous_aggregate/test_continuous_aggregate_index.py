@@ -44,6 +44,6 @@ group by 2
             "without_default.sql": self._model_sql(False),
         }
 
-    def test_continuous_aggregate(self, project: Any) -> None:  # noqa: ANN401
+    def test_continuous_aggregate(self, project: Any) -> None:
         results = run_dbt(["run"])
         assert len(results) == 3

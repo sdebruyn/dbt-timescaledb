@@ -13,7 +13,7 @@ class TimescaleDBAdapter(PostgresAdapter):
     ConnectionManager = TimescaleDBConnectionManager
 
     @available
-    def parse_index(self, raw_index: Any) -> Optional[TimescaleDBIndexConfig]:  # noqa: ANN401
+    def parse_index(self, raw_index: Any) -> Optional[TimescaleDBIndexConfig]:
         return TimescaleDBIndexConfig.parse(raw_index)
 
     @available
