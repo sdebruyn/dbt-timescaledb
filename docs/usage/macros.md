@@ -66,3 +66,15 @@ Add a dimension to a hypertable. Note that this only works on empty hypertables.
 ```sql+jinja
 {{ add_dimension('table_name', {'column_name': 'column_name'}) }}
 ```
+
+## `add_retention_policy`
+
+Add a retention policy to a hypertable or continuous aggregate.
+
+[Configuration options](retention-policies.md#configuration-options)
+
+```sql+jinja
+{{ add_retention_policy('table_name', {
+    #TODO: config example
+}) }}
+```

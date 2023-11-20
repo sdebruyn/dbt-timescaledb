@@ -97,5 +97,6 @@ nav:
   - Continuous aggregates: usage/continuous-aggregates.md
   - Compression: usage/compression.md
   - Reorder policies: usage/reorder-policies.md
+  - Retention policies: usage/retention-policies.md
   - Indexes: usage/indexes.md
   - Macros: usage/macros.md
