@@ -67,8 +67,14 @@
   {% do create_indexes(target_relation) %}
 
   {%- if config.get("reorder_policy") %}
-    {% call statement("reorder_policy", fetch_result=False) %}
+    {% call statement("reorder_policy") %}
       {{ add_reorder_policy(target_relation, config.get("reorder_policy")) }}
+    {% endcall %}
+  {% endif -%}
+
+  {%- if config.get("retention_policy") %}
+    {% call statement("retention_policy") %}
+      {{ add_retention_policy(target_relation, config.get("retention_policy")) }}
     {% endcall %}
   {% endif -%}
 

@@ -65,6 +65,12 @@
 
   {% do create_indexes(target_relation) %}
 
+  {%- if config.get("retention_policy") %}
+    {% call statement("retention_policy") %}
+      {{ add_retention_policy(target_relation, config.get("retention_policy")) }}
+    {% endcall %}
+  {% endif -%}
+
   {% set should_revoke = should_revoke(existing_relation, full_refresh_mode=True) %}
   {% do apply_grants(target_relation, grant_config, should_revoke=should_revoke) %}
 
