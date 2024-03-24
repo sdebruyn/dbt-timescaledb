@@ -1,6 +1,9 @@
 {%- materialization continuous_aggregate, adapter="timescaledb" -%}
 
   {%- set existing_relation = load_cached_relation(this) -%}
+  {% if existing_relation is not none %}
+      {%- set existing_relation = existing_relation.incorporate(type=this.MaterializedView) -%}
+  {% endif %}
   {%- set target_relation = this.incorporate(type=this.MaterializedView) -%}
   {%- set intermediate_relation =  make_intermediate_relation(target_relation) -%}
 
@@ -8,6 +11,9 @@
   -- will return None in that case. Otherwise, we get a relation that we can drop
   -- later, before we try to use this name for the current operation
   {%- set preexisting_intermediate_relation = load_cached_relation(intermediate_relation) -%}
+  {% if preexisting_intermediate_relation is not none %}
+    {%- set preexisting_intermediate_relation = preexisting_intermediate_relation.incorporate(type=this.MaterializedView) -%}
+  {% endif %}
   /*
      This relation (probably) doesn't exist yet. If it does exist, it's a leftover from
      a previous run, and we're going to try to drop it immediately. At the end of this
@@ -25,6 +31,9 @@
   {%- set backup_relation = make_backup_relation(target_relation, backup_relation_type) -%}
   -- as above, the backup_relation should not already exist
   {%- set preexisting_backup_relation = load_cached_relation(backup_relation) -%}
+  {% if preexisting_backup_relation is not none %}
+    {%- set preexisting_backup_relation = preexisting_backup_relation.incorporate(type=this.MaterializedView) -%}
+  {% endif %}
   -- grab current tables grants config for comparision later on
   {% set grant_config = config.get('grants') %}
 
@@ -58,6 +67,7 @@
         since the variable was first set. */
     {% set existing_relation = load_cached_relation(existing_relation) %}
     {% if existing_relation is not none %}
+      {%- set existing_relation = existing_relation.incorporate(type=this.MaterializedView) -%}
         {{ adapter.rename_relation(existing_relation, backup_relation) }}
     {% endif %}
   {% endif %}
