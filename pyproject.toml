@@ -6,7 +6,9 @@ authors = [
     {name = "Sam Debruyn", email = "dbt.sam@debruyn.dev"},
 ]
 dependencies = [
-    "dbt-postgres~=1.7.1",
+    "dbt-postgres>=1.8.0b1",
+    "dbt-adapters>=1.0.0b1",
+    "dbt-common>=1.0.0b1",
 ]
 requires-python = ">=3.11"
 readme = "README.md"
@@ -51,7 +53,7 @@ dev = [
 ]
 test = [
     "pytest>=7.4.3",
-    "dbt-tests-adapter>=1.7.1",
+    "dbt-tests-adapter>=1.8.0b1",
     "pytest-xdist[psutil]>=3.4.0",
     "pytest-cov>=4.1.0",
     "pytest-dotenv>=0.5.2",

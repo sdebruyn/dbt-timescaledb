@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
+from dbt_common.utils.encoding import md5
+
 from dbt.adapters.postgres.impl import PostgresIndexConfig
-from dbt.utils import md5
 
 
 @dataclass

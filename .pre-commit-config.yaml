@@ -16,11 +16,11 @@ repos:
       - id: fix-byte-order-marker
       - id: mixed-line-ending
   - repo: https://github.com/pdm-project/pdm
-    rev: '2.10.1'
+    rev: '2.12.4'
     hooks:
       - id: pdm-lock-check
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.4
+    rev: v0.3.4
     hooks:
       - id: ruff
         args: [ --fix ]
