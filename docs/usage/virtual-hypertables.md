@@ -18,7 +18,7 @@ The SQL code in the dbt model does not matter and will be fully ignored. However
 
 === "SQL"
 
-    ```sql+jinja hl_lines="3 4" title="models/existing_hypertable.sql"
+    ```sql+jinja hl_lines="3" title="models/existing_hypertable.sql"
     {{
       config(
         materialized='virtual_hypertable'
@@ -29,7 +29,7 @@ The SQL code in the dbt model does not matter and will be fully ignored. However
 
 === "YAML"
 
-    ```yaml title="dbt_project.yml"
+    ```yaml hl_lines="4" title="dbt_project.yml"
     models:
       your_project_name:
         folder_containing_the_hypertables:
