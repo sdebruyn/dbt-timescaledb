@@ -3,6 +3,7 @@
 set -ex
 
 echo "Build started on `date`"
+cd ..
 
 python -V
 python -m pip install --upgrade pip
