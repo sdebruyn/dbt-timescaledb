@@ -288,7 +288,7 @@ files = [
 
 [[package]]
 name = "dbt-adapters"
-version = "1.0.0b1"
+version = "1.0.0b2"
 requires_python = ">=3.8.0"
 summary = "The set of adapter protocols and base functionality that supports integration with dbt-core"
 dependencies = [
@@ -300,13 +300,13 @@ dependencies = [
     "typing-extensions<5.0,>=4.0",
 ]
 files = [
-    {file = "dbt_adapters-1.0.0b1-py3-none-any.whl", hash = "sha256:1d2f6a3e52ec7663364c9456ed8b3495861ee16dba556818abd84bfc817372d0"},
-    {file = "dbt_adapters-1.0.0b1.tar.gz", hash = "sha256:d494250b3c504731403d838cd9f37cbc267765d5070e7af44e678f5b2f20262a"},
+    {file = "dbt_adapters-1.0.0b2-py3-none-any.whl", hash = "sha256:1a8b85a7d4018d68e96aa3db3fe68e9582e1a445dd9b3d6e3bcbe077dc3c21b1"},
+    {file = "dbt_adapters-1.0.0b2.tar.gz", hash = "sha256:23aef2a48405e92bbfd52e9006b23d13ca05423b181f7ae7c1bfde2a77bc777d"},
 ]
 
 [[package]]
 name = "dbt-common"
-version = "1.0.0b1"
+version = "1.0.0b2"
 requires_python = ">=3.8"
 summary = "The shared common utilities that dbt-core and adapter implementations use"
 dependencies = [
@@ -323,8 +323,8 @@ dependencies = [
     "typing-extensions<5.0,>=4.4",
 ]
 files = [
-    {file = "dbt_common-1.0.0b1-py3-none-any.whl", hash = "sha256:2272737fa51f8f5ee5ec202eebdda216c4d91b1039d8770795f355d331ee5131"},
-    {file = "dbt_common-1.0.0b1.tar.gz", hash = "sha256:9a5cd0c8e2cd5d04a280661cb080bcb6e51da8628be420d5d3bd6fab62cad368"},
+    {file = "dbt_common-1.0.0b2-py3-none-any.whl", hash = "sha256:169289fe9ae3f915688cce0383e77c60a1eb066700b970593ff6500d2c53d5c9"},
+    {file = "dbt_common-1.0.0b2.tar.gz", hash = "sha256:a4b2aec7e376d660dd6666c889fa8c6a632df72baf444a2fb2ff77f404c3612c"},
 ]
 
 [[package]]
