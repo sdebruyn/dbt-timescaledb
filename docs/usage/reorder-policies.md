@@ -1,6 +1,6 @@
 # Reorder policies
 
-You can add a reorder policy to reorder chunks on a given hypertable index in the background.
+You can add a reorder policy to reorder chunks on a given (virtual) hypertable index in the background.
 
 !!! info
     Consult the [Timescale docs](https://docs.timescale.com/api/latest/hypertable/add_reorder_policy/) to learn more about reorder policies.

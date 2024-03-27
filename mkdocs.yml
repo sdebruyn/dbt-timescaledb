@@ -94,6 +94,7 @@ nav:
 - Usage:
   - Overview: usage/index.md
   - Hypertables: usage/hypertables.md
+  - Virtual hypertables: usage/virtual-hypertables.md
   - Continuous aggregates: usage/continuous-aggregates.md
   - Compression: usage/compression.md
   - Reorder policies: usage/reorder-policies.md

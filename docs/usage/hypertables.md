@@ -4,6 +4,9 @@
 
 Hypertables make less sense as dbt models to store transformed data. However, you can still use them as such. A more useful version right now is the `empty` option, which will create empty hypertables.
 
+!!! tip "Look into virtual hypertables"
+    If you're looking to use dbt to configure your leverage pre-existing hypertables, check out the [virtual hypertables](../usage/virtual-hypertables.md) guide.
+
 !!! danger "Only run hypertable models once"
 
     dbt will always recreate your entire model. This means that all existing data in your hypertables will be lost when you run them again. If you're using hypertables for ingesting time-series data, you probably don't want this.
@@ -155,15 +158,3 @@ Dimensions are a list. Every dimension can have the following configuration opti
 * `number_partitions`
 * `chunk_time_interval`
 * `partitioning_func`
-
-## :thinking: Ideas
-
-dbt could still be useful to manage hypertables and their policies. Here are a few ideas of features we could implement in the future to make this process easier.
-
-### Leverage sources
-
-You probably will want to expose your hypertables to dbt as [sources](https://docs.getdbt.com/docs/build/sources) since they are meant for data ingestion, not for data tranformation. We could maybe add all required configuration options to the `source` properties and then leverage that to manage the policies on the hypertable or even to initially create the hypertable itself.
-
-### :heart_eyes: Virtual table
-
-The problem with the sources above however is that the new [dbt contract](https://docs.getdbt.com/docs/collaborate/govern/model-contracts) features defining the schema are only available for models. Therefore, we could create a virtual version of this materialization which only sets all policies and updates the schema. This would probably feel more native in dbt as you could leverage its extensive configuration options and the schema defined in the contract.

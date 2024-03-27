@@ -7,7 +7,7 @@ The macros below are available to use in your dbt project. They are also used in
 
 ## `enable_compression`
 
-Enable compression on a hypertable or continuous aggregate.
+Enable compression on a (virtual) hypertable or continuous aggregate.
 
 [Configuration options](compression.md#compression-settings)
 
@@ -17,7 +17,7 @@ Enable compression on a hypertable or continuous aggregate.
 
 ## `add_compression_policy`
 
-Add a compression policy to a hypertable or continuous aggregate.
+Add a compression policy to a (virtual) hypertable or continuous aggregate.
 
 [Configuration options](compression.md#compression-policy-settings)
 
@@ -27,7 +27,7 @@ Add a compression policy to a hypertable or continuous aggregate.
 
 ## `add_reorder_policy`
 
-Add a reorder policy to a hypertable.
+Add a reorder policy to a (virtual) hypertable.
 
 [Configuration options](reorder-policies.md#configuration-options)
 
@@ -59,7 +59,7 @@ Set the function used to generate the current time for integer time columns.
 
 ## `add_dimension`
 
-Add a dimension to a hypertable. Note that this only works on empty hypertables.
+Add a dimension to a (virtual) hypertable. Note that this only works on empty hypertables.
 
 [Configuration options](hypertables.md#dimension-options)
 
@@ -69,7 +69,7 @@ Add a dimension to a hypertable. Note that this only works on empty hypertables.
 
 ## `add_retention_policy`
 
-Add a retention policy to a hypertable or continuous aggregate.
+Add a retention policy to a (virtual) hypertable or continuous aggregate.
 
 [Configuration options](retention-policies.md#configuration-options)
 

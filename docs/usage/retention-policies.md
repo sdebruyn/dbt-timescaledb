@@ -1,6 +1,6 @@
 # Retention policies
 
-You can add a retention policy to automatically drop old chunks of data from hypertables and continuous aggregates in the background.
+You can add a retention policy to automatically drop old chunks of data from (virtual) hypertables and continuous aggregates in the background.
 
 !!! info
     Consult the [Timescale docs](https://docs.timescale.com/use-timescale/latest/data-retention/about-data-retention/) to learn more about retention policies.
