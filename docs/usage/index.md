@@ -11,5 +11,6 @@ Other TimescaleDB features are available natively in dbt as well:
 * [Compression](compression.md)
 * [Transaction per chunk indexes](indexes.md)
 * [Reorder policies](reorder-policies.md)
+* [Retention policies](retention-policies.md)
 
 Most of the features are also available as [macros](macros.md).
