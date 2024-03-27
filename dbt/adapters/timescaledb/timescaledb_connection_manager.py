@@ -3,8 +3,8 @@ from typing import Any, Optional, Tuple
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 from dbt.adapters.contracts.connection import Connection
+from dbt.adapters.events.logging import AdapterLogger
 from dbt.adapters.postgres.connections import PostgresConnectionManager
-from dbt.events.logging import AdapterLogger
 
 NO_TRANSACTION_MARKER = "/* MARKER SHOULD RUN OUTSIDE TRANSACTION */"
 
