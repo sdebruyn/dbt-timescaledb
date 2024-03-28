@@ -25,9 +25,11 @@ dbt is the T in ELT. Organize, cleanse, denormalize, filter, rename, and pre-agg
 
 ## Supported versions
 
-This adapter supports dbt Core 1.7.0 and newer. It is not available on dbt Cloud.
-
-This adapter supports TimescaleDB 2.12 and newer. Older versions of TimescaleDB will probably also work if you don't use any of the features that were added in newer versions.
+| Adapter versions  | Supported dbt versions | Supported TimescaleDB versions |
+| ----------------- | ---------------------- | ------------------------------ |
+| 1.7.0a1 - 1.7.0a7 | 1.7.x                  | 2.12 - latest                  |
+| 1.8.0a1 - 1.8.0a2 | 1.8.x - latest         | 2.12 - latest                  |
+| 1.8.0a3 - latest  | 1.8.x - latest         | 2.13 - latest                  |
 
 The recommended versions of Timescale are TimescaleDB Community Edition or Timescale cloud. It is not recommended to use this adapter with TimescaleDB Apache 2 Edition. See the [TimescaleDB editions](https://docs.timescale.com/about/latest/timescaledb-editions/) page for more information.
 
