@@ -256,3 +256,4 @@ $RECYCLE.BIN/
 .pdm-python
 .pdm-build/
 test.env
+dbt/adapters/timescaledb/__version__.py
