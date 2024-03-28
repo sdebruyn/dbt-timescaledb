@@ -24,7 +24,7 @@ To materialize a model as a hypertable, simply set its `materialization` in the 
     {{
       config(
         materialized='hypertable',
-        time_column_name='time_column'
+        main_dimension='time_column'
       )
     }}
     select current_timestamp as time_column
@@ -38,13 +38,13 @@ To materialize a model as a hypertable, simply set its `materialization` in the 
         folder_containing_the_hypertables:
           +materialized: hypertable
             model_one:
-              +time_column_name: time_column # (1)!
+              +main_dimension: time_column  # (1)!
             model_two:
-              +time_column_name: time_column_name_in_model_two
+              +main_dimension: time_column_in_model_two
     # ...
     ```
 
-    1.  While you can set the `hypertable` materialization for multiple models, you'll still have to configure the `time_column_name` for each model individually.
+    1.  While you can set the `hypertable` materialization for multiple models, you'll still have to configure the `main_dimension` for each model individually.
 
 ## Configuration options
 
@@ -56,7 +56,7 @@ The following options are not taken from the TimescaleDB APIs, but are specific 
 
 ### TimescaleDB hypertable options
 
-Every hypertable requires its main dimension to be provided upon creation. You can add additional dimensions to the hypertable by providing a list of dictionaries in the `dimensions` configuration option.
+The TimescaleDB option `create_default_indexes` can be set to `true` or `false`. It defaults to `true`.
 
 --8<-- "docs/usage/dimensions.md"
 

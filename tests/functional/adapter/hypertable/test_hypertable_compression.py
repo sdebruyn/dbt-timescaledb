@@ -17,7 +17,7 @@ class BaseTestHypertableCompression:
     def model_config(self, compression_settings: dict[str, Any]) -> dict[str, Any]:
         return {
             "+materialized": "hypertable",
-            "+time_column_name": "time_column",
+            "+main_dimension": "time_column",
             "+compression": compression_settings,
         }
 

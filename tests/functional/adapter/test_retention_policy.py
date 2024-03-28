@@ -40,7 +40,7 @@ class TestRetentionPolicy:
         return {
             "base": {
                 "+materialized": "hypertable",
-                "+time_column_name": "time_column",
+                "+main_dimension": "time_column",
                 "+retention_policy": retention_config,
             }
         }

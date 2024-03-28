@@ -12,7 +12,7 @@ class TestHypertableReorderPolicy:
 {{{{
   config(
     materialized = "hypertable",
-    time_column_name = "time_column",
+    main_dimension = "time_column",
     create_default_indexes = False,
     indexes = [{{
         "columns": ["time_column", "col_1"]

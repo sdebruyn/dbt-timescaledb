@@ -15,7 +15,7 @@ class TestContinuousAggregateRefreshPolicy:
             "name": "continuous_aggregate_tests",
             "models": {
                 "continuous_aggregate_tests": {
-                    "base": {"+materialized": "hypertable", "+time_column_name": "time_column"},
+                    "base": {"+materialized": "hypertable", "+main_dimension": "time_column"},
                     "test_model": {
                         "+materialized": "continuous_aggregate",
                         "+refresh_policy": {

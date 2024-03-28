@@ -13,8 +13,8 @@ To create a transaction per chunk index, simply set the `transaction_per_chunk` 
 
     ```sql+jinja hl_lines="5" title="models/my_hypertable.sql"
     {{ config(
-        materialized = 'hypertable',
-        time_column_name = 'time_column',
+        materialized='hypertable',
+        main_dimension='time_column',
         indexes=[
           {'columns': ['column_a'], 'transaction_per_chunk': True}
         ]
@@ -30,7 +30,7 @@ To create a transaction per chunk index, simply set the `transaction_per_chunk` 
       your_project_name:
         model_name:
           +materialized: hypertable
-          +time_column_name: time_column
+          +main_dimension: time_column
           +indexes:
             - columns: ['column_a']
               transaction_per_chunk: true

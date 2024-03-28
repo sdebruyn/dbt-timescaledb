@@ -10,31 +10,14 @@ from dbt.tests.util import (
 
 _base_model_config: dict[str, str] = {
     "+materialized": "hypertable",
-    "+time_column_name": "time_column",
+    "+main_dimension": "time_column",
 }
 
 _models_with_configs: dict[str, Any] = {
     "default": _base_model_config,
-    "partitioning": _base_model_config
-    | {
-        "+partitioning_column:": "col_1",
-        "+number_partitions": 5,
-    },
     "empty": _base_model_config
     | {
         "+empty_hypertable": True,
-    },
-    "chunk_time_interval": _base_model_config
-    | {
-        "+chunk_time_interval": "interval '24 hours'",
-    },
-    "associated_schema_name": _base_model_config
-    | {
-        "+associated_schema_name": "public",
-    },
-    "associated_table_prefix": _base_model_config
-    | {
-        "+associated_table_prefix": "prefix_",
     },
 }
 

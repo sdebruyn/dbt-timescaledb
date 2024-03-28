@@ -12,7 +12,7 @@ class TestHypertableIndex:
 {{{{
   config(
     materialized = "hypertable",
-    time_column_name = "time_column",
+    main_dimension = "time_column",
     create_default_indexes = {create_default_indexes},
     indexes=[
       {{'columns': ['col_1'], 'transaction_per_chunk': True}}

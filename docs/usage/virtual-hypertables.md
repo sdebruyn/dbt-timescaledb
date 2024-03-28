@@ -39,4 +39,4 @@ The SQL code in the dbt model does not matter and will be fully ignored. However
 
 ## Configuration options
 
-At the moment, only [compression](../usage/compression.md) has been tested and verified to work. Other features are already implemented but require testing and documentation.
+--8<-- "docs/usage/dimensions.md"

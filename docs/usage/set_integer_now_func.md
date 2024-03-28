@@ -21,8 +21,7 @@ The following 2 options are available for hypertables where the time column is n
 {{
   config(
     materialized='hypertable',
-    time_column_name='time_column',
-    chunk_time_interval="interval '1 day'",
+    main_dimension='time_column',
     integer_now_func='my_hypertable_int_to_now',
     integer_now_func_sql='select extract(epoch from now())::bigint'
   )

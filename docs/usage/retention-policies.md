@@ -16,7 +16,7 @@ You can add a retention policy to automatically drop old chunks of data from (vi
     {{
       config(
         materialized='hypertable',
-        time_column_name='time_column',
+        main_dimension='time_column',
         retention_policy={
           "drop_after": "interval '1 month'"
         }
@@ -35,7 +35,7 @@ You can add a retention policy to automatically drop old chunks of data from (vi
         folder_containing_the_hypertables:
           +materialized: hypertable
             model_one:
-              +time_column_name: time_column
+              +main_dimension: time_column
               +retention_policy:
                 drop_after: interval '1 month'
     # ...

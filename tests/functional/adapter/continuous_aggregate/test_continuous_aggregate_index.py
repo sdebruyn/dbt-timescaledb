@@ -31,7 +31,7 @@ group by 2
             "name": "continuous_aggregate_index_tests",
             "models": {
                 "continuous_aggregate_index_tests": {
-                    "base": {"+materialized": "hypertable", "+time_column_name": "time_column"},
+                    "base": {"+materialized": "hypertable", "+main_dimension": "time_column"},
                 }
             },
         }

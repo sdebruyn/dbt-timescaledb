@@ -16,7 +16,7 @@ You can add a reorder policy to reorder chunks on a given (virtual) hypertable i
     {{
       config(
         materialized='hypertable',
-        time_column_name='time_column',
+        main_dimension='time_column',
         reorder_policy={
           index: {
             columns: ['column_a']
@@ -37,7 +37,7 @@ You can add a reorder policy to reorder chunks on a given (virtual) hypertable i
         folder_containing_the_hypertables:
           +materialized: hypertable
             model_one:
-              +time_column_name: time_column
+              +main_dimension: time_column
               +reorder_policy:
                 index:
                   columns: ['column_a']

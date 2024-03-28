@@ -18,8 +18,7 @@ class BaseTestHypertableIntegerNowFunc:
                 "hypertable_tests": {
                     "test_model": {
                         "+materialized": "hypertable",
-                        "+time_column_name": "id",
-                        "+chunk_time_interval": 86400,
+                        "+main_dimension": "id",
                         "+integer_now_func": "test_model_now",
                     }
                     | extra_model_config,

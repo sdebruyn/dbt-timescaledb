@@ -14,7 +14,7 @@ class TestContinuousAggregateCompression:
                 "continuous_aggregate_tests": {
                     "base": {
                         "+materialized": "hypertable",
-                        "+time_column_name": "time_column",
+                        "+main_dimension": "time_column",
                     },
                     "test_model": {
                         "+materialized": "continuous_aggregate",

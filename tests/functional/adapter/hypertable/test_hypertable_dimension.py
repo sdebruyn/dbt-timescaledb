@@ -14,11 +14,11 @@ class TestHypertableDimension:
                 "hypertable_tests": {
                     "test_model": {
                         "+materialized": "hypertable",
-                        "+time_column_name": "time_column",
+                        "+main_dimension": "time_column",
                         "+empty_hypertable": True,
                         "+dimensions": [
-                            {"column_name": "id", "number_partitions": 5},
-                            {"column_name": "col_1", "chunk_time_interval": 10000},
+                            {"column_name": "id", "type": "by_hash", "number_partitions": 5},
+                            {"column_name": "col_1", "partition_interval": 10000},
                         ],
                     }
                 }
@@ -74,7 +74,7 @@ class TestHypertableDimensionWithoutTruncateShouldRaiseException:
                 "hypertable_tests": {
                     "test_model": {
                         "+materialized": "hypertable",
-                        "+time_column_name": "time_column",
+                        "+main_dimension": "time_column",
                         "+dimensions": [{"column_name": "id"}],
                     }
                 }

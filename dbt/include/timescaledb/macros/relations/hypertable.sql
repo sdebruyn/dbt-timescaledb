@@ -8,7 +8,10 @@
     '{{ relation }}',
     {{ parse_dimension_config(main_dimension) }},
 
-    if_not_exists => false, {# Users should not be concerned with this #}
+    {%- if config.get('create_default_indexes') is not none %}
+      create_default_indexes => {{ config.get('create_default_indexes') }},
+    {% endif -%}
+
     migrate_data => true {# Required since dbt models will always contain data #}
   );
 {% endmacro %}

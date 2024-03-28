@@ -15,7 +15,7 @@ Compression is a configuration option for **(virtual) hypertables and continuous
     {{
       config(
         materialized='hypertable',
-        time_column_name='time_column',
+        main_dimension={"column_name": "time_column"},
         compression={
           after="interval '1 day'",
         }
@@ -33,11 +33,13 @@ Compression is a configuration option for **(virtual) hypertables and continuous
           +materialized: hypertable
           +compression: false # (1)!
             model_one:
-              +time_column_name: time_column
+              +main_dimension:
+                column_name: time_column
               +compression:
                 after: interval '1 day'
             model_two:
-              +time_column_name: time_column_name_in_model_two
+              +main_dimension:
+                column_name: time_column_in_model_two
               +compression:
                 after: interval '1 hour'
                 chunk_time_interval: 1 day

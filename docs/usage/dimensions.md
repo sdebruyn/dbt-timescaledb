@@ -1,15 +1,16 @@
 ### Dimensions
 
-Hypertables and virtual hypertables have one or more dimensions.
+Hypertables and virtual hypertables have one or more dimensions. The main dimension of a hypertable is provided upon creation using the `main_dimension` configuration option. Additional dimensions can be added to the (virtual) hypertable using the `dimensions` configuration option.
 
 In this adapter, dimensions can be provided as a dictionary with the following options:
 
 * `column_name`
-* `type`: `by_hash` or `by_range`
+* `type`: `by_hash` or `by_range` (default is `by_range`)
 * `partition_interval` (only for `by_range`)
 * `number_partitions` (only for `by_hash`)
 * `partitioning_func`
-* `chunk_time_interval` (not for the main time dimension of a hypertable)
+
+Since most dimensions will probably be `by_range` dimensions with a column name, you can also provide the name of the column as a shorthand instead of a dictionary.
 
 !!! warning "Empty hypertable required"
     You can only add dimensions to an empty hypertable.
@@ -19,13 +20,13 @@ In this adapter, dimensions can be provided as a dictionary with the following o
 
 === "SQL"
 
-    ```sql+jinja hl_lines="5" title="models/my_hypertable.sql"
+    ```sql+jinja hl_lines="3-8" title="models/my_hypertable.sql"
     {{ config(
         materialized = 'hypertable',
-        main_dimension = {"column_name": "time_column", "type": "by_range"},
+        main_dimension = 'time_column',
         dimensions=[
           {"column_name": "id", "type": "by_hash", "number_partitions": 5},
-          {"column_name": "col_1", "type": "by_range", "chunk_time_interval": 10000},
+          {"column_name": "col_1", "type": "by_range", "partition_interval": "interval '1 day'"},
           {"column_name": "another_column", "type": "by_range"}
         ]
     }}
@@ -39,7 +40,7 @@ In this adapter, dimensions can be provided as a dictionary with the following o
 
 === "YAML"
 
-    ```yaml hl_lines="8" title="dbt_project.yml"
+    ```yaml hl_lines="5-14" title="dbt_project.yml"
     models:
       your_project_name:
         model_name:
@@ -47,12 +48,13 @@ In this adapter, dimensions can be provided as a dictionary with the following o
           +main_dimension:
             column_name: time_column
             type: by_range
+          # the above would be equivalent to +main_dimension: time_column
           +dimensions:
             - column_name: id
               type: by_hash
               number_partitions: 5
             - column_name: another_time_column
               type: by_range
-              chunk_time_interval: interval '1 day'
+              partition_interval: interval '1 day'
     # ...
     ```
