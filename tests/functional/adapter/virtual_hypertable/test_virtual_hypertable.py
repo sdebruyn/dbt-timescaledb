@@ -48,7 +48,22 @@ and hypertable_schema = '{unique_schema}'""",
         assert len(hypertables) == 1
         hypertable = hypertables[0]
 
+        timescale_jobs = project.run_sql(
+            f"""
+select *
+from timescaledb_information.jobs
+where hypertable_name = 'vht'
+and hypertable_schema = '{unique_schema}'
+and application_name like 'Compression Policy%'
+and schedule_interval = interval '6 day'""",
+            fetch="all",
+        )
+        self.validate_jobs(timescale_jobs)
+
         self.run_assertions(project, unique_schema, hypertable)
+
+    def validate_jobs(self, jobs: Any) -> None:
+        assert len(jobs) == 0
 
 
 class TestVirtualHypertable(BaseTestVirtualHypertable):
@@ -79,16 +94,7 @@ and hypertable_schema = '{unique_schema}'""",
         assert not time_column[5]
         assert time_column[6]
 
-        timescale_jobs = project.run_sql(
-            f"""
-select *
-from timescaledb_information.jobs
-where hypertable_name = 'vht'
-and hypertable_schema = '{unique_schema}'
-and application_name like 'Compression Policy%'
-and schedule_interval = interval '6 day'""",
-            fetch="all",
-        )
-        assert len(timescale_jobs) == 1
-        job = timescale_jobs[0]
+    def validate_jobs(self, jobs: Any) -> None:
+        assert len(jobs) == 1
+        job = jobs[0]
         assert job[9]
