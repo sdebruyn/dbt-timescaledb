@@ -56,75 +56,8 @@ The following options are not taken from the TimescaleDB APIs, but are specific 
 
 ### TimescaleDB hypertable options
 
-All [TimescaleDB hypertable configuration options](https://docs.timescale.com/api/latest/hypertable/create_hypertable/#optional-arguments) as of version 2.12 are supported through model configuration as well:
+Every hypertable requires its main dimension to be provided upon creation. You can add additional dimensions to the hypertable by providing a list of dictionaries in the `dimensions` configuration option.
 
-* `time_column_name`
-* `partitioning_column`
-* `number_partitions`
-* `chunk_time_interval` (interval - required if time column is not a timestamp)
-* `create_default_indexes` (boolean)
-* `partitioning_func`
-* `associated_schema_name`
-* `associated_table_prefix`
-* `time_partitioning_func`
-* `replication_factor`
-* `data_nodes` (list of strings)
-* `distributed` (boolean)
-
-!!! info
-    Consult the [Timescale docs](https://docs.timescale.com/api/latest/hypertable/create_hypertable/#optional-arguments) for more information regarding these options.
+--8<-- "docs/usage/dimensions.md"
 
 --8<-- "docs/usage/set_integer_now_func.md"
-
-### Dimension options
-
-You can add dimensions to a hypertable.
-
-!!! warning "Empty hypertable required"
-    You can only add dimensions to an empty hypertable. Therefore, you'll have to set `empty_hypertable` to `true` as well.
-
-!!! info
-    Consult the [Timescale docs](https://docs.timescale.com/api/latest/hypertable/add_dimension/) for more information regarding dimensions.
-
-=== "SQL"
-
-    ```sql+jinja hl_lines="5" title="models/my_hypertable.sql"
-    {{ config(
-        materialized = 'hypertable',
-        time_column_name = 'time_column',
-        dimensions=[
-          {"column_name": "id", "number_partitions": 5},
-          {"column_name": "col_1", "chunk_time_interval": 10000},
-          {"column_name": "another_column"}
-        ]
-    }}
-
-    select
-      current_timestamp as time_column,
-      1 as id,
-      2 as col_1,
-      3 as another_column
-    ```
-
-=== "YAML"
-
-    ```yaml hl_lines="8" title="dbt_project.yml"
-    models:
-      your_project_name:
-        model_name:
-          +materialized: hypertable
-          +time_column_name: time_column
-          +dimensions:
-            - column_name: id
-              number_partitions: 5
-            - column_name: another_time_column
-              chunk_time_interval: interval '1 day'
-    # ...
-    ```
-
-Dimensions are a list. Every dimension can have the following configuration options:
-
-* `column`
-* `number_partitions`
-* `chunk_time_interval`
-* `partitioning_func`

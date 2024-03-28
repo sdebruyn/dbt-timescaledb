@@ -61,11 +61,11 @@ Set the function used to generate the current time for integer time columns.
 
 Add a dimension to a (virtual) hypertable. Note that this only works on empty hypertables.
 
-[Configuration options](hypertables.md#dimension-options)
-
 ```sql+jinja
-{{ add_dimension('table_name', {'column_name': 'column_name'}) }}
+{{ add_dimension('table_name', dimension_config) }}
 ```
+
+--8<-- "docs/usage/dimensions.md:12345"
 
 ## `add_retention_policy`
 
