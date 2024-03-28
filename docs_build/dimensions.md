@@ -40,7 +40,7 @@ Since most dimensions will probably be `by_range` dimensions with a column name,
 
 === "YAML"
 
-    ```yaml hl_lines="5-14" title="dbt_project.yml"
+    ```yaml hl_lines="5-15" title="dbt_project.yml"
     models:
       your_project_name:
         model_name:

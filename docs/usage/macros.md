@@ -49,9 +49,7 @@ Add a refresh policy to a continuous aggregate.
 
 ## `set_integer_now_func`
 
-Set the function used to generate the current time for integer time columns.
-
-[Configuration options](hypertables.md#set_integer_now_func-options)
+Set the function used to generate the current time for integer time columns in hypertables.
 
 ```sql+jinja
 {{ set_integer_now_func('table_name', 'function_name') }}
@@ -59,7 +57,7 @@ Set the function used to generate the current time for integer time columns.
 
 ## `add_dimension`
 
-Add a dimension to a (virtual) hypertable.
+Add a dimension to a hypertable.
 
 ```sql+jinja
 {{ add_dimension('table_name', dimension_config) }}

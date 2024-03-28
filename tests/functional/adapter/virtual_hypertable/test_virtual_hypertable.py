@@ -31,8 +31,9 @@ class BaseTestVirtualHypertable:
         pass
 
     def test_virtual_hypertable(self, project, unique_schema: str) -> None:  # noqa: ANN001
-        project.run_sql(f"create table {unique_schema}.vht (time_column timestamp, col_1 int);")
-        project.run_sql(f"select create_hypertable('{unique_schema}.vht', 'time_column');")
+        project.run_sql(f"""
+create table {unique_schema}.vht (time_column timestamp, col_1 int);
+select create_hypertable('{unique_schema}.vht', by_range('time_column'));""")
         results = run_dbt(["run"])
         assert len(results) == 1
         assert all(result.node.config.materialized == "virtual_hypertable" for result in results)

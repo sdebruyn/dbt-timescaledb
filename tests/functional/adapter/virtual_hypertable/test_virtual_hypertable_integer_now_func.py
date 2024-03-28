@@ -5,7 +5,7 @@ import pytest
 from dbt.tests.util import run_dbt
 
 
-class BaseTestHypertableIntegerNowFunc:
+class BaseTestVirtualHypertableIntegerNowFunc:
     @pytest.fixture(scope="class")
     def extra_model_config(self) -> dict[str, Any]:
         return {}
@@ -13,12 +13,11 @@ class BaseTestHypertableIntegerNowFunc:
     @pytest.fixture(scope="class")
     def project_config_update(self, extra_model_config: dict[str, Any]) -> dict[str, Any]:
         return {
-            "name": "hypertable_tests",
+            "name": "virtual_hypertable_tests",
             "models": {
-                "hypertable_tests": {
-                    "test_model": {
-                        "+materialized": "hypertable",
-                        "+main_dimension": "id",
+                "virtual_hypertable_tests": {
+                    "vht": {
+                        "+materialized": "virtual_hypertable",
                         "+integer_now_func": "test_model_now",
                     }
                     | extra_model_config,
@@ -29,11 +28,13 @@ class BaseTestHypertableIntegerNowFunc:
     @pytest.fixture(scope="class")
     def models(self) -> dict[str, Any]:
         return {
-            "test_model.sql": "select 1::bigint as id",
+            "vht.sql": "--",
         }
 
     def prepare_func(self, project: Any, unique_schema: str) -> None:
-        pass
+        project.run_sql(f"""
+create table {unique_schema}.vht (id bigint);
+select create_hypertable('{unique_schema}.vht', by_range('id'));""")
 
     def test_integer_now_func(self, project: Any, unique_schema: str) -> None:
         self.prepare_func(project, unique_schema)
@@ -41,8 +42,9 @@ class BaseTestHypertableIntegerNowFunc:
         assert len(results) == 1
 
 
-class TestHypertableIntegerNowFuncWithoutSQL(BaseTestHypertableIntegerNowFunc):
+class TestVirtualHypertableIntegerNowFuncWithoutSQL(BaseTestVirtualHypertableIntegerNowFunc):
     def prepare_func(self, project: Any, unique_schema: str) -> None:
+        super().prepare_func(project, unique_schema)
         project.run_sql(
             f"""
 create or replace function {unique_schema}.test_model_now() returns bigint language sql immutable as $$
@@ -52,7 +54,7 @@ create or replace function {unique_schema}.test_model_now() returns bigint langu
         )
 
 
-class TestHypertableIntegerNowFuncWithSQL(BaseTestHypertableIntegerNowFunc):
+class TestVirtualHypertableIntegerNowFuncWithSQL(BaseTestVirtualHypertableIntegerNowFunc):
     @pytest.fixture(scope="class")
     def extra_model_config(self) -> dict[str, Any]:
         return {"integer_now_func_sql": "select extract(epoch from now())::bigint"}

@@ -1,6 +1,6 @@
 ### set_integer_now_func options
 
-The following 2 options are available for hypertables where the time column is not a timestamp:
+The following 2 options are available for (virtual) hypertables where the time column is not a timestamp:
 
 * `integer_now_func` (string): name of a function to be used to generate the current time as an integer.
 * `integer_now_func_sql` (string, optional): SQL code for the function mentioned above. If provided, the function with the name set in `integer_now_func` will be created. If not provided, an error will be thrown if the function does not exist already.

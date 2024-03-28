@@ -4,7 +4,7 @@
   {%- elif relation.is_table -%}
     {%- set relation_type = "table" -%}
   {%- else -%}
-    {{ exceptions.raise_compiler_error("Cannot enable compression on a {{ relation.type }}") }}
+    {{ exceptions.raise_compiler_error("Cannot enable compression on a " ~ relation.type) }}
   {%- endif -%}
 
   alter {{ relation_type }} {{ relation }} set (
