@@ -69,9 +69,11 @@ docs = [
 
 [tool.ruff]
 line-length = 110
+target-version = "py311"
+
+[tool.ruff.lint]
 select = ["E", "F", "B", "W", "I", "PL", "ANN"]
 ignore = ["PLR2004", "ANN101", "ANN401"]
-target-version = "py311"
 
 [tool.pytest.ini_options]
 env_files = ["test.env"]
