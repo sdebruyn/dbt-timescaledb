@@ -2,6 +2,7 @@ from typing import Any
 
 import pytest
 
+from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import check_result_nodes_by_name, run_dbt
 
 
@@ -55,7 +56,7 @@ select
         job = timescale_jobs[0]
         assert job[9]
 
-    def test_hypertable(self, project, unique_schema: str) -> None:  # noqa: ANN001
+    def test_hypertable(self, project: TestProjInfo, unique_schema: str) -> None:
         results = run_dbt(["run"])
         assert len(results) == 1
         check_result_nodes_by_name(results, ["test_model"])

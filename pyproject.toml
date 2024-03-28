@@ -78,4 +78,4 @@ ignore = ["PLR2004", "ANN101", "ANN401"]
 [tool.pytest.ini_options]
 env_files = ["test.env"]
 testpaths = ["tests"]
-addopts = "-v -n auto --cov-report=xml"
+addopts = "-W ignore::pytest.PytestCollectionWarning -v -n auto --cov-report=xml"

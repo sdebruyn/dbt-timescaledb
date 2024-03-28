@@ -2,6 +2,7 @@ from typing import Any
 
 import pytest
 
+from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import check_result_nodes_by_name, run_dbt
 
 
@@ -31,7 +32,7 @@ class TestHypertableDimension:
             "test_model.sql": "select current_timestamp as time_column, 1 as id, 2 as col_1",
         }
 
-    def test_hypertable_dimension(self, project: Any, unique_schema: str) -> None:
+    def test_hypertable_dimension(self, project: TestProjInfo, unique_schema: str) -> None:
         results = run_dbt(["run"])
         assert len(results) == 1
         check_result_nodes_by_name(results, ["test_model"])
@@ -81,7 +82,7 @@ class TestHypertableDimensionWithoutTruncateShouldRaiseException:
             },
         }
 
-    def test_hypertable_dimension_throw_exception(self, project: Any) -> None:
+    def test_hypertable_dimension_throw_exception(self, project: TestProjInfo) -> None:
         results = run_dbt(["run"], expect_pass=False)
         assert len(results) == 1
         assert str(results[0].status) == "error"

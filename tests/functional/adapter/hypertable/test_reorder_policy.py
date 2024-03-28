@@ -2,6 +2,7 @@ from typing import Any
 
 import pytest
 
+from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import run_dbt
 from tests.utils import get_indexes_sql
 
@@ -36,7 +37,7 @@ select
             "sep_index.sql": self._model_sql(False),
         }
 
-    def test_reorder_policy(self, project: Any, unique_schema: str) -> None:
+    def test_reorder_policy(self, project: TestProjInfo, unique_schema: str) -> None:
         results = run_dbt(["run"])
         assert len(results) == 2
 

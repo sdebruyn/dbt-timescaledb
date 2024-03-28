@@ -2,6 +2,7 @@ from typing import Any
 
 import pytest
 
+from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import (
     check_result_nodes_by_name,
     relation_from_name,
@@ -40,7 +41,7 @@ class TestHypertable:
     def models(self) -> dict[str, Any]:
         return {f"{k}.sql": _model_sql for k in _models_with_configs.keys()}
 
-    def test_hypertable(self, project, unique_schema: str) -> None:  # noqa: ANN001
+    def test_hypertable(self, project: TestProjInfo, unique_schema: str) -> None:
         results = run_dbt(["run"])
         assert len(results) == len(_models_with_configs)
         check_result_nodes_by_name(results, _models_with_configs.keys())

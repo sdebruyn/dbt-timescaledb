@@ -2,6 +2,7 @@ from typing import Any
 
 import pytest
 
+from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import (
     run_dbt,
 )
@@ -27,10 +28,10 @@ class BaseTestVirtualHypertable:
     def models(self) -> dict[str, Any]:
         return {"vht.sql": "--"}
 
-    def run_assertions(self, project, unique_schema: str, hypertable) -> None:  # noqa: ANN001
+    def run_assertions(self, project: TestProjInfo, unique_schema: str, hypertable: Any) -> None:
         pass
 
-    def test_virtual_hypertable(self, project, unique_schema: str) -> None:  # noqa: ANN001
+    def test_virtual_hypertable(self, project: TestProjInfo, unique_schema: str) -> None:
         project.run_sql(f"""
 create table {unique_schema}.vht (time_column timestamp, col_1 int);
 select create_hypertable('{unique_schema}.vht', by_range('time_column'));""")
@@ -76,7 +77,7 @@ class TestVirtualHypertableCompression(BaseTestVirtualHypertable):
     def extra_model_config(self) -> dict[str, Any]:
         return {"+compression": {"after": "interval '1 day'", "schedule_interval": "interval '6 day'"}}
 
-    def run_assertions(self, project, unique_schema: str, hypertable) -> None:  # noqa: ANN001
+    def run_assertions(self, project: TestProjInfo, unique_schema: str, hypertable: Any) -> None:
         assert hypertable[5]  # compression_enabled
 
         compression_settings = project.run_sql(

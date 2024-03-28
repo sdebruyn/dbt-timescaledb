@@ -2,6 +2,7 @@ from typing import Any
 
 import pytest
 
+from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import run_dbt
 
 RETENTION_CONFIGS: list = [
@@ -56,7 +57,7 @@ class TestRetentionPolicy:
             "models": {"retention_policy_tests": model_configs},
         }
 
-    def test_retention_policy(self, project: Any, model_count: int, unique_schema: str) -> None:
+    def test_retention_policy(self, project: TestProjInfo, model_count: int, unique_schema: str) -> None:
         results = run_dbt(["run"])
         assert len(results) == model_count
 
@@ -95,7 +96,7 @@ group by 2
             }
         }
 
-    def test_retention_policy(self, project: Any, model_count: int, unique_schema: str) -> None:
+    def test_retention_policy(self, project: TestProjInfo, model_count: int, unique_schema: str) -> None:
         super().test_retention_policy(project, model_count, unique_schema)
 
         cagg_jobs = project.run_sql(

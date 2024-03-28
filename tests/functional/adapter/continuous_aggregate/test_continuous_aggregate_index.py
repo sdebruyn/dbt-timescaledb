@@ -2,6 +2,7 @@ from typing import Any
 
 import pytest
 
+from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import run_dbt
 
 
@@ -44,6 +45,6 @@ group by 2
             "without_default.sql": self._model_sql(False),
         }
 
-    def test_continuous_aggregate(self, project: Any) -> None:
+    def test_continuous_aggregate(self, project: TestProjInfo) -> None:
         results = run_dbt(["run"])
         assert len(results) == 3

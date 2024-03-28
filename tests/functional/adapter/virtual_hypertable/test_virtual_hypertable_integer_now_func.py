@@ -2,6 +2,7 @@ from typing import Any
 
 import pytest
 
+from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import run_dbt
 
 
@@ -31,19 +32,19 @@ class BaseTestVirtualHypertableIntegerNowFunc:
             "vht.sql": "--",
         }
 
-    def prepare_func(self, project: Any, unique_schema: str) -> None:
+    def prepare_func(self, project: TestProjInfo, unique_schema: str) -> None:
         project.run_sql(f"""
 create table {unique_schema}.vht (id bigint);
 select create_hypertable('{unique_schema}.vht', by_range('id'));""")
 
-    def test_integer_now_func(self, project: Any, unique_schema: str) -> None:
+    def test_integer_now_func(self, project: TestProjInfo, unique_schema: str) -> None:
         self.prepare_func(project, unique_schema)
         results = run_dbt(["run"])
         assert len(results) == 1
 
 
 class TestVirtualHypertableIntegerNowFuncWithoutSQL(BaseTestVirtualHypertableIntegerNowFunc):
-    def prepare_func(self, project: Any, unique_schema: str) -> None:
+    def prepare_func(self, project: TestProjInfo, unique_schema: str) -> None:
         super().prepare_func(project, unique_schema)
         project.run_sql(
             f"""
