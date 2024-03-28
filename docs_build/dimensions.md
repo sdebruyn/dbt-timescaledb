@@ -1,6 +1,6 @@
 ### Dimensions
 
-Hypertables and virtual hypertables have one or more dimensions. The main dimension of a hypertable is provided upon creation using the `main_dimension` configuration option. Additional dimensions can be added to the (virtual) hypertable using the `dimensions` configuration option.
+Hypertables have one or more dimensions, defined upon creation of the hypertable. The main dimension of a hypertable is provided using the `main_dimension` configuration option. Additional dimensions can be added to the hypertable using the `dimensions` configuration option.
 
 In this adapter, dimensions can be provided as a dictionary with the following options:
 

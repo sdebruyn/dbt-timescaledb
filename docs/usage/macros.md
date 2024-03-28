@@ -65,7 +65,7 @@ Add a dimension to a (virtual) hypertable.
 {{ add_dimension('table_name', dimension_config) }}
 ```
 
---8<-- "docs/usage/dimensions.md:5"
+--8<-- "docs_build/dimensions.md:5"
 
 ## `add_retention_policy`
 

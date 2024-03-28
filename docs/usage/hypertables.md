@@ -58,6 +58,6 @@ The following options are not taken from the TimescaleDB APIs, but are specific 
 
 The TimescaleDB option `create_default_indexes` can be set to `true` or `false`. It defaults to `true`.
 
---8<-- "docs/usage/dimensions.md"
+--8<-- "docs_build/dimensions.md"
 
---8<-- "docs/usage/set_integer_now_func.md"
+--8<-- "docs_build/set_integer_now_func.md"

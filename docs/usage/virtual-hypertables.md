@@ -39,4 +39,4 @@ The SQL code in the dbt model does not matter and will be fully ignored. However
 
 ## Configuration options
 
---8<-- "docs/usage/dimensions.md"
+Dimensions are not supported for virtual hypertables as you can only set them during the creation of the hypertable. You can use virtual hypertables to manage [Compression](compression.md).
