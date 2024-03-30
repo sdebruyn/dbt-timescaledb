@@ -25,6 +25,9 @@
 
     {% do create_indexes(target_relation) %}
 
+    {%- call statement("clear_reorder_policy") %}
+      {{ clear_reorder_policy(target_relation) }}
+    {% endcall -%}
     {%- if config.get("reorder_policy") %}
         {% call statement("reorder_policy") %}
             {{ add_reorder_policy(target_relation, config.get("reorder_policy")) }}
