@@ -34,6 +34,9 @@
         {% endcall %}
     {% endif -%}
 
+    {%- call statement("clear_retention_policy") %}
+      {{ clear_retention_policy(target_relation) }}
+    {% endcall -%}
     {%- if config.get("retention_policy") %}
         {% call statement("retention_policy") %}
             {{ add_retention_policy(target_relation, config.get("retention_policy")) }}

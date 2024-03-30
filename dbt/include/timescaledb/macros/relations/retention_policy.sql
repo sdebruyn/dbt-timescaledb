@@ -17,3 +17,7 @@
 
     if_not_exists => true);
 {% endmacro %}
+
+{% macro clear_retention_policy(relation) %}
+  select remove_retention_policy('{{ relation }}', if_exists => true);
+{% endmacro %}

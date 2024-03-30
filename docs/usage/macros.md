@@ -84,3 +84,11 @@ Add a retention policy to a (virtual) hypertable or continuous aggregate.
     "drop_after": "interval '1 month'"
 }) }}
 ```
+
+## `clear_retention_policy`
+
+Remove any existing retention policy from a (virtual) hypertable or a continuous aggregate.
+
+```sql+jinja
+{{ clear_retention_policy('table_name') }}
+```
