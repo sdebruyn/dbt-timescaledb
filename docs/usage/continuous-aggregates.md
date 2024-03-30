@@ -39,7 +39,7 @@ To use continuous aggregates, you need to set the `materialized` config to `cont
 
 ### dbt-specific options: refreshing upon creation
 
-Continuous aggregates are refreshed automatically by TimescaleDB. This is configured using a refresh policy (not available in dbt-timescaledb yet, use a post-hook for now).
+Continuous aggregates are refreshed automatically by TimescaleDB. This is configured using a [refresh policy](#timescaledb-refresh-policy-options).
 
 They are also refreshed initially when they are created. This is done by default but can be disabled by setting the `refresh_now` config option to `false`.
 
