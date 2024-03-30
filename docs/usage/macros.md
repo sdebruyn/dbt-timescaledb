@@ -35,6 +35,14 @@ Add a reorder policy to a (virtual) hypertable.
 {{ add_reorder_policy('table_name', {"index": {"columns": "column_name"}}) }}
 ```
 
+## `clear_reorder_policy`
+
+Remove any existing reorder policy from a (virtual) hypertable.
+
+```sql+jinja
+{{ clear_reorder_policy('table_name') }}
+```
+
 ## `add_refresh_policy`
 
 Add a refresh policy to a continuous aggregate.
