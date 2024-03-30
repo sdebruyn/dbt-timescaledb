@@ -60,3 +60,7 @@ and view_name = 'test_model'""",
             fetch="all",
         )
         assert len(continuous_aggregate_results) == 1
+
+    def test_continuous_aggregate_multiple_runs(self, project: TestProjInfo, unique_schema: str) -> None:
+        for _ in range(5):
+            self.test_continuous_aggregate(project, unique_schema)
