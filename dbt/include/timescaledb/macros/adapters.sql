@@ -19,7 +19,6 @@
 {# https://github.com/dbt-labs/dbt-core/issues/9124 #}
 {% macro timescaledb__rename_relation(from_relation, to_relation) -%}
   {% set target_name = adapter.quote_as_configured(to_relation.identifier, 'identifier') %}
-  {{ log('from_relation: ' ~ from_relation, info=True) }}
   {% call statement('rename_relation') -%}
     {{ get_rename_sql(from_relation, target_name) }}
   {%- endcall %}
