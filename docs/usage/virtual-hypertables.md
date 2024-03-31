@@ -7,8 +7,8 @@ Hypertables by themselves don't make a lot of sense in dbt as you'd create them 
 !!! info
     Consult the [Timescale docs](https://docs.timescale.com/use-timescale/latest/hypertables/about-hypertables/) for more information regarding hypertables.
 
-!!! danger "Work in progress"
-    This feature is still a work in progress. Testing and documentation has not been completed yet. Use at your own risk.
+!!! danger "Existing configurations"
+    As soon as you start to manage a hypertable as a virtual hypertable with dbt-timescaledb, dbt will replace existing configurations on every run. This includes the retention policy, compression, and other settings. If you have existing configurations in place, you have to make sure to adjust the dbt configuration accordingly.
 
 ## Usage
 
