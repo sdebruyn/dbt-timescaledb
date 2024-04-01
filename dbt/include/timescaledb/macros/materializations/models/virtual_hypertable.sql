@@ -1,6 +1,8 @@
 {% materialization virtual_hypertable, adapter="timescaledb" %}
 
     {%- set target_relation = this.incorporate(type=this.Table) -%}
+    {%- set existing_relation = load_cached_relation(target_relation) -%}
+    {%- set index_changes = get_virtual_hypertable_index_changes(existing_relation, config) -%}
 
     {%- set grant_config = config.get('grants') -%}
     {{ run_hooks(pre_hooks, inside_transaction=False) }}
@@ -24,7 +26,9 @@
 
     {%- endcall %}
 
-    {% do create_indexes(target_relation) %}
+    {%- if index_changes %}
+        {{ timescaledb__update_indexes_on_virtual_hypertable(target_relation, index_changes) }}
+    {%- endif %}
 
     {%- call statement("clear_reorder_policy") %}
       {{ clear_reorder_policy(target_relation) }}

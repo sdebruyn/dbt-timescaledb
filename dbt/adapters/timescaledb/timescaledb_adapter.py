@@ -7,10 +7,12 @@ from dbt.adapters.timescaledb.timescaledb_connection_manager import (
     TimescaleDBConnectionManager,
 )
 from dbt.adapters.timescaledb.timescaledb_index_config import TimescaleDBIndexConfig
+from dbt.adapters.timescaledb.timescaledb_relation import TimescaleDBRelation
 
 
 class TimescaleDBAdapter(PostgresAdapter):
     ConnectionManager = TimescaleDBConnectionManager
+    Relation = TimescaleDBRelation
 
     @available
     def parse_index(self, raw_index: Any) -> Optional[TimescaleDBIndexConfig]:
