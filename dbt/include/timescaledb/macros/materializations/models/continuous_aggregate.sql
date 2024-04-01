@@ -12,33 +12,61 @@
 
   {%- set full_refresh_mode = should_full_refresh() -%}
 
-  {#- If the existing relation is not a materialized view or we do a full refresh,
-    we will just drop it and create this one instead. -#}
-  {%- if full_refresh_mode or not existing_relation.is_materialized_view %}
+  {%- set should_drop = full_refresh_mode or not existing_relation.is_materialized_view -%}
+  {%- set create_mode = not existing_relation or should_drop -%}
+  {%- set alter_mode = not create_mode -%}
+  {%- set configuration_changes = none -%}
+
+  {%- if alter_mode -%}
+    {%- set configuration_changes = get_materialized_view_configuration_changes(existing_relation, config) -%}
+  {%- endif -%}
+
+  {%- if configuration_changes.requires_full_refresh -%}
+    {%- set alter_mode = false -%}
+    {%- set should_drop = true -%}
+    {%- set create_mode = true -%}
+  {%- endif -%}
+
+  {%- if should_drop -%}
     {{- drop_relation_if_exists(existing_relation) -}}
-  {% endif -%}
+  {%- endif -%}
 
   {% call statement('main') -%}
-    {#- Now we find out if we have to alter any existing relation or we create a new one. -#}
-    {{ get_create_continuous_aggregate_as_sql(target_relation, sql) }}
+    {%- if create_mode %}
+      {{ get_create_continuous_aggregate_as_sql(target_relation, sql) }}
+    {% endif -%}
 
-    {{ clear_refresh_policy(target_relation) }}
+    {%- if alter_mode and configuration_changes.indexes %}
+      {{ postgres__update_indexes_on_materialized_view(target_relation, configuration_changes.indexes) }}
+    {% endif -%}
+
+    {%- if alter_mode %}
+      {{ clear_refresh_policy(target_relation) }}
+    {% endif -%}
     {%- if config.get('refresh_policy') %}
       {{ add_refresh_policy(target_relation, config.get('refresh_policy')) }}
     {%- endif -%}
 
-    {{ set_compression(target_relation, config.get("compression")) }}
-    {{ clear_compression_policy(target_relation) }}
+    {%- if alter_mode or config.get('compression') %}
+      {{ set_compression(target_relation, config.get("compression")) }}
+    {% endif -%}
+    {%- if alter_mode %}
+      {{ clear_compression_policy(target_relation) }}
+    {% endif -%}
     {%- if config.get('compression') %}
       {{ add_compression_policy(target_relation, config.get("compression")) }}
     {%- endif -%}
   {%- endcall %}
 
-  {% do create_indexes(target_relation) %}
+  {%- if create_mode %}
+    {% do create_indexes(target_relation) %}
+  {% endif -%}
 
-  {%- call statement("clear_retention_policy") %}
-    {{ clear_retention_policy(target_relation) }}
-  {% endcall -%}
+  {%- if alter_mode %}
+    {%- call statement("clear_retention_policy") %}
+      {{ clear_retention_policy(target_relation) }}
+    {% endcall -%}
+  {% endif -%}
   {%- if config.get("retention_policy") %}
     {% call statement("retention_policy") %}
       {{ add_retention_policy(target_relation, config.get("retention_policy")) }}

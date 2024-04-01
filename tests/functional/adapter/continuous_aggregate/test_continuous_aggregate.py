@@ -24,7 +24,7 @@ class TestContinuousAggregate:
             "name": "continuous_aggregate_tests",
             "models": {
                 "continuous_aggregate_tests": {
-                    "base": {"+materialized": "hypertable", "+main_dimension": "time_column"},
+                    "vht": {"+materialized": "virtual_hypertable"},
                     "test_model": {"+materialized": "continuous_aggregate"} | request.param,
                 }
             },
@@ -33,20 +33,24 @@ class TestContinuousAggregate:
     @pytest.fixture(scope="class")
     def models(self) -> dict[str, Any]:
         return {
-            "base.sql": "select current_timestamp as time_column",
+            "vht.sql": "--",
             "test_model.sql": """
 select
     count(*),
     time_bucket(interval '1 day', time_column) as bucket
-from {{ ref('base') }}
+from {{ ref('vht') }}
 group by 2
 """,
         }
 
     def test_continuous_aggregate(self, project: TestProjInfo, unique_schema: str) -> None:
+        project.run_sql(f"""
+create table if not exists {unique_schema}.vht (time_column timestamp);
+select create_hypertable('{unique_schema}.vht', by_range('time_column'), if_not_exists => true);""")
+
         results = run_dbt(["run"])
         assert len(results) == 2  # noqa
-        check_result_nodes_by_name(results, ["base", "test_model"])
+        check_result_nodes_by_name(results, ["vht", "test_model"])
         nodes = [r.node for r in results]
         test_model = next(n for n in nodes if n.name == "test_model")
         assert test_model.node_info["materialized"] == "continuous_aggregate"

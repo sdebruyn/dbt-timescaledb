@@ -8,6 +8,11 @@ from dbt.tests.util import run_dbt
 
 class TestContinuousAggregateRetentionPolicy:
     @pytest.fixture(scope="class")
+    def unique_schema(self, unique_schema: str) -> str:
+        # The schema name must be less than 64 characters long
+        return unique_schema[:63]
+
+    @pytest.fixture(scope="class")
     def models(self) -> dict[str, Any]:
         return {
             "vht.sql": "--",
