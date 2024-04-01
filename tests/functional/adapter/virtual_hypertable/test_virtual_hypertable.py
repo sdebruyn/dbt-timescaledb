@@ -18,7 +18,9 @@ class BaseTestVirtualHypertable:
         return {
             "name": "virtual_hypertable_tests",
             "models": {
-                "virtual_hypertable_tests": {"vht": {"+materialized": "virtual_hypertable"} | extra_model_config}
+                "virtual_hypertable_tests": {
+                    "vht": {"+materialized": "virtual_hypertable"} | extra_model_config
+                }
             },
         }
 
