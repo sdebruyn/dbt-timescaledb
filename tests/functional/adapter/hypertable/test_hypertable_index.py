@@ -38,9 +38,7 @@ select
         assert len(results) == 2
 
         with_default_results = project.run_sql(get_indexes_sql(unique_schema, "with_default"), fetch="all")
-        without_default_results = project.run_sql(
-            get_indexes_sql(unique_schema, "without_default"), fetch="all"
-        )
+        without_default_results = project.run_sql(get_indexes_sql(unique_schema, "without_default"), fetch="all")
 
         assert len(with_default_results) == 2
         assert len(without_default_results) == 1
