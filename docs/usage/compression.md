@@ -17,7 +17,7 @@ Compression is a configuration option for **(virtual) hypertables and continuous
         materialized='hypertable',
         main_dimension={"column_name": "time_column"},
         compression={
-          after="interval '1 day'",
+          "after": "interval '1 day'",
         }
       )
     }}
