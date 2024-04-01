@@ -5,14 +5,14 @@ The macros below are available to use in your dbt project. They are also used in
 !!! tip
     Usually the macros below won't be used directly but instead will be used via the configuration options of the hypertables and continuous aggregates. They are documented here for completeness.
 
-## `enable_compression`
+## `set_compression`
 
-Enable compression on a (virtual) hypertable or continuous aggregate.
+Enable or disable compression on a (virtual) hypertable or continuous aggregate.
 
 [Configuration options](compression.md#compression-settings)
 
 ```sql+jinja
-{{ enable_compression('table_name', {"orderby": "column_name"}) }}
+{{ set_compression('table_name', {"orderby": "column_name"}) }}
 ```
 
 ## `add_compression_policy`
@@ -23,6 +23,14 @@ Add a compression policy to a (virtual) hypertable or continuous aggregate.
 
 ```sql+jinja
 {{ add_compression_policy('table_name', {"after": "interval '60d'"}) }}
+```
+
+## `clear_compression_policy`
+
+Remove any existing compression policy from a (virtual) hypertable or continuous aggregate.
+
+```sql+jinja
+{{ clear_compression_policy('table_name') }}
 ```
 
 ## `add_reorder_policy`

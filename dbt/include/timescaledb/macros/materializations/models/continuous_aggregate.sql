@@ -46,8 +46,9 @@
       {{ add_refresh_policy(intermediate_relation, config.get('refresh_policy')) }}
     {%- endif -%}
 
+    {{ set_compression(intermediate_relation, config.get("compression")) }}
+    {{ clear_compression_policy(intermediate_relation) }}
     {%- if config.get('compression') %}
-      {{ enable_compression(intermediate_relation, config.get("compression")) }}
       {{ add_compression_policy(intermediate_relation, config.get("compression")) }}
     {%- endif -%}
   {%- endcall %}

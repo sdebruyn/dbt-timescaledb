@@ -12,8 +12,9 @@
     {% call statement('main') -%}
         select 1 as dummy;
 
+        {{ set_compression(target_relation, config.get("compression")) }}
+        {{ clear_compression_policy(target_relation) }}
         {%- if config.get('compression') %}
-            {{ enable_compression(target_relation, config.get("compression")) }}
             {{ add_compression_policy(target_relation, config.get("compression")) }}
         {% endif -%}
 

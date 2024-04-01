@@ -41,8 +41,8 @@
 
     {{- get_create_hypertable_as_sql(intermediate_relation) }}
 
+    {{ set_compression(intermediate_relation, config.get("compression")) }}
     {%- if config.get('compression') %}
-      {{ enable_compression(intermediate_relation, config.get("compression")) }}
       {{ add_compression_policy(intermediate_relation, config.get("compression")) }}
     {% endif -%}
 
