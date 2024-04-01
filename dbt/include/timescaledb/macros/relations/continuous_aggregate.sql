@@ -41,3 +41,7 @@
 
     if_not_exists => true);
 {% endmacro %}
+
+{% macro clear_refresh_policy(relation) %}
+  select remove_continuous_aggregate_policy('{{ relation }}', if_exists => true);
+{% endmacro %}

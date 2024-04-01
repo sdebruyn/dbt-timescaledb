@@ -63,6 +63,14 @@ Add a refresh policy to a continuous aggregate.
     "end_offset": "interval '2 day'"}) }}
 ```
 
+## `clear_refresh_policy`
+
+Remove any existing refresh policy from a continuous aggregate.
+
+```sql+jinja
+{{ clear_refresh_policy('continuous_aggregate_name') }}
+```
+
 ## `set_integer_now_func`
 
 Set the function used to generate the current time for integer time columns in hypertables.
