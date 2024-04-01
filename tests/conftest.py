@@ -16,3 +16,9 @@ def dbt_profile_target() -> dict[str, Any]:
         "pass": os.getenv("POSTGRES_PASSWORD", "timescaledb"),
         "dbname": os.getenv("POSTGRES_DB", "timescaledb"),
     }
+
+
+@pytest.fixture(scope="class")
+def unique_schema(unique_schema: str) -> str:
+    # The schema name must be less than 64 characters long
+    return unique_schema[:63]
