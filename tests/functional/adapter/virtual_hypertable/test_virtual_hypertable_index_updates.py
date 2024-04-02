@@ -12,7 +12,7 @@ class TestVirtualHypertableIndexUpdates:
         return {
             "vht.sql": """
 {% if var("add_index", false) %}
-    {{ config(indexes=[{'columns': ['col_1'], 'type': 'hash'}]) }}
+    {{ config(indexes=[{'columns': ['col_1']}]) }}
 {% endif %}
 --
 """

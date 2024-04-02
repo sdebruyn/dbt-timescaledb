@@ -17,17 +17,13 @@
 {% endmacro %}
 
 {%- macro timescaledb__update_indexes_on_virtual_hypertable(relation, index_changes) -%}
-    {{ log('index_changes: ' ~ index_changes, info=True) }}
     {%- for _index_change in index_changes -%}
-        {{ log('_index_change: ' ~ _index_change, info=True) }}
         {%- set _index = _index_change.context -%}
 
         {%- if _index_change.action == "drop" -%}
-
             {{ postgres__get_drop_index_sql(relation, _index.name) }};
 
         {%- elif _index_change.action == "create" -%}
-
             {{ postgres__get_create_index_sql(relation, _index.as_node_config) }}
 
         {%- endif -%}
