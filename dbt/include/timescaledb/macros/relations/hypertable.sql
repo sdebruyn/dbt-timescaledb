@@ -17,7 +17,9 @@
 {% endmacro %}
 
 {%- macro timescaledb__update_indexes_on_virtual_hypertable(relation, index_changes) -%}
+    {{ log('index_changes: ' ~ index_changes, info=True) }}
     {%- for _index_change in index_changes -%}
+        {{ log('_index_change: ' ~ _index_change, info=True) }}
         {%- set _index = _index_change.context -%}
 
         {%- if _index_change.action == "drop" -%}
@@ -39,8 +41,8 @@
     {% do return({'indexes': _indexes}) %}
 {% endmacro %}
 
-{% macro get_virtual_hypertable_index_changes(existing_relation, new_config) %}
+{% macro get_virtual_hypertable_change_collection(existing_relation, new_config) %}
     {% set _existing_hypertable = describe_hypertable(existing_relation) %}
-    {% set _index_changes = existing_relation.get_hypertable_index_changes(_existing_hypertable, new_config.model) %}
-    {% do return(_index_changes) %}
+    {% set _change_collection = existing_relation.get_hypertable_config_change_collection(_existing_hypertable, new_config.model) %}
+    {% do return(_change_collection) %}
 {% endmacro %}

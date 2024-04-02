@@ -2,8 +2,7 @@
 
     {%- set target_relation = this.incorporate(type=this.Table) -%}
     {%- set existing_relation = load_cached_relation(target_relation) -%}
-    {%- set index_changes = get_virtual_hypertable_index_changes(existing_relation, config) -%}
-
+    {%- set change_collection = get_virtual_hypertable_change_collection(existing_relation, config) -%}
     {%- set grant_config = config.get('grants') -%}
     {{ run_hooks(pre_hooks, inside_transaction=False) }}
 
@@ -25,11 +24,9 @@
         {% endif -%}
 
     {%- endcall %}
-
-    {%- if index_changes %}
-        {{ timescaledb__update_indexes_on_virtual_hypertable(target_relation, index_changes) }}
+    {%- if change_collection %}
+        {{ timescaledb__update_indexes_on_virtual_hypertable(target_relation, change_collection.indexes) }}
     {%- endif %}
-
     {%- call statement("clear_reorder_policy") %}
       {{ clear_reorder_policy(target_relation) }}
     {% endcall -%}

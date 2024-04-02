@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, Set
+from typing import Optional
 
 import agate
 
@@ -7,18 +7,18 @@ from dbt.adapters.contracts.relation import RelationConfig
 from dbt.adapters.postgres.relation import PostgresRelation
 from dbt.adapters.postgres.relation_configs import (
     PostgresIndexConfig,
-    PostgresIndexConfigChange,
 )
 from dbt.adapters.relation_configs import (
     RelationResults,
 )
+from dbt.adapters.timescaledb.timescaledb_change_collection import TimescaleDBHypertableConfigChangeCollection
 
 
 @dataclass(frozen=True, eq=False, repr=False)
 class TimescaleDBRelation(PostgresRelation):
-    def get_hypertable_index_changes(
+    def get_hypertable_config_change_collection(
         self, relation_results: RelationResults, relation_config: RelationConfig
-    ) -> Optional[Set[PostgresIndexConfigChange]]:
+    ) -> Optional[TimescaleDBHypertableConfigChangeCollection]:
         if not relation_results:
             return None
 
@@ -39,6 +39,10 @@ class TimescaleDBRelation(PostgresRelation):
 
         indexes_from_config = relation_config.config.get("indexes", [])
         parsed_from_config = [PostgresIndexConfig.parse_model_node(index) for index in indexes_from_config]
-        set_from_config = frozenset(parsed_from_config)
+        obj_from_config = [PostgresIndexConfig.from_dict(index) for index in parsed_from_config]
+        set_from_config = frozenset(obj_from_config)
 
-        return self._get_index_config_changes(index_set, set_from_config)
+        changeset = TimescaleDBHypertableConfigChangeCollection(
+            indexes=self._get_index_config_changes(index_set, set_from_config)
+        )
+        return changeset if changeset.has_changes else None
