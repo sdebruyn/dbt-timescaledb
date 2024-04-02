@@ -23,27 +23,21 @@
             {{ set_integer_now_func(target_relation, config.get("integer_now_func"), config.get("integer_now_func_sql")) }}
         {% endif -%}
 
-    {%- endcall %}
-    {%- if change_collection %}
-        {{ timescaledb__update_indexes_on_virtual_hypertable(target_relation, change_collection.indexes) }}
-    {%- endif %}
-    {%- call statement("clear_reorder_policy") %}
-      {{ clear_reorder_policy(target_relation) }}
-    {% endcall -%}
-    {%- if config.get("reorder_policy") %}
-        {% call statement("reorder_policy") %}
-            {{ add_reorder_policy(target_relation, config.get("reorder_policy")) }}
-        {% endcall %}
-    {% endif -%}
+        {%- if change_collection %}
+            {{ timescaledb__update_indexes_on_virtual_hypertable(target_relation, change_collection.indexes) }}
+        {%- endif %}
 
-    {%- call statement("clear_retention_policy") %}
-      {{ clear_retention_policy(target_relation) }}
-    {% endcall -%}
-    {%- if config.get("retention_policy") %}
-        {% call statement("retention_policy") %}
+        {{ clear_reorder_policy(target_relation) }}
+        {%- if config.get("reorder_policy") %}
+                {{ add_reorder_policy(target_relation, config.get("reorder_policy")) }}
+        {% endif -%}
+
+        {{ clear_retention_policy(target_relation) }}
+        {%- if config.get("retention_policy") %}
             {{ add_retention_policy(target_relation, config.get("retention_policy")) }}
-        {% endcall %}
-    {% endif -%}
+        {% endif -%}
+
+    {%- endcall %}
 
     {{ run_hooks(post_hooks, inside_transaction=True) }}
 

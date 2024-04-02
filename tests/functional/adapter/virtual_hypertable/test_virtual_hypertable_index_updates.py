@@ -34,8 +34,8 @@ where tablename = 'vht'
 and schemaname = '{unique_schema}'""",
             fetch="all",
         )
-        table_names = [job[2] for job in indexes]
-        return table_names
+        index_names = [job[2] for job in indexes]
+        return index_names
 
     def test_virtual_hypertable_index_updates(self, project: TestProjInfo, unique_schema: str) -> None:
         project.run_sql(f"""
