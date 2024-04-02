@@ -10,9 +10,6 @@ Hypertables by themselves don't make a lot of sense in dbt as you'd create them 
 !!! warning "Existing configurations"
     As soon as you start to manage a hypertable as a virtual hypertable with dbt-timescaledb, dbt will replace existing configurations on every run. This includes the retention policy, compression, and other settings. If you have existing configurations in place, you have to make sure to adjust the dbt configuration accordingly.
 
-!!! warning "Indexes"
-    Indexes are not properly implemented yet. You can add them to the configuration, but they will stack up on every run. This is a known issue and will be fixed in the future.
-
 ## Usage
 
 The hypertable has to pre-exist in your database. If the hypertable is not present, dbt will throw an error. Optionally, you can specify dbt's built-in `schema` parameter to reference a hypertable in a different schema.
@@ -44,6 +41,6 @@ The SQL code in the dbt model does not matter and will be fully ignored. However
 
 Dimensions are not supported for virtual hypertables as you can only set them during the creation of the hypertable.
 
-You can use virtual hypertables to manage [compression](compression.md), set a [reorder policy](reorder-policies.md), define [retention policies](retention-policies.md), or any of the options below.
+You can use virtual hypertables to manage [compression](compression.md), indexes, set a [reorder policy](reorder-policies.md), define [retention policies](retention-policies.md), or any of the options below.
 
 --8<-- "docs_build/set_integer_now_func.md"
