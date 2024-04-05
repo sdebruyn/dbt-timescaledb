@@ -42,3 +42,11 @@
     {% set _change_collection = existing_relation.get_hypertable_config_change_collection(_existing_hypertable, new_config.model) %}
     {% do return(_change_collection) %}
 {% endmacro %}
+
+{% macro set_chunk_time_interval(relation, chunk_time_interval, dimension_name = none) %}
+  set_chunk_time_interval('{{ relation }}', '{{ chunk_time_interval }}'
+    {%- if dimension_name %}
+      , dimension_name => '{{ dimension_name }}'
+    {%- endif %}
+  );
+{% endmacro %}

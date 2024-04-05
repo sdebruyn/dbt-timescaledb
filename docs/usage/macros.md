@@ -79,9 +79,17 @@ Set the function used to generate the current time for integer time columns in h
 {{ set_integer_now_func('table_name', 'function_name') }}
 ```
 
+## `set_chunk_time_interval`
+
+Set the chunk time interval for a (virtual) hypertable. This macro has an optional argument `dimension_name`. If provided, the chunk time interval will be set for the specified dimension only
+
+```sql+jinja
+{{ set_chunk_time_interval('table_name', 'interval') }}
+```
+
 ## `add_dimension`
 
-Add a dimension to a hypertable.
+Add a dimension to a (virtual) hypertable.
 
 ```sql+jinja
 {{ add_dimension('table_name', dimension_config) }}
