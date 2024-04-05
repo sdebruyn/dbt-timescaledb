@@ -44,7 +44,7 @@
 {% endmacro %}
 
 {% macro set_chunk_time_interval(relation, chunk_time_interval, dimension_name = none) %}
-  set_chunk_time_interval('{{ relation }}', '{{ chunk_time_interval }}'
+  select set_chunk_time_interval('{{ relation }}', {{ chunk_time_interval }}
     {%- if dimension_name %}
       , dimension_name => '{{ dimension_name }}'
     {%- endif %}
