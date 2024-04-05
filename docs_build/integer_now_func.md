@@ -1,4 +1,4 @@
-### set_integer_now_func options
+### integer_now_func
 
 The following 2 options are available for (virtual) hypertables where the time column is not a timestamp:
 

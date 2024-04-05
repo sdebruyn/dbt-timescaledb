@@ -50,6 +50,10 @@
       {{ set_integer_now_func(intermediate_relation, config.get("integer_now_func"), config.get("integer_now_func_sql")) }}
     {% endif -%}
 
+    {%- if config.get("chunk_time_interval") %}
+      {{ set_chunk_time_interval(intermediate_relation, config.get("chunk_time_interval")) }}
+    {% endif -%}
+
   {%- endcall %}
 
   -- cleanup

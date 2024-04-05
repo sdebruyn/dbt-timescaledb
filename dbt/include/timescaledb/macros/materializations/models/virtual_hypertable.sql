@@ -23,13 +23,17 @@
             {{ set_integer_now_func(target_relation, config.get("integer_now_func"), config.get("integer_now_func_sql")) }}
         {% endif -%}
 
+        {%- if config.get("chunk_time_interval") %}
+            {{ set_chunk_time_interval(target_relation, config.get("chunk_time_interval")) }}
+        {% endif -%}
+
         {%- if change_collection %}
             {{ timescaledb__update_indexes_on_virtual_hypertable(target_relation, change_collection.indexes) }}
         {%- endif %}
 
         {{ clear_reorder_policy(target_relation) }}
         {%- if config.get("reorder_policy") %}
-                {{ add_reorder_policy(target_relation, config.get("reorder_policy")) }}
+            {{ add_reorder_policy(target_relation, config.get("reorder_policy")) }}
         {% endif -%}
 
         {{ clear_retention_policy(target_relation) }}

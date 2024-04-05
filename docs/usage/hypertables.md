@@ -60,4 +60,6 @@ The TimescaleDB option `create_default_indexes` can be set to `true` or `false`.
 
 --8<-- "docs_build/dimensions.md"
 
---8<-- "docs_build/set_integer_now_func.md"
+--8<-- "docs_build/integer_now_func.md"
+
+--8<-- "docs_build/chunk_time_interval.md"
