@@ -8,6 +8,9 @@ Continuous aggregates are the reason that this adapter exists. With this adapter
 !!! tip "Materialized views"
     dbt-postgres 1.6 added support for [materialized views](https://docs.getdbt.com/docs/build/materializations#materialized-view). This feature is **also still available** in this adapter. The main difference between materialized views and continuous aggregates is that continuous aggregates are automatically refreshed (based on a policy) by TimescaleDB, while materialized views are refreshed manually or when you run `dbt run`.
 
+!!! tip "Full refresh"
+    Once continuous aggregates have been created, only its metadata will be updated on subsequent runs. If you need to fully refresh the continuous aggregate, - maybe because you have changed its implementation - you can use the `full-refresh` option in dbt to drop and recreate the continuous aggregate.
+
 !!! failure "CTEs and subqueries not supported"
     TimescaleDB [does not support](https://github.com/timescale/timescaledb/issues/1931) [CTE](https://docs.getdbt.com/terms/cte)s, subqueries and set-returning functions in continuous aggregates.
 
