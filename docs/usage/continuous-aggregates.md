@@ -53,7 +53,7 @@ They are also refreshed initially when they are created. This is done by default
 
 All [TimescaleDB continuous aggregate configuration options](https://docs.timescale.com/api/latest/continuous-aggregates/create_materialized_view/#parameters) as of version 2.12 are supported through model configuration as well:
 
-* `materialized_only`
+* `materialized_only` (make sure to quote the value when setting to false, e.g. "False")
 * `create_group_indexes`
 
 ### TimescaleDB refresh policy options
