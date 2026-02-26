@@ -1,7 +1,8 @@
 {% macro do_refresh_continuous_aggregate(relation) %}
   {% call statement('refresh', fetch_result=False, auto_begin=False) %}
+    {%- set end_offset = config.get('refresh_policy', {}).get('end_offset') -%}
     {{ adapter.marker_run_outside_transaction() }}
-    call refresh_continuous_aggregate('{{ relation }}', null, null);
+    call refresh_continuous_aggregate('{{ relation }}', null, {{ end_offset or 'null' }});
   {% endcall %}
 {% endmacro %}
 
