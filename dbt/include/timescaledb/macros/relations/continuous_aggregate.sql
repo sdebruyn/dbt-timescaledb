@@ -46,3 +46,24 @@
 {% macro clear_refresh_policy(relation) %}
   select remove_continuous_aggregate_policy('{{ relation }}', if_exists => true);
 {% endmacro %}
+
+{#- The indexes of a continuous aggregate sit on its materialization hypertable -#}
+{% macro timescaledb__get_show_indexes_sql(relation) %}
+  {%- set _hypertable_sql -%}
+    select materialization_hypertable_schema, materialization_hypertable_name
+    from timescaledb_information.continuous_aggregates
+    where view_schema = '{{ relation.schema }}' and view_name = '{{ relation.identifier }}'
+  {%- endset -%}
+  {%- set _hypertable = run_query(_hypertable_sql) if execute else none -%}
+
+  {%- if _hypertable and _hypertable.rows -%}
+    {%- set _schema = _hypertable.rows[0][0] -%}
+    {%- set _name = _hypertable.rows[0][1] -%}
+    {#- TimescaleDB names its own indexes after the materialization hypertable -#}
+    select *
+    from ({{ postgres__get_show_indexes_sql(relation.incorporate(path={"schema": _schema, "identifier": _name})) }}) _indexes
+    where name not like '{{ _name }}%'
+  {%- else -%}
+    {{ postgres__get_show_indexes_sql(relation) }}
+  {%- endif -%}
+{% endmacro %}

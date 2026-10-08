@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime, timezone
 
 from dbt_common.utils.encoding import md5
 
@@ -19,6 +20,7 @@ class TimescaleDBIndexConfig(PostgresIndexConfig):
             str(self.unique),
             str(self.type),
             str(self.transaction_per_chunk),
+            datetime.now(timezone.utc).replace(tzinfo=None).isoformat(),
         ]
         string = "_".join(inputs)
         return md5(string)

@@ -4,6 +4,7 @@ import pytest
 
 from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import run_dbt
+from tests.utils import get_indexes_sql
 
 
 class TestVirtualHypertableReorderPolicy:
@@ -65,3 +66,32 @@ select create_hypertable('{unique_schema}.vht', by_range('time_column'));""")
         assert all(result.node.config.materialized == "virtual_hypertable" for result in run_disable_results)
 
         assert self.find_reorder_policy_tables(project, unique_schema) == []
+
+
+class TestVirtualHypertableReorderPolicyOnConfiguredIndex:
+    @pytest.fixture(scope="class")
+    def models(self) -> dict[str, Any]:
+        return {
+            "vht.sql": """
+{{
+config(
+    materialized = "virtual_hypertable",
+    indexes = [{ "columns": ["col_1"] }],
+    reorder_policy = {
+        "create_index": true,
+        "index": { "columns": ["COL_1"] }
+    }
+)
+}}
+--
+"""
+        }
+
+    def test_virtual_hypertable_reorder_policy(self, project: TestProjInfo, unique_schema: str) -> None:
+        project.run_sql(f"""
+create table {unique_schema}.vht (time_column timestamp, col_1 int);
+select create_hypertable('{unique_schema}.vht', by_range('time_column'));""")
+        for _ in range(2):
+            results = run_dbt(["run"])
+            assert len(results) == 1
+            assert len(project.run_sql(get_indexes_sql(unique_schema, "vht"), fetch="all")) == 2
