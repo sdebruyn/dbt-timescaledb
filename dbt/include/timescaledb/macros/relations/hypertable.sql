@@ -24,7 +24,7 @@
             {{ postgres__get_drop_index_sql(relation, _index.name) }};
 
         {%- elif _index_change.action == "create" -%}
-            {{ postgres__get_create_index_sql(relation, _index.as_node_config) }}
+            {{ postgres__get_create_index_sql(relation, _index.as_node_config) }};
 
         {%- endif -%}
 

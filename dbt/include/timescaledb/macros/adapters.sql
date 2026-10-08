@@ -1,7 +1,7 @@
-{% macro timescaledb__get_create_index_sql(relation, index_dict) -%}
+{% macro timescaledb__get_create_index_sql(relation, index_dict, index_name=none) -%}
   {%- set index_config = adapter.parse_index(index_dict) -%}
   {%- set comma_separated_columns = ", ".join(index_config.columns) -%}
-  {%- set index_name = index_config.render(relation) -%}
+  {%- set index_name = index_name or index_config.render(relation) -%}
 
   create {% if index_config.unique -%}
     unique

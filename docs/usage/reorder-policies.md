@@ -47,4 +47,4 @@ You can add a reorder policy to reorder chunks on a given (virtual) hypertable i
 ## Configuration options
 
 * `index` (required): The configuration for the index to reorder on. See [dbt Postgres docs](https://docs.getdbt.com/reference/resource-configs/postgres-configs#indexes) for more information regarding how indexes can be configured.
-* `create_index`: `true` by default. A boolean value to indicate if the index specified in `index` should be created or if it already exists.
+* `create_index`: `true` by default. A boolean value to indicate if the index specified in `index` should be created or if it already exists. Either way, an existing index on exactly the columns in `index`, in that order, is reused.

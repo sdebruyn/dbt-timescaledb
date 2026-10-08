@@ -34,13 +34,16 @@ select
         }
 
     def test_table(self, project: TestProjInfo, unique_schema: str) -> None:
-        results = run_dbt(["run"])
-        assert len(results) == 2
+        for _ in range(2):
+            results = run_dbt(["run"])
+            assert len(results) == 2
 
-        with_default_results = project.run_sql(get_indexes_sql(unique_schema, "with_default"), fetch="all")
-        without_default_results = project.run_sql(
-            get_indexes_sql(unique_schema, "without_default"), fetch="all"
-        )
+            with_default_results = project.run_sql(
+                get_indexes_sql(unique_schema, "with_default"), fetch="all"
+            )
+            without_default_results = project.run_sql(
+                get_indexes_sql(unique_schema, "without_default"), fetch="all"
+            )
 
-        assert len(with_default_results) == 2
-        assert len(without_default_results) == 1
+            assert len(with_default_results) == 2
+            assert len(without_default_results) == 1
