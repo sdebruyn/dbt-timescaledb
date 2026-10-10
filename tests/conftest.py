@@ -22,3 +22,11 @@ def dbt_profile_target() -> dict[str, Any]:
 def unique_schema(unique_schema: str) -> str:
     # The schema name must be less than 64 characters long
     return unique_schema[:63]
+
+
+# dbt-tests-adapter writes project files via project_root.mkdir(), which fails when the
+# fixture chain is re-executed for another parametrized variant on the same project_root.
+# Depending on project_config_update gives each variant its own project directory.
+@pytest.fixture(scope="class")
+def project_root(tmpdir_factory: Any, project_config_update: Any) -> Any:
+    return tmpdir_factory.mktemp("project")
