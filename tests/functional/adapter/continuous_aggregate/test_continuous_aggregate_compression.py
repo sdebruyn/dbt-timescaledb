@@ -1,9 +1,11 @@
+from datetime import timedelta
 from typing import Any
 
 import pytest
 
 from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import check_result_nodes_by_name, run_dbt
+from tests.utils import get_jobs_sql
 
 
 class TestContinuousAggregateCompression:
@@ -67,12 +69,7 @@ and view_name = 'test_model'""",
         assert continuous_aggregate[6]  # compression_enabled
 
         job_results = project.run_sql(
-            """
-select *
-from timescaledb_information.jobs
-where application_name like 'Compression Policy%'
-and schedule_interval = interval '5 day'
-""",
-            fetch="all",
+            get_jobs_sql(unique_schema, "test_model", "policy_compression"), fetch="all"
         )
         assert len(job_results) == 1
+        assert job_results[0][2] == timedelta(days=5)  # schedule_interval

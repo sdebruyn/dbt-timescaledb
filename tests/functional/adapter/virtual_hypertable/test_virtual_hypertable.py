@@ -1,3 +1,4 @@
+from datetime import timedelta
 from typing import Any
 
 import pytest
@@ -6,6 +7,7 @@ from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import (
     run_dbt,
 )
+from tests.utils import DEFAULT_ORDERBY, get_compression_settings_sql, get_jobs_sql
 
 
 class BaseTestVirtualHypertable:
@@ -51,14 +53,7 @@ and hypertable_schema = '{unique_schema}'""",
         hypertable = hypertables[0]
 
         timescale_jobs = project.run_sql(
-            f"""
-select *
-from timescaledb_information.jobs
-where hypertable_name = 'vht'
-and hypertable_schema = '{unique_schema}'
-and application_name like 'Compression Policy%'
-and schedule_interval = interval '6 day'""",
-            fetch="all",
+            get_jobs_sql(unique_schema, "vht", "policy_compression"), fetch="all"
         )
         self.validate_jobs(timescale_jobs)
 
@@ -80,23 +75,15 @@ class TestVirtualHypertableCompression(BaseTestVirtualHypertable):
     def run_assertions(self, project: TestProjInfo, unique_schema: str, hypertable: Any) -> None:
         assert hypertable[5]  # compression_enabled
 
-        compression_settings = project.run_sql(
-            f"""
-select *
-from timescaledb_information.compression_settings
-where hypertable_name = 'vht'
-and hypertable_schema = '{unique_schema}'""",
-            fetch="all",
+        segmentby, orderby, interval = project.run_sql(
+            get_compression_settings_sql(unique_schema, "vht"), fetch="one"
         )
-
-        assert len(compression_settings) == 1
-        time_column = [x for x in compression_settings if x[2] == "time_column"][0]
-
-        assert time_column[3] is None
-        assert not time_column[5]
-        assert time_column[6]
+        assert segmentby is None
+        assert orderby in DEFAULT_ORDERBY
+        assert interval is None
 
     def validate_jobs(self, jobs: Any) -> None:
         assert len(jobs) == 1
         job = jobs[0]
-        assert job[9]
+        assert job[2] == timedelta(days=6)  # schedule_interval
+        assert job[9]  # scheduled
