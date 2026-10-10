@@ -29,7 +29,8 @@ dbt is the T in ELT. Organize, cleanse, denormalize, filter, rename, and pre-agg
 | ----------------- | ---------------------- | ------------------------------ |
 | 1.7.0a1 - 1.7.0a7 | 1.7.x                  | 2.12 - latest                  |
 | 1.8.0a1 - 1.8.0a2 | 1.8.x - latest         | 2.12 - latest                  |
-| 1.8.0a3 - latest  | 1.8.x - latest         | 2.13 - latest                  |
+| 1.8.0a3 - 1.8.x   | 1.8.x - latest         | 2.13 - latest                  |
+| 1.12.0 - latest   | 1.12.x - latest        | 2.13 - latest                  |
 
 The recommended versions of Timescale are TimescaleDB Community Edition or Timescale cloud. It is not recommended to use this adapter with TimescaleDB Apache 2 Edition. See the [TimescaleDB editions](https://docs.timescale.com/about/latest/timescaledb-editions/) page for more information.
 
