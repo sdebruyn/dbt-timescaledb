@@ -15,10 +15,7 @@ class TestVirtualHypertableReorderPolicy:
 {% if var("create_reorder_policy", false) %}
     {{
     config(
-        reorder_policy = {
-            "create_index": true,
-            "index": { "columns": ["col_1"] }
-        }
+        reorder_policy = { "index": { "columns": ["col_1"] } }
     )
     }}
 {% endif %}
