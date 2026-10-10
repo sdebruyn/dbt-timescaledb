@@ -4,6 +4,7 @@ import pytest
 
 from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import run_dbt
+from tests.utils import get_jobs_sql
 
 
 class TestContinuousAggregateRetentionPolicy:
@@ -35,19 +36,7 @@ group by 2""",
         }
 
     def find_retention_policy_continuous_aggregates(self, project: TestProjInfo, unique_schema: str) -> int:
-        timescale_jobs = project.run_sql(
-            f"""
-select *
-from timescaledb_information.jobs j
-join timescaledb_information.continuous_aggregates c
-on j.hypertable_schema = c.materialization_hypertable_schema
-and j.hypertable_name = c.materialization_hypertable_name
-where j.proc_name = 'policy_retention'
-and c.view_schema = '{unique_schema}'
-and c.view_name = 'cagg'""",
-            fetch="all",
-        )
-        return len(timescale_jobs)
+        return len(project.run_sql(get_jobs_sql(unique_schema, "cagg", "policy_retention"), fetch="all"))
 
     def test_continuous_aggregate_retention_policy(self, project: TestProjInfo, unique_schema: str) -> None:
         project.run_sql(f"""

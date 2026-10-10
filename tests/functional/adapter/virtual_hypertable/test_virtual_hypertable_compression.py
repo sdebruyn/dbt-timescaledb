@@ -4,6 +4,7 @@ import pytest
 
 from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import run_dbt
+from tests.utils import get_jobs_sql
 
 
 class TestVirtualHypertableCompression:
@@ -25,16 +26,18 @@ class TestVirtualHypertableCompression:
             "models": {"virtual_hypertable_tests": {"vht": {"+materialized": "virtual_hypertable"}}},
         }
 
-    def count_compression_settings(self, project: TestProjInfo, unique_schema: str) -> int:
-        compression_settings = project.run_sql(
+    def compression_enabled(self, project: TestProjInfo, unique_schema: str) -> bool:
+        return project.run_sql(
             f"""
-select *
-from timescaledb_information.compression_settings
+select compression_enabled
+from timescaledb_information.hypertables
 where hypertable_name = 'vht'
 and hypertable_schema = '{unique_schema}'""",
-            fetch="all",
-        )
-        return len(compression_settings)
+            fetch="one",
+        )[0]
+
+    def count_compression_jobs(self, project: TestProjInfo, unique_schema: str) -> int:
+        return len(project.run_sql(get_jobs_sql(unique_schema, "vht", "policy_compression"), fetch="all"))
 
     def test_virtual_hypertable_compression(self, project: TestProjInfo, unique_schema: str) -> None:
         project.run_sql(f"""
@@ -43,14 +46,17 @@ select create_hypertable('{unique_schema}.vht', by_range('time_column'));""")
         results = run_dbt(["run"])
         assert len(results) == 1
 
-        assert self.count_compression_settings(project, unique_schema) == 0
+        assert not self.compression_enabled(project, unique_schema)
+        assert self.count_compression_jobs(project, unique_schema) == 0
 
         run_enable_results = run_dbt(["run", "--vars", "enable_compression: true"])
         assert len(run_enable_results) == 1
 
-        assert self.count_compression_settings(project, unique_schema) == 1
+        assert self.compression_enabled(project, unique_schema)
+        assert self.count_compression_jobs(project, unique_schema) == 1
 
         run_disable_results = run_dbt(["run"])
         assert len(run_disable_results) == 1
 
-        assert self.count_compression_settings(project, unique_schema) == 0
+        assert not self.compression_enabled(project, unique_schema)
+        assert self.count_compression_jobs(project, unique_schema) == 0

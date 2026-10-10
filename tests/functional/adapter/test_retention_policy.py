@@ -4,6 +4,7 @@ import pytest
 
 from dbt.tests.fixtures.project import TestProjInfo
 from dbt.tests.util import run_dbt
+from tests.utils import get_jobs_sql
 
 RETENTION_CONFIGS: list = [
     pytest.param(
@@ -62,14 +63,7 @@ class TestRetentionPolicy:
         assert len(results) == model_count
 
         hypertable_jobs = project.run_sql(
-            f"""
-select *
-from timescaledb_information.jobs
-where proc_name = 'policy_retention'
-and hypertable_schema = '{unique_schema}'
-and hypertable_name = 'base'
-""",
-            fetch="all",
+            get_jobs_sql(unique_schema, "base", "policy_retention"), fetch="all"
         )
         assert len(hypertable_jobs) == 1
 
@@ -99,17 +93,5 @@ group by 2
     def test_retention_policy(self, project: TestProjInfo, model_count: int, unique_schema: str) -> None:
         super().test_retention_policy(project, model_count, unique_schema)
 
-        cagg_jobs = project.run_sql(
-            f"""
-select *
-from timescaledb_information.jobs j
-join timescaledb_information.continuous_aggregates c
-on j.hypertable_schema = c.materialization_hypertable_schema
-and j.hypertable_name = c.materialization_hypertable_name
-where j.proc_name = 'policy_retention'
-and c.view_schema = '{unique_schema}'
-and c.view_name = 'cagg'
-""",
-            fetch="all",
-        )
+        cagg_jobs = project.run_sql(get_jobs_sql(unique_schema, "cagg", "policy_retention"), fetch="all")
         assert len(cagg_jobs) == 1

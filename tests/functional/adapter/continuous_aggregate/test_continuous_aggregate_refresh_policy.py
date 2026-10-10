@@ -1,3 +1,4 @@
+from datetime import timedelta
 from typing import Any
 
 import pytest
@@ -7,6 +8,7 @@ from dbt.tests.util import (
     check_result_nodes_by_name,
     run_dbt,
 )
+from tests.utils import get_jobs_sql
 
 
 class TestContinuousAggregateRefreshPolicy:
@@ -58,12 +60,7 @@ and view_name = 'test_model'""",
         assert len(continuous_aggregate_results) == 1
 
         job_results = project.run_sql(
-            """
-select *
-from timescaledb_information.jobs
-where application_name like 'Refresh Continuous Aggregate Policy%'
-and schedule_interval = interval '3 day'
-""",
-            fetch="all",
+            get_jobs_sql(unique_schema, "test_model", "policy_refresh_continuous_aggregate"), fetch="all"
         )
         assert len(job_results) == 1
+        assert job_results[0][2] == timedelta(days=3)  # schedule_interval
