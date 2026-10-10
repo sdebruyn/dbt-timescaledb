@@ -116,3 +116,89 @@ and hypertable_schema = '{unique_schema}'""",
                 f"{get_indexes_sql(unique_schema, table_name)} and indexname = '{index_name}'",
                 fetch="one",
             )
+
+
+class TestHypertableReorderPolicyDefaultCreateIndex:
+    """`create_index` left out or none: the index is created, or reused when `indexes` already has it."""
+
+    @pytest.fixture(scope="class")
+    def models(self) -> dict[str, Any]:
+        return {
+            "config_default.sql": """
+{{
+  config(
+    materialized = "hypertable",
+    main_dimension = "time_column",
+    create_default_indexes = False,
+    reorder_policy = { "index": { "columns": ["col_1"] } },
+  )
+}}
+
+select current_timestamp as time_column, 1 as col_1
+""",
+            "config_none.sql": """
+{{
+  config(
+    materialized = "hypertable",
+    main_dimension = "time_column",
+    create_default_indexes = False,
+    reorder_policy = { "create_index": none, "index": { "columns": ["col_1"] } },
+  )
+}}
+
+select current_timestamp as time_column, 1 as col_1
+""",
+            "config_reuse.sql": """
+{{
+  config(
+    materialized = "hypertable",
+    main_dimension = "time_column",
+    create_default_indexes = False,
+    indexes = [{ "columns": ["col_1"] }],
+    reorder_policy = { "index": { "columns": ["col_1"] } },
+  )
+}}
+
+select current_timestamp as time_column, 1 as col_1
+""",
+            "yaml_default.sql": "select current_timestamp as time_column, 1 as col_1",
+        }
+
+    @pytest.fixture(scope="class")
+    def project_config_update(self) -> dict[str, Any]:
+        return {
+            "models": {
+                "test": {
+                    "yaml_default": {
+                        "+materialized": "hypertable",
+                        "+main_dimension": "time_column",
+                        "+create_default_indexes": False,
+                        "+reorder_policy": {"index": {"columns": ["col_1"]}},
+                    }
+                }
+            }
+        }
+
+    def test_reorder_policy(self, project: TestProjInfo, unique_schema: str) -> None:
+        for _ in range(2):
+            results = run_dbt(["run"])
+            assert len(results) == 4
+
+            timescale_jobs = project.run_sql(
+                f"""
+select hypertable_name, config->>'index_name'
+from timescaledb_information.jobs
+where application_name like 'Reorder Policy%'
+and hypertable_schema = '{unique_schema}'""",
+                fetch="all",
+            )
+            assert {table_name for table_name, _ in timescale_jobs} == {
+                "config_default",
+                "config_none",
+                "config_reuse",
+                "yaml_default",
+            }
+            for table_name, index_name in timescale_jobs:
+                indexes = project.run_sql(get_indexes_sql(unique_schema, table_name), fetch="all")
+                assert len(indexes) == 1, f"Expected exactly 1 index on {table_name}"
+                assert indexes[0][2] == index_name, f"Reorder index {index_name} not on {table_name}"

@@ -22,7 +22,7 @@
     order by c.relname;
 
     if _index_name is null then
-      {%- if reorder_config.create_index is none or reorder_config.create_index %}
+      {%- if reorder_config.get('create_index') is none or reorder_config.create_index %}
       {{ timescaledb__get_create_index_sql(relation, index_dict, index_name) }}
       _index_name := '{{ index_name }}';
       {%- else %}
