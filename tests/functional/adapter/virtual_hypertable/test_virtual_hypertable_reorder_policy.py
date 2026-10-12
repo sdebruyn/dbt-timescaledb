@@ -92,3 +92,50 @@ select create_hypertable('{unique_schema}.vht', by_range('time_column'));""")
             results = run_dbt(["run"])
             assert len(results) == 1
             assert len(project.run_sql(get_indexes_sql(unique_schema, "vht"), fetch="all")) == 2
+
+
+class TestVirtualHypertableReorderPolicyKeepsIndex:
+    @pytest.fixture(scope="class")
+    def models(self) -> dict[str, Any]:
+        return {
+            "vht.sql": """
+{% if var("reorder_column", none) %}
+    {{
+    config(
+        reorder_policy = { "index": { "columns": [var("reorder_column"), "time_column"] } }
+    )
+    }}
+{% endif %}
+--
+"""
+        }
+
+    @pytest.fixture(scope="class")
+    def project_config_update(self) -> dict[str, Any]:
+        return {
+            "name": "virtual_hypertable_tests",
+            "models": {"virtual_hypertable_tests": {"vht": {"+materialized": "virtual_hypertable"}}},
+        }
+
+    def reorder_index_names(self, project: TestProjInfo, unique_schema: str, column: str) -> list[str]:
+        rows = project.run_sql(get_indexes_sql(unique_schema, "vht"), fetch="all")
+        return [row[2] for row in rows if f"({column}, time_column)" in row[4]]
+
+    def test_reorder_policy_keeps_index(self, project: TestProjInfo, unique_schema: str) -> None:
+        project.run_sql(f"""
+create table {unique_schema}.vht (time_column timestamp, col_1 int, col_2 int);
+select create_hypertable('{unique_schema}.vht', by_range('time_column'));""")
+
+        run_dbt(["run", "--vars", "reorder_column: col_1"])
+        names = self.reorder_index_names(project, unique_schema, "col_1")
+        assert len(names) == 1
+
+        run_dbt(["run", "--vars", "reorder_column: col_1"])
+        assert self.reorder_index_names(project, unique_schema, "col_1") == names
+
+        run_dbt(["run", "--vars", "reorder_column: col_2"])
+        assert self.reorder_index_names(project, unique_schema, "col_1") == []
+        assert len(self.reorder_index_names(project, unique_schema, "col_2")) == 1
+
+        run_dbt(["run"])
+        assert self.reorder_index_names(project, unique_schema, "col_2") == []
