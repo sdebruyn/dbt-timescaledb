@@ -42,6 +42,16 @@ class TimescaleDBRelation(PostgresRelation):
         obj_from_config = [PostgresIndexConfig.from_dict(index) for index in parsed_from_config]
         set_from_config = frozenset(obj_from_config)
 
+        # add_reorder_policy creates and reuses this index itself; keep it out of the comparison.
+        reorder_policy = relation_config.config.get("reorder_policy") or {}
+        create_index = reorder_policy.get("create_index")
+        if reorder_policy and (create_index is None or create_index):
+            reorder_index = PostgresIndexConfig.from_dict(
+                PostgresIndexConfig.parse_model_node(reorder_policy.get("index") or {})
+            )
+            index_set -= {reorder_index}
+            set_from_config -= {reorder_index}
+
         changeset = TimescaleDBHypertableConfigChangeCollection(
             indexes=self._get_index_config_changes(index_set, set_from_config)
         )
