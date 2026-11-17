@@ -11,6 +11,7 @@ jobs:
     env:
       UV_PYTHON: "3.11"
     permissions:
+      contents: read
       id-token: write
     steps:
         - uses: actions/checkout@v7
