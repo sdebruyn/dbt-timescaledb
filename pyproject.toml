@@ -31,23 +31,10 @@ Repository = "https://github.com/sdebruyn/dbt-timescaledb"
 Documentation = "https://dbt-timescaledb.debruyn.dev/usage/"
 
 [build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
 
-[tool.pdm]
-plugins = [
-    "sync-pre-commit-lock"
-]
-
-[tool.pdm.build]
-includes = ["dbt/"]
-
-[tool.pdm.version]
-source = "scm"
-write_to = "dbt/adapters/timescaledb/__version__.py"
-write_template = "version = '{}'"
-
-[tool.pdm.dev-dependencies]
+[dependency-groups]
 dev = [
     "pre-commit>=3.5.0",
     "ruff>=0.1.4",
@@ -66,6 +53,26 @@ docs = [
     "mkdocs-autorefs>=0.5.0",
     "pymdown-extensions>=10.4",
     "mkdocs-open-in-new-tab>=1.0.3",
+]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "dbt/adapters/timescaledb/__version__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "dbt/__init__.py",
+    "dbt/adapters/timescaledb",
+    "dbt/include/timescaledb",
+]
+
+[tool.hatch.build.targets.wheel]
+only-include = [
+    "dbt/__init__.py",
+    "dbt/adapters/timescaledb",
+    "dbt/include/timescaledb",
 ]
 
 [tool.ruff]

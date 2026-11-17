@@ -1,3 +1,5 @@
+exclude: ^docs_build/site/
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -15,10 +17,13 @@ repos:
       - id: check-toml
       - id: fix-byte-order-marker
       - id: mixed-line-ending
-  - repo: https://github.com/pdm-project/pdm
-    rev: '2.29.5'
+  - repo: local
     hooks:
-      - id: pdm-lock-check
+      - id: uv-lock-check
+        name: uv-lock-check
+        entry: uv lock --check
+        language: system
+        pass_filenames: false
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.3.4
     hooks:

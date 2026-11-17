@@ -9,7 +9,7 @@
   <img alt="timescale logo" src="https://raw.githubusercontent.com/sdebruyn/dbt-timescaledb/main/assets/Timescale-Logo-Black-PNG.png">
 </picture>
 
-[![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm-project.org)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![PyPI - Version](https://img.shields.io/pypi/v/dbt-timescaledb)](https://pypi.org/project/dbt-timescaledb/)
 [![PyPI - License](https://img.shields.io/pypi/l/dbt-timescaledb)](https://github.com/sdebruyn/dbt-timescaledb/blob/main/LICENSE)
 [![tests](https://github.com/sdebruyn/dbt-timescaledb/actions/workflows/test.yml/badge.svg)](https://github.com/sdebruyn/dbt-timescaledb/actions/workflows/test.yml)
@@ -37,6 +37,18 @@ The recommended versions of Timescale are TimescaleDB Community Edition or Times
 ## Features & documentation
 
 [Read the documentation](https://dbt-timescaledb.debruyn.dev/) ([installation](https://dbt-timescaledb.debruyn.dev/installation/) | [usage](https://dbt-timescaledb.debruyn.dev/usage/)) for more information.
+
+## Development
+
+Create the development environment with `uv sync --group test`, then run the checks:
+
+```shell
+uv lock --check
+uv run pre-commit run --all-files
+uv run pre-commit run ruff --all-files
+uv run pre-commit run ruff-format --all-files
+uv run pytest --cov=dbt
+```
 
 ## Code of Conduct
 

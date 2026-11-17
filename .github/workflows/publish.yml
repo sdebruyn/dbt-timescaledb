@@ -8,15 +8,79 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: "3.11"
     permissions:
+      contents: read
       id-token: write
     steps:
         - uses: actions/checkout@v7
-
-        - uses: pdm-project/setup-pdm@v4
           with:
-            cache: true
+            fetch-depth: 0
+
+        - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+          with:
+            enable-cache: true
             python-version: '3.11'
+            version: '0.13.9'
+
+        - name: Build package distributions
+          run: uv build --no-sources
+
+        - name: Verify package distributions
+          env:
+            EXPECTED_VERSION: ${{ github.ref_name }}
+          run: |
+            mkdir -p /tmp/dbt-timescaledb-sdist
+            tar -xzf dist/*.tar.gz -C /tmp/dbt-timescaledb-sdist --strip-components=1
+            uv build --wheel --no-sources --out-dir /tmp/dbt-timescaledb-wheel /tmp/dbt-timescaledb-sdist
+
+            python - <<'PY'
+            import os
+            import tarfile
+            import zipfile
+            from email.parser import BytesParser
+            from pathlib import Path
+
+            expected = os.environ["EXPECTED_VERSION"].removeprefix("v")
+            sdists = list(Path("dist").glob("*.tar.gz"))
+            wheels = list(Path("dist").glob("*.whl"))
+            rebuilt_wheels = list(Path("/tmp/dbt-timescaledb-wheel").glob("*.whl"))
+            artifacts = [*sdists, *wheels, *rebuilt_wheels]
+            if len(sdists) != 1 or len(wheels) != 1 or len(artifacts) != 3:
+                raise SystemExit(f"Expected one sdist, one wheel, and one wheel rebuilt from the sdist: {artifacts}")
+
+            def metadata_version(path: Path) -> str:
+                if path.suffix == ".whl":
+                    with zipfile.ZipFile(path) as archive:
+                        metadata_name = next(name for name in archive.namelist() if name.endswith(".dist-info/METADATA"))
+                        metadata = archive.read(metadata_name)
+                else:
+                    with tarfile.open(path, "r:gz") as archive:
+                        metadata_file = next(member for member in archive.getmembers() if member.name.endswith("/PKG-INFO"))
+                        extracted = archive.extractfile(metadata_file)
+                        if extracted is None:
+                            raise RuntimeError(f"Could not read metadata from {path}")
+                        metadata = extracted.read()
+                return BytesParser().parsebytes(metadata)["Version"]
+
+            for artifact in artifacts:
+                version = metadata_version(artifact)
+                if version != expected:
+                    raise SystemExit(f"{artifact} has version {version}, expected {expected}")
+
+            required_wheel_files = {
+                "dbt/adapters/timescaledb/__version__.py",
+                "dbt/include/timescaledb/dbt_project.yml",
+                "dbt/include/timescaledb/profile_template.yml",
+                "dbt/include/timescaledb/macros/adapters.sql",
+            }
+            for wheel in [*wheels, *rebuilt_wheels]:
+                with zipfile.ZipFile(wheel) as archive:
+                    missing = required_wheel_files.difference(archive.namelist())
+                    if missing:
+                        raise SystemExit(f"{wheel} is missing package resources: {sorted(missing)}")
+            PY
 
         - name: Publish package distributions to PyPI
-          run: pdm publish
+          run: uv publish --trusted-publishing always dist/*
