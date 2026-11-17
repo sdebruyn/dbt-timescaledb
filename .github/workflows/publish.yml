@@ -42,9 +42,10 @@ jobs:
             from pathlib import Path
 
             expected = os.environ["EXPECTED_VERSION"].removeprefix("v")
-            artifacts = [*Path("dist").glob("*"), *Path("/tmp/dbt-timescaledb-wheel").glob("*")]
             sdists = list(Path("dist").glob("*.tar.gz"))
             wheels = list(Path("dist").glob("*.whl"))
+            rebuilt_wheels = list(Path("/tmp/dbt-timescaledb-wheel").glob("*.whl"))
+            artifacts = [*sdists, *wheels, *rebuilt_wheels]
             if len(sdists) != 1 or len(wheels) != 1 or len(artifacts) != 3:
                 raise SystemExit(f"Expected one sdist, one wheel, and one wheel rebuilt from the sdist: {artifacts}")
 
@@ -73,7 +74,7 @@ jobs:
                 "dbt/include/timescaledb/profile_template.yml",
                 "dbt/include/timescaledb/macros/adapters.sql",
             }
-            for wheel in [*wheels, *Path("/tmp/dbt-timescaledb-wheel").glob("*.whl")]:
+            for wheel in [*wheels, *rebuilt_wheels]:
                 with zipfile.ZipFile(wheel) as archive:
                     missing = required_wheel_files.difference(archive.namelist())
                     if missing:
