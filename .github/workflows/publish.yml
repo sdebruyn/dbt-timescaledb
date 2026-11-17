@@ -8,6 +8,8 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: "3.11"
     permissions:
       id-token: write
     steps:
